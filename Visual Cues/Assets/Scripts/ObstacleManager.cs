@@ -13,7 +13,8 @@ public class ObstacleManager : MonoBehaviour
     public List<Quaternion> obstacleStartingRotations;
     public List<Vector3> obstacleStartingScales;
 
-    private bool cuesOn = true;
+    private bool collocatedCuesOn = true;
+    private bool hudCuesOn = true;
     public GameObject[] visualCues;
     public List<Vector3> cueStartingLocations;
     public List<Quaternion> cueStartingRotations;
@@ -88,34 +89,48 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    public void VisualCuesToggle()
+    public void CollocatedCuesToggle()
     {
-        Debug.Log("Toggling visual cues.");
+        Debug.Log("Toggling collocated visual cues.");
 
-        if (cuesOn)
+        if (collocatedCuesOn)
         {
-            Debug.Log("Cues off.");
+            Debug.Log("Collocated cues off.");
             foreach (GameObject Cue in visualCues)
             {
                 Cue.SetActive(false);
             }
-
-            HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().HideIndicators();
-
-            cuesOn = false;
+            collocatedCuesOn = false;
         }
 
         else
         {
-            Debug.Log("Cues on.");
+            Debug.Log("Collocated cues on.");
             foreach (GameObject Cue in visualCues)
             {
                 Cue.SetActive(true);
             }
+            collocatedCuesOn = true;
+        }
+    }
 
+    public void HUDCuesToggle()
+    {
+        Debug.Log("Toggling HUD visual cues.");
+
+        if (hudCuesOn)
+        {
+            Debug.Log("HUD cues off.");
+            HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().HideIndicators();
+            hudCuesOn = false;
+        }
+
+        else
+        {
+            Debug.Log("HUD cues on.");
             HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().ShowIndicators();
+            hudCuesOn = true;
 
-            cuesOn = true;
         }
     }
 

@@ -17,22 +17,29 @@ MonoBehaviour:
   recognitionConfidenceLevel: 1
   speechCommands:
   - localizationKey: 
-    keyword: Toggle Obstacles
-    keyCode: 111
+    keyword: Toggle Digital Obstacles
+    keyCode: 282
     action:
       id: 0
       description: Toggle Profiler
       axisConstraint: 0
   - localizationKey: 
-    keyword: Toggle Cues
+    keyword: Toggle Collocated Cues
     keyCode: 283
     action:
       id: 0
       description: Toggle Profiler
       axisConstraint: 0
   - localizationKey: 
-    keyword: Reset Positions
+    keyword: Toggle HUD Cues
     keyCode: 284
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Reset Positions
+    keyCode: 285
     action:
       id: 0
       description: None
