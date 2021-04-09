@@ -42,8 +42,11 @@ public class ObstacleManager : MonoBehaviour
     //public GameObject cuePrefab; //Necessary for AddCue, not ShowCue
 
     [Tooltip("Number of cues to show at start.")]
-    public int startingCues = 1; //
-    private int numShown = 10; //Indicates how many cues are currently shown
+    public int startingCues = 3; //
+    private int numShown; //Indicates how many cues are currently shown
+
+    [Tooltip("User height in meters.")]
+    public float userHeight = 1.5f;
 
 
     // Start is called before the first frame update
@@ -51,9 +54,10 @@ public class ObstacleManager : MonoBehaviour
     {
         SavePositions();
         HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
+        numShown = visualCues.Count;
 
-        //Hide cues until the number remaining matches numShown.
-        for (int n = visualCues.Count; n> startingCues; n--)
+        //Hide cues until the number shown matches startingCues.
+        while (numShown > startingCues)
         {
             HideCue();
         }
@@ -188,7 +192,7 @@ public class ObstacleManager : MonoBehaviour
         {
             visualCues[numShown - 1].SetActive(false);
             HUDIndicator.RemoveIndicator(visualCues[numShown - 1].transform);
-            Debug.Log("Indicator removed.");
+            //Debug.Log("Indicator removed.");
 
             numShown--;
             numShownTextObject.GetComponent<TMP_Text>().text = "Show Cue (" + numShown + "/10)";
@@ -212,6 +216,7 @@ public class ObstacleManager : MonoBehaviour
         for (int n = 0; n < cuesParent.transform.childCount; n++)
         {
             visualCues.Add(cuesParent.transform.GetChild(n).gameObject);
+            //Debug.Log("Added visual cue: " + visualCues[n].name);
         }
 
         Debug.Log(visualCues.Count + " visual cues added to list.");
@@ -227,6 +232,7 @@ public class ObstacleManager : MonoBehaviour
 
     public void ResetPositions()
     {
+        //Adjusts obstacles back to last saved position.
         Debug.Log("Resetting positions.");
 
         //int obstacleCount = 0;
@@ -249,6 +255,39 @@ public class ObstacleManager : MonoBehaviour
             Cue.transform.localScale = cueStartingScales[cueCount];
             cueCount++;
         }
+    }
+
+    public void SetLocation(string posName)
+    {
+        //Sets location of user to a given position by moving entire Collocated Cues object.
+        if (posName == "doorway")
+        {
+            //Set cues parent to be at user's location and lower by height
+            cuesParent.transform.position = Camera.main.transform.position - new Vector3 (0.0f, userHeight, 0.0f);
+
+            //Then rotate in Y axis to match camera
+            cuesParent.transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            cuesParent.transform.Rotate(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
+            Debug.Log("Location set to doorway.");
+        }
+
+        else
+        {
+            Debug.Log("Position not found. Location unchanged.");
+        }
+    }
+
+    public void AdjustHeight(float dif)
+    {
+        //Adjusts user height up or down.
+        userHeight += dif;
+        Debug.Log("User height is now: " + userHeight + " meters.");
+    }
+
+    public void ManualRotate(float degrees)
+    {
+        //Manually rotates world left or right.
+        cuesParent.transform.Rotate(0f, degrees, 0f);
     }
 
     public void ToggleInterface()

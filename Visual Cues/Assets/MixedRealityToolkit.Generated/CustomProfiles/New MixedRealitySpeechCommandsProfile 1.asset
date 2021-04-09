@@ -65,3 +65,38 @@ MonoBehaviour:
       id: 0
       description: None
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Set Location Doorway
+    keyCode: 56
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Height Up
+    keyCode: 57
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Height Down
+    keyCode: 48
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Rotate Left
+    keyCode: 276
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Rotate Right
+    keyCode: 275
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
