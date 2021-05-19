@@ -179,7 +179,8 @@ namespace Greyman
 					hitPoint = rToTarget.GetPoint(distance);
 					Ray rToArrow = new Ray(pPlane, hitPoint - pPlane);
 					arrowIndicator.arrow.transform.position = rToArrow.GetPoint(-radius);
-					arrowIndicator.onScreen = false;
+					//arrowIndicator.onScreen = false;
+					arrowIndicator.onScreen = true; //Setting this case to true should effectively cause the arrow to fade out if it points to something behind the user
 
 					Vector3 plPlane = indicatorsParentObj.transform.localPosition;
 					Vector3 plHitPoint = arrowIndicator.arrow.transform.localPosition;

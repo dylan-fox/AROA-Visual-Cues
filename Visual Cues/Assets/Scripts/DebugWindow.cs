@@ -11,6 +11,9 @@ public class DebugWindow : MonoBehaviour
     void Start()
     {
         textMesh = gameObject.GetComponentInChildren<TMP_Text>();
+        //textMesh = transform.GetChild(0).GetChild(0).gameObject.GetComponent<TMP_Text>();
+        //Debug.Log("text mesh object: " + transform.GetChild(0).GetChild(0).gameObject);
+        textMesh.text = "";
     }
 
     void OnEnable()

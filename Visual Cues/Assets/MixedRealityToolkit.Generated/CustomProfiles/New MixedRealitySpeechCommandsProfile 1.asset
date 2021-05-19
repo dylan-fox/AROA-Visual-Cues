@@ -73,14 +73,14 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Height Up
+    keyword: Move Up
     keyCode: 57
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Height Down
+    keyword: Move Down
     keyCode: 48
     action:
       id: 0
@@ -88,14 +88,49 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Left
-    keyCode: 276
+    keyCode: 44
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Right
+    keyCode: 46
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Toggle Calibration
+    keyCode: 99
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Move Forward
+    keyCode: 273
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Move Back
+    keyCode: 274
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Move Right
     keyCode: 275
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Move Left
+    keyCode: 276
     action:
       id: 0
       description: None

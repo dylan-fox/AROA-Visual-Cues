@@ -34,6 +34,7 @@ public class ObstacleManager : MonoBehaviour
 
     public GameObject interfaceObject;
     public GameObject cuesParent;
+    public GameObject calibrationCue;
 
     public GameObject HUDManager;
     private HUDIndicator HUDIndicator;
@@ -45,8 +46,8 @@ public class ObstacleManager : MonoBehaviour
     public int startingCues = 3; //
     private int numShown; //Indicates how many cues are currently shown
 
-    [Tooltip("User height in meters.")]
-    public float userHeight = 1.5f;
+    [Tooltip("Default user height in meters.")]
+    public float defaultHeight = 1.6256f; //5'4" should be roughly average eye height
 
 
     // Start is called before the first frame update
@@ -61,6 +62,7 @@ public class ObstacleManager : MonoBehaviour
         {
             HideCue();
         }
+
     }
 
     // Update is called once per frame
@@ -140,6 +142,15 @@ public class ObstacleManager : MonoBehaviour
             hudCuesOn = true;
 
         }
+    }
+
+    public void CalibrationToggle()
+    {
+        Debug.Log("Toggling calibration cue.");
+        if (calibrationCue.activeSelf)
+            calibrationCue.SetActive(false);
+        else
+            calibrationCue.SetActive(true);
     }
 
     /*
@@ -224,8 +235,8 @@ public class ObstacleManager : MonoBehaviour
         foreach (GameObject Cue in visualCues)
         {
             //Debug.Log("Cue " + Cue.name + " added at " + Cue.transform.position);
-            cueStartingLocations.Add(Cue.transform.position);
-            cueStartingRotations.Add(Cue.transform.rotation);
+            cueStartingLocations.Add(Cue.transform.localPosition);
+            cueStartingRotations.Add(Cue.transform.localRotation);
             cueStartingScales.Add(Cue.transform.localScale);
         }
     }
@@ -250,8 +261,8 @@ public class ObstacleManager : MonoBehaviour
 
         foreach (GameObject Cue in visualCues)
         {
-            Cue.transform.position = cueStartingLocations[cueCount];
-            Cue.transform.rotation = cueStartingRotations[cueCount];
+            Cue.transform.localPosition = cueStartingLocations[cueCount];
+            Cue.transform.localRotation = cueStartingRotations[cueCount];
             Cue.transform.localScale = cueStartingScales[cueCount];
             cueCount++;
         }
@@ -263,7 +274,7 @@ public class ObstacleManager : MonoBehaviour
         if (posName == "doorway")
         {
             //Set cues parent to be at user's location and lower by height
-            cuesParent.transform.position = Camera.main.transform.position - new Vector3 (0.0f, userHeight, 0.0f);
+            cuesParent.transform.position = Camera.main.transform.position - new Vector3 (0.0f, defaultHeight, 0.0f);
 
             //Then rotate in Y axis to match camera
             cuesParent.transform.eulerAngles = new Vector3(0f, 0f, 0f);
@@ -277,18 +288,29 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    public void AdjustHeight(float dif)
+
+    public void MoveForward(float dist)
     {
-        //Adjusts user height up or down.
-        userHeight += dif;
-        Debug.Log("User height is now: " + userHeight + " meters.");
+        cuesParent.transform.localPosition += cuesParent.transform.forward * dist;
     }
+
+    public void MoveRight(float dist)
+    {
+        cuesParent.transform.localPosition += cuesParent.transform.right * dist;
+    }
+
+    public void MoveUp(float dist)
+    {
+        cuesParent.transform.localPosition += cuesParent.transform.up * dist;
+    }
+
 
     public void ManualRotate(float degrees)
     {
-        //Manually rotates world left or right.
+        //Manually rotates cues left or right.
         cuesParent.transform.Rotate(0f, degrees, 0f);
     }
+
 
     public void ToggleInterface()
     {
