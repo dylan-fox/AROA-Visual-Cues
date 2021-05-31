@@ -5,6 +5,7 @@ using Greyman;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 
 public class ObstacleManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class ObstacleManager : MonoBehaviour
 
     private bool collocatedCuesOn = true;
     private bool hudCuesOn = true;
+    private bool gestureLock = false;
 
     [HideInInspector]
     public List<GameObject> visualCues;
@@ -62,6 +64,12 @@ public class ObstacleManager : MonoBehaviour
         {
             HideCue();
         }
+
+        //Start with cues and interface off
+        CollocatedCuesToggle();
+        HUDCuesToggle();
+        ToggleInterface();
+        ToggleGestures();
 
     }
 
@@ -218,7 +226,7 @@ public class ObstacleManager : MonoBehaviour
         //Get visual cues and record original positions
 
         visualCues.Clear();
-        Debug.Log("Visual cues cleared; length is now " + visualCues.Count);
+        //Debug.Log("Visual cues cleared; length is now " + visualCues.Count);
         cueStartingLocations.Clear();
         cueStartingRotations.Clear();
         cueStartingScales.Clear();
@@ -230,7 +238,7 @@ public class ObstacleManager : MonoBehaviour
             //Debug.Log("Added visual cue: " + visualCues[n].name);
         }
 
-        Debug.Log(visualCues.Count + " visual cues added to list.");
+        Debug.Log("Positions saved for " + visualCues.Count + " visual cues.");
 
         foreach (GameObject Cue in visualCues)
         {
@@ -325,5 +333,47 @@ public class ObstacleManager : MonoBehaviour
             interfaceObject.SetActive(true);
         }
 
+    }
+
+    public void ToggleGestures()
+    {
+        //Locks gesture-based movement controls so users cannot accidentally move digital obstacles.
+        if (!gestureLock)
+        {
+            //Turn gesture lock on by disabling Object Manipulators and Bounds Controls on all collocated cues
+            Debug.Log("Locking gestures.");
+            foreach (GameObject cue in visualCues)
+            {
+                if (cue.GetComponent<ObjectManipulator>() != null)
+                {
+                    cue.GetComponent<ObjectManipulator>().enabled = false;
+                }
+
+                if (cue.GetComponent<BoundsControl>() != null)
+                {
+                    cue.GetComponent<BoundsControl>().enabled = false;
+                }
+            }
+            gestureLock = true;
+        }
+
+        else
+        {
+            //Turn gesture lock off by enabling Object Manipulators and Bounds Controls on all collocated cues
+            Debug.Log("Unlocking gestures.");
+            foreach (GameObject cue in visualCues)
+            {
+                if (cue.GetComponent<ObjectManipulator>() != null)
+                {
+                    cue.GetComponent<ObjectManipulator>().enabled = true;
+                }
+
+                if (cue.GetComponent<BoundsControl>() != null)
+                {
+                    cue.GetComponent<BoundsControl>().enabled = true;
+                }
+            }
+            gestureLock = false;
+        }
     }
 }

@@ -135,3 +135,10 @@ MonoBehaviour:
       id: 0
       description: None
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Toggle Gestures
+    keyCode: 103
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
