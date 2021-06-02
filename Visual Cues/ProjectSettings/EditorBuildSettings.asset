@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Visual Cues v2.unity
     guid: bcfce4ee423c5134eba0935249404919
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Visual Cues v3.unity
     guid: cc6cc0ea0660be74abaf9d58062a1a1f
+  - enabled: 1
+    path: Assets/Scenes/Visual Cues v4a.unity
+    guid: 6539b7b49bf561841999a865182e4fc7
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: f244be48151006f44b69a854d68ddf41,
       type: 2}
