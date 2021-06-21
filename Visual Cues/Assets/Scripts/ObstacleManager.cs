@@ -319,6 +319,19 @@ public class ObstacleManager : MonoBehaviour
         cuesParent.transform.Rotate(0f, degrees, 0f);
     }
 
+    public void shiftHUD(float dist)
+    {
+        HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX += dist;
+        Debug.Log("HUD cues adjusted " + dist + " meters to the right. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX);
+    }
+
+    public void increaseHUDradius (float dist)
+    {
+        HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius += dist;
+        Debug.Log("HUD cue radius increased by " + dist + " meters. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius);
+
+    }
+
 
     public void ToggleInterface()
     {

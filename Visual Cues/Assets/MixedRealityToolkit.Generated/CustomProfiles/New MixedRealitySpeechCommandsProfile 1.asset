@@ -142,3 +142,31 @@ MonoBehaviour:
       id: 0
       description: None
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Shift HUD Right
+    keyCode: 108
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Shift HUD Left
+    keyCode: 106
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Increase HUD Radius
+    keyCode: 105
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Decrease HUD Radius
+    keyCode: 107
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0

@@ -17,6 +17,7 @@ namespace Greyman
 		public float cameraDistance = 5; //default distance
 		public float radius = 2; //default radius
 		public float indicatorScale = 0.1f;
+		public float arrowShiftX = 0f; //DYLAN EDIT: Amount to shift arrows right
 
 		void Start()
 		{
@@ -125,9 +126,14 @@ namespace Greyman
 			//change pPlane according to Z of arrow
 			Ray zRay = new Ray(pPlane, pCam - pPlane);
 			pPlane = zRay.GetPoint(-0.001f * id);
+					
 			//plane to draw things
 			Plane plane = new Plane(Vector3.Normalize(pCam - pPlane), pPlane);
 			//raycast line to target
+
+			//DYLAN EDIT: Shift pPlane to camera's right by an amount arrowShiftX
+			Vector3 camRight = Camera.main.transform.right;
+			pPlane += camRight * arrowShiftX;
 
 			Vector3 pTarget = arrowIndicator.target.transform.position + arrowIndicator.indicator.targetOffset;
 			Ray rToTarget = new Ray(pCam, pTarget - pCam);
@@ -149,8 +155,11 @@ namespace Greyman
 					arrowIndicator.onScreen = true;
 					arrowIndicator.arrow.transform.position = hitPoint;
 				}
+
+
 				//We do angle stuff in local space *GLOBAL SPACE
-				Vector3 plPlane = indicatorsParentObj.transform.localPosition;
+				//Vector3 plPlane = indicatorsParentObj.transform.localPosition;
+				Vector3 plPlane = indicatorsParentObj.transform.localPosition + new Vector3 (arrowShiftX, 0f, 0f);//DYLAN EDIT: Account for updated plane intersection
 				Vector3 plHitPoint = arrowIndicator.arrow.transform.localPosition;
 				// plPlane local pos is 0,0 but maybe we move the plane?
 				//Apply Head rotation angle
@@ -180,7 +189,7 @@ namespace Greyman
 					Ray rToArrow = new Ray(pPlane, hitPoint - pPlane);
 					arrowIndicator.arrow.transform.position = rToArrow.GetPoint(-radius);
 					//arrowIndicator.onScreen = false;
-					arrowIndicator.onScreen = true; //Setting this case to true should effectively cause the arrow to fade out if it points to something behind the user
+					arrowIndicator.onScreen = true; //DYLAN EDIT: Setting this case to true should effectively cause the arrow to fade out if it points to something behind the user
 
 					Vector3 plPlane = indicatorsParentObj.transform.localPosition;
 					Vector3 plHitPoint = arrowIndicator.arrow.transform.localPosition;

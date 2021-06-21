@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3951,6 +3951,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 240d9483db94993408ff1d02335ea212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxMaterial: {fileID: 0}
+  boxGrabbedMaterial: {fileID: 0}
+  flattenAxisDisplayScale: 0
 --- !u!1001 &1135964970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4275,6 +4278,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fcb6341cafc3f84994828d3606683d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handlePrefabColliderType: 1
+  showHandleForX: 0
+  showHandleForY: 0
+  showHandleForZ: 0
 --- !u!1 &1224487819
 GameObject:
   m_ObjectHideFlags: 0
@@ -4816,6 +4830,66 @@ MonoBehaviour:
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
+  - keyword: Shift HUD Right
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: shiftHUD
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.05
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Shift HUD Left
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: shiftHUD
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -0.05
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase HUD Radius
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: increaseHUDradius
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.05
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease HUD Radius
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: increaseHUDradius
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -0.05
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
   persistentKeywords: 0
   speechConfirmationTooltipPrefab: {fileID: 0}
 --- !u!114 &1303072127
@@ -4830,6 +4904,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36981d974b5546a4cbfa0b4bfa0c0ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handlePrefabColliderType: 1
+  showHandleForX: 1
+  showHandleForY: 1
+  showHandleForZ: 1
 --- !u!1 &1335286681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5260,6 +5345,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1377672511}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &1377672510
@@ -6196,6 +6282,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae6b815054539c4cbce3013daf8f276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  proximityEffectActive: 0
+  objectMediumProximity: 0.1
+  objectCloseProximity: 0.03
+  farScale: 0
+  mediumScale: 1
+  closeScale: 1.5
+  farGrowRate: 0.3
+  mediumGrowRate: 0.2
+  closeGrowRate: 0.3
 --- !u!1001 &1571389380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6795,6 +6890,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d3e2fcd636d0243820f1bebf6e167b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handleSlatePrefab: {fileID: 0}
+  showScaleHandles: 1
+  scaleBehavior: 0
 --- !u!1 &1769118240
 GameObject:
   m_ObjectHideFlags: 0
@@ -7880,6 +7985,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wireframeMaterial: {fileID: 0}
+  wireframeEdgeRadius: 0.001
+  wireframeShape: 0
+  showWireframe: 1
 --- !u!114 &4154195923237920730
 MonoBehaviour:
   m_ObjectHideFlags: 0
