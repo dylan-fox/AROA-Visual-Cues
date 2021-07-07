@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Cooper Lab
-  productName: AROA
+  productName: Obstacle Avoidance
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -125,7 +125,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0
+  bundleVersion: 1.01
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -636,7 +636,7 @@ PlayerSettings:
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
   metroCertificateNotAfter: 8003a689131ed801
-  metroApplicationDescription: AROA
+  metroApplicationDescription: Obstacle Avoidance
   wsaImages:
     65636: Assets/Icons/AROA_Logo_v1_icon_50px.png
     65736: Assets/Icons/AROA_Logo_v1_icon_100px.png
@@ -647,7 +647,7 @@ PlayerSettings:
     2293860: Assets/Icons/AROA_Logo_v1_light_wide.png
     2293960: Assets/Icons/AROA_Logo_v1_light_wide@2x.png
     2294160: Assets/Icons/AROA_Logo_v1_light_wide@4x.png
-  metroTileShortName: AROA v1.0
+  metroTileShortName: Obstacle Avoidance v1.01
   metroTileShowName: 0
   metroMediumTileShowName: 1
   metroLargeTileShowName: 1
