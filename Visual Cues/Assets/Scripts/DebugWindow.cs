@@ -41,7 +41,7 @@ public class DebugWindow : MonoBehaviour
         }
         else
         {
-            Debug.Log("Text mesh not found.");
+            //Debug.Log("Text mesh not found.");
         }
         
     }

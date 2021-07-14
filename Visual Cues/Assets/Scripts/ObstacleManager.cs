@@ -112,7 +112,7 @@ public class ObstacleManager : MonoBehaviour
 
     public void CollocatedCuesToggle()
     {
-        Debug.Log("Toggling collocated visual cues.");
+        //Debug.Log("Toggling collocated visual cues.");
 
         if (collocatedCuesOn)
         {
@@ -134,7 +134,7 @@ public class ObstacleManager : MonoBehaviour
 
     public void HUDCuesToggle()
     {
-        Debug.Log("Toggling HUD visual cues.");
+        //Debug.Log("Toggling HUD visual cues.");
 
         if (hudCuesOn)
         {
