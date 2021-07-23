@@ -132,13 +132,14 @@ GameObject:
   - component: {fileID: 11173240}
   - component: {fileID: 11173239}
   - component: {fileID: 11173238}
+  - component: {fileID: 11173241}
   m_Layer: 0
   m_Name: QRCodesManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &11173238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,7 +147,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11173237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1e61141c1cacfc4098bba584b1256a0, type: 3}
   m_Name: 
@@ -160,7 +161,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11173237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ca5764ede9ad0f42b0558448cd2dfd0, type: 3}
   m_Name: 
@@ -173,13 +174,27 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11173237}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1490066230}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11173241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11173237}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8354357318faf2648a3944036b925822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacle1: {fileID: 440831915}
+  obstacle2: {fileID: 4310497907214298780}
 --- !u!1 &32149977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,7 +1308,7 @@ Transform:
   - {fileID: 1224487820}
   - {fileID: 664482710}
   m_Father: {fileID: 1490066230}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &440831915
 GameObject:
@@ -1634,7 +1649,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a50237e3265fe9149a16e889fd8d8b4c, type: 2}
+  - {fileID: 2100000, guid: 868ae86507c380b459f0e9ae4d48b8bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1983,7 +1998,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a50237e3265fe9149a16e889fd8d8b4c, type: 2}
+  - {fileID: 2100000, guid: 868ae86507c380b459f0e9ae4d48b8bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2617,7 +2632,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a50237e3265fe9149a16e889fd8d8b4c, type: 2}
+  - {fileID: 2100000, guid: 868ae86507c380b459f0e9ae4d48b8bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3016,7 +3031,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a50237e3265fe9149a16e889fd8d8b4c, type: 2}
+  - {fileID: 2100000, guid: 868ae86507c380b459f0e9ae4d48b8bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5861,6 +5876,7 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   - {fileID: 1264387025}
+  - {fileID: 11173240}
   - {fileID: 1536247364}
   - {fileID: 1948430008}
   - {fileID: 6109485034297252929}
@@ -6090,7 +6106,7 @@ Transform:
   m_Children:
   - {fileID: 1426407795}
   m_Father: {fileID: 1490066230}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1536247365
 MonoBehaviour:
@@ -7572,7 +7588,7 @@ Transform:
   - {fileID: 153820812}
   - {fileID: 1724624460}
   m_Father: {fileID: 1490066230}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967049892
 GameObject:
@@ -11313,7 +11329,7 @@ Transform:
   - {fileID: 1778422968}
   - {fileID: 2110126120}
   m_Father: {fileID: 1490066230}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6109509619439208569
 Transform:
@@ -11669,13 +11685,13 @@ MonoBehaviour:
 
 
     Here
-    are the currently available voice commands.
+    are the currently available voice commands. (NOW WITH QR CODES)
 
 
 
 
-    Toggles the collocated cues
-    (yellow cube outlines) and HUD cues (yellow arrows), respectively.
+    Toggles
+    the collocated cues (yellow cube outlines) and HUD cues (yellow arrows), respectively.
 
 
 
