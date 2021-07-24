@@ -9,8 +9,10 @@ namespace QRTracking
 {
     public class QRCodes_AROA : MonoBehaviour
     {
+        public GameObject qrCodePrefab;
         public GameObject obstacle1;
         public GameObject obstacle2;
+        public GameObject obstacleCollection;
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
@@ -49,9 +51,10 @@ namespace QRTracking
             QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
-            if (obstacle1 == null || obstacle2 == null)
+
+            if (qrCodePrefab == null || obstacle1 == null || obstacle2 == null || obstacleCollection == null)
             {
-                throw new System.Exception("Obstacles not assigned");
+                throw new System.Exception("Prefab or obstacles not assigned");
             }
         }
         private void Instance_QRCodesTrackingStateChanged(object sender, bool status)
@@ -101,24 +104,88 @@ namespace QRTracking
                     var action = pendingActions.Dequeue();
                     if (action.type == ActionData.Type.Added)
                     {
-                        //GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        //qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                        //qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
-                        //qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                        GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                        qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                        qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                        qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
 
-                        obstacle1.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                        obstacle1.GetComponent<QRCode>().qrCode = action.qrCode;
-                        qrCodesObjectsList.Add(action.qrCode.Id, obstacle1);
+                        //AROA EDIT - Assign object to QRCode script
+                        Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
+                        if (action.qrCode.Data == "QR Code 1")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                        }
 
+                        else if (action.qrCode.Data == "QR Code 2")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                        }
+
+                        else if (action.qrCode.Data == "QR Code 3")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                        }
+
+                        /*
+                        if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 1")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                        }
+
+                        else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 2")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                        }
+                        
+                        else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 3")
+                        {
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                        }
+                        */
                     }
                     else if (action.type == ActionData.Type.Updated)
                     {
                         if (!qrCodesObjectsList.ContainsKey(action.qrCode.Id))
                         {
-                            //GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                            //qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                            //qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
-                            //qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                            GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                            qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                            qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                            qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+
+                            //AROA EDIT
+                            Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
+                            if (action.qrCode.Data == "QR Code 1")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                            }
+
+                            else if (action.qrCode.Data == "QR Code 2")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                            }
+
+                            else if (action.qrCode.Data == "QR Code 3")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            }
+
+                            /*
+                            if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 1")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                            }
+
+                            else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 2")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                            }
+
+                            else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 3")
+                            {
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            }
+                            */
+
                         }
                     }
                     else if (action.type == ActionData.Type.Removed)

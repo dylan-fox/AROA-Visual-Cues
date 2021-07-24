@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &11173238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11173237}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ca5764ede9ad0f42b0558448cd2dfd0, type: 3}
   m_Name: 
@@ -188,13 +188,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11173237}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8354357318faf2648a3944036b925822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  qrCodePrefab: {fileID: 1200717071578424, guid: 6fa02cbd43d37c0419f982f588e72144,
+    type: 3}
   obstacle1: {fileID: 440831915}
   obstacle2: {fileID: 4310497907214298780}
+  obstacleCollection: {fileID: 1948430007}
 --- !u!1 &32149977
 GameObject:
   m_ObjectHideFlags: 0

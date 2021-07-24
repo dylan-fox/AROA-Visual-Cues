@@ -25,6 +25,9 @@ namespace QRTracking
         private bool launch = false;
         private System.Uri uriResult;
         private long lastTimeStamp = 0;
+        //AROA EDIT
+        private TextMesh QRPositionText;
+        public GameObject trackedObject; //Object that will mimic position of QR Code
 
         // Use this for initialization
         void Start()
@@ -47,6 +50,8 @@ namespace QRTracking
             QRVersion = QRInfo.transform.Find("QRVersion").gameObject.GetComponent<TextMesh>();
             QRTimeStamp = QRInfo.transform.Find("QRTimeStamp").gameObject.GetComponent<TextMesh>();
             QRSize = QRInfo.transform.Find("QRSize").gameObject.GetComponent<TextMesh>();
+            //AROA EDIT
+            QRPositionText = QRInfo.transform.Find("QRPositionText").gameObject.GetComponent<TextMesh>();
 
             QRID.text = "Id:" + qrCode.Id.ToString();
             QRNodeID.text = "NodeId:" + qrCode.SpatialGraphNodeId.ToString();
@@ -81,6 +86,15 @@ namespace QRTracking
                 qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
                 lastTimeStamp = qrCode.SystemRelativeLastDetectedTime.Ticks;
                 QRInfo.transform.localScale = new Vector3(PhysicalSize/0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
+
+                //AROA EDIT
+                QRPositionText.text = "Position: " + qrCodeCube.transform.position;
+                Debug.Log("Position = " + qrCodeCube.transform.position);
+                if (trackedObject != null)
+                {
+                    trackedObject.transform.position = qrCodeCube.transform.position;
+                    trackedObject.transform.rotation = qrCodeCube.transform.rotation;
+                }
             }
         }
 
