@@ -78,22 +78,36 @@ namespace QRTracking
                 QRSize.text = "Size:" + qrCode.PhysicalSideLength.ToString("F04") + "m";
 
                 QRTimeStamp.text = "Time:" + qrCode.LastDetectedTime.ToString("MM/dd/yyyy HH:mm:ss.fff");
-                QRTimeStamp.color = QRTimeStamp.color==Color.yellow? Color.white: Color.yellow;
+                QRTimeStamp.color = QRTimeStamp.color == Color.yellow ? Color.white : Color.yellow;
                 PhysicalSize = qrCode.PhysicalSideLength;
                 Debug.Log("Id= " + qrCode.Id + "NodeId= " + qrCode.SpatialGraphNodeId + " PhysicalSize = " + PhysicalSize + " TimeStamp = " + qrCode.SystemRelativeLastDetectedTime.Ticks + " Time = " + qrCode.LastDetectedTime.ToString("MM/dd/yyyy HH:mm:ss.fff"));
 
                 qrCodeCube.transform.localPosition = new Vector3(PhysicalSize / 2.0f, PhysicalSize / 2.0f, 0.0f);
                 qrCodeCube.transform.localScale = new Vector3(PhysicalSize, PhysicalSize, 0.005f);
                 lastTimeStamp = qrCode.SystemRelativeLastDetectedTime.Ticks;
-                QRInfo.transform.localScale = new Vector3(PhysicalSize/0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
+                QRInfo.transform.localScale = new Vector3(PhysicalSize / 0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
 
                 //AROA EDIT
                 QRPositionText.text = "Position: " + qrCodeCube.transform.position;
                 Debug.Log("Position = " + qrCodeCube.transform.position);
-                if (trackedObject != null)
-                {
-                    trackedObject.transform.position = qrCodeCube.transform.position;
-                    trackedObject.transform.rotation = qrCodeCube.transform.rotation;
+                if (trackedObject != null) { 
+                    if (trackedObject.name == "Collocated Cues") //Moving whole room
+                    {
+                        trackedObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
+                        trackedObject.transform.Rotate(0f, qrCodeCube.transform.rotation.eulerAngles.y + 90f, 0f);//Rotate to match QR code, then 90 degrees 
+                        trackedObject.transform.position = qrCodeCube.transform.position;  //Adjust position to QR code location
+                        //make local changes to adjust
+                        trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
+                        trackedObject.transform.localPosition -= trackedObject.transform.up * 1.42f;
+                        trackedObject.transform.localPosition += trackedObject.transform.right * 0.36f;
+                        Debug.Log("Room position adjusted via QR code.");
+                    }
+
+                    else //Normal object
+                    {
+                        trackedObject.transform.position = qrCodeCube.transform.position;
+                        trackedObject.transform.rotation = qrCodeCube.transform.rotation;
+                    }
                 }
             }
         }
