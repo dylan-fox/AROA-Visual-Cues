@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Microsoft.MixedReality.QR;
+using Microsoft.MixedReality.Toolkit.Audio;
+
 namespace QRTracking
 {
     public class QRCodes_AROA : MonoBehaviour
@@ -16,6 +18,10 @@ namespace QRTracking
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
+
+        //AROA Edit
+        public TextToSpeech textToSpeech;
+        public ObstacleManager obstacleManager;
 
         struct ActionData
         {
@@ -111,6 +117,9 @@ namespace QRTracking
 
                         //AROA EDIT - Assign object to QRCode script
                         Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
+                        qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
+                        qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
+
                         if (action.qrCode.Data == "QR Code 1")
                         {
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
@@ -126,22 +135,7 @@ namespace QRTracking
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
                         }
 
-                        /*
-                        if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 1")
-                        {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
-                        }
 
-                        else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 2")
-                        {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
-                        }
-                        
-                        else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 3")
-                        {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                        }
-                        */
                     }
                     else if (action.type == ActionData.Type.Updated)
                     {
@@ -154,6 +148,9 @@ namespace QRTracking
 
                             //AROA EDIT
                             Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
+                            qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
+                            qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
+
                             if (action.qrCode.Data == "QR Code 1")
                             {
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
@@ -169,22 +166,7 @@ namespace QRTracking
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
                             }
 
-                            /*
-                            if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 1")
-                            {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
-                            }
 
-                            else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 2")
-                            {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
-                            }
-
-                            else if (qrCodeObject.GetComponent<QRCode>().QRText.text == "QR Code 3")
-                            {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            }
-                            */
 
                         }
                     }

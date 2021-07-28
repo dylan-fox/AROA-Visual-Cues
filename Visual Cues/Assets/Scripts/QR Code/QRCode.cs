@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Microsoft.MixedReality.Toolkit.Audio;
+using System.Collections;
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,8 @@ namespace QRTracking
         //AROA EDIT
         private TextMesh QRPositionText;
         public GameObject trackedObject; //Object that will mimic position of QR Code
+        public TextToSpeech textToSpeech;
+        public ObstacleManager obstacleManager;
 
         // Use this for initialization
         void Start()
@@ -93,6 +96,9 @@ namespace QRTracking
                 if (trackedObject != null) { 
                     if (trackedObject.name == "Collocated Cues") //Moving whole room
                     {
+                        if (!textToSpeech.IsSpeaking())
+                            textToSpeech.StartSpeaking("Room calibrated.");
+                        obstacleManager.ResetPositions(); //Reset positions of obstacles
                         trackedObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
                         trackedObject.transform.Rotate(0f, qrCodeCube.transform.rotation.eulerAngles.y + 90f, 0f);//Rotate to match QR code, then 90 degrees 
                         trackedObject.transform.position = qrCodeCube.transform.position;  //Adjust position to QR code location
@@ -101,10 +107,15 @@ namespace QRTracking
                         trackedObject.transform.localPosition -= trackedObject.transform.up * 1.42f;
                         trackedObject.transform.localPosition += trackedObject.transform.right * 0.36f;
                         Debug.Log("Room position adjusted via QR code.");
+
+
                     }
 
                     else //Normal object
                     {
+                        if (!textToSpeech.IsSpeaking())
+                            textToSpeech.StartSpeaking("QR code detected.");
+                        trackedObject.transform.localPosition = new Vector3(0f, 0f, 0f); //reset local position
                         trackedObject.transform.position = qrCodeCube.transform.position;
                         trackedObject.transform.rotation = qrCodeCube.transform.rotation;
                     }

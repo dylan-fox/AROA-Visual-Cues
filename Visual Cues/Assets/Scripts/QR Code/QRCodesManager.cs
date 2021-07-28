@@ -83,6 +83,8 @@ namespace QRTracking
             capabilityTask = QRCodeWatcher.RequestAccessAsync();
             accessStatus = await capabilityTask;
             capabilityInitialized = true;
+            //AROA EDIT
+            qrCodesList.Clear();//Clear list on initialization
         }
 
         private void SetupQRTracking()
