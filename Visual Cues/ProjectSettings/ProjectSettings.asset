@@ -183,7 +183,7 @@ PlayerSettings:
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
-  StripUnusedMeshComponents: 1
+  StripUnusedMeshComponents: 0
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
   iOSTargetOSVersionString: 10.0
@@ -647,7 +647,7 @@ PlayerSettings:
     2293860: Assets/Icons/AROA_Logo_v1_light_wide.png
     2293960: Assets/Icons/AROA_Logo_v1_light_wide@2x.png
     2294160: Assets/Icons/AROA_Logo_v1_light_wide@4x.png
-  metroTileShortName: Obstacle Avoidance v1.01
+  metroTileShortName: Obstacle Avoidance
   metroTileShowName: 0
   metroMediumTileShowName: 1
   metroLargeTileShowName: 1
@@ -699,7 +699,7 @@ PlayerSettings:
       UserNotificationListener: False
       VideosLibrary: False
       VoipCall: False
-      WebCam: False
+      WebCam: True
   metroTargetDeviceFamilies:
     Desktop: False
     Holographic: True

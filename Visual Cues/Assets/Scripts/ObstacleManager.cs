@@ -6,6 +6,7 @@ using TMPro;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.Audio;
 
 public class ObstacleManager : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class ObstacleManager : MonoBehaviour
     public GameObject HUDManager;
     private HUDIndicator HUDIndicator;
 
+    public TextToSpeech textToSpeech;
+
     public GameObject numShownTextObject;
     //public GameObject cuePrefab; //Necessary for AddCue, not ShowCue
 
@@ -50,7 +53,6 @@ public class ObstacleManager : MonoBehaviour
 
     [Tooltip("Default user height in meters.")]
     public float defaultHeight = 1.6256f; //5'4" should be roughly average eye height
-
 
     // Start is called before the first frame update
     void Start()
@@ -112,20 +114,24 @@ public class ObstacleManager : MonoBehaviour
 
     public void CollocatedCuesToggle()
     {
-        Debug.Log("Toggling collocated visual cues.");
+        //Debug.Log("Toggling collocated visual cues.");
 
         if (collocatedCuesOn)
         {
             Debug.Log("Collocated cues off.");
+            textToSpeech.StartSpeaking("Co-located cues off.");
 
             cuesParent.SetActive(false);
 
             collocatedCuesOn = false;
+
         }
 
         else
         {
             Debug.Log("Collocated cues on.");
+            textToSpeech.StartSpeaking("Co-located cues on.");
+
             cuesParent.SetActive(true);
 
             collocatedCuesOn = true;
@@ -134,11 +140,13 @@ public class ObstacleManager : MonoBehaviour
 
     public void HUDCuesToggle()
     {
-        Debug.Log("Toggling HUD visual cues.");
+        //Debug.Log("Toggling HUD visual cues.");
 
         if (hudCuesOn)
         {
             Debug.Log("HUD cues off.");
+            textToSpeech.StartSpeaking("HUD cues off.");
+
             HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().HideIndicators();
             hudCuesOn = false;
         }
@@ -146,6 +154,8 @@ public class ObstacleManager : MonoBehaviour
         else
         {
             Debug.Log("HUD cues on.");
+            textToSpeech.StartSpeaking("HUD cues on.");
+
             HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().ShowIndicators();
             hudCuesOn = true;
 
@@ -156,9 +166,15 @@ public class ObstacleManager : MonoBehaviour
     {
         Debug.Log("Toggling calibration cue.");
         if (calibrationCue.activeSelf)
+        { 
             calibrationCue.SetActive(false);
+            textToSpeech.StartSpeaking("Calibration cue off.");
+        }
         else
+        {
             calibrationCue.SetActive(true);
+            textToSpeech.StartSpeaking("Calibration cue on.");
+        }
     }
 
     /*
@@ -200,6 +216,8 @@ public class ObstacleManager : MonoBehaviour
             numShown++;
             numShownTextObject.GetComponent<TMP_Text>().text = "Show Cue (" + numShown + "/10)";
             Debug.Log("Showing additional cue. Number shown: " + numShown);
+            textToSpeech.StartSpeaking("Showing additional cue.");
+
         }
         else Debug.Log("Max cues shown.");
     }
@@ -216,6 +234,8 @@ public class ObstacleManager : MonoBehaviour
             numShown--;
             numShownTextObject.GetComponent<TMP_Text>().text = "Show Cue (" + numShown + "/10)";
             Debug.Log("Hiding last cue. Number shown: " + numShown);
+            textToSpeech.StartSpeaking("Hiding last cue.");
+
         }
         else Debug.Log("All cues hidden.");
     }
@@ -239,6 +259,8 @@ public class ObstacleManager : MonoBehaviour
         }
 
         Debug.Log("Positions saved for " + visualCues.Count + " visual cues.");
+        textToSpeech.StartSpeaking("Positions saved.");
+
 
         foreach (GameObject Cue in visualCues)
         {
@@ -253,6 +275,9 @@ public class ObstacleManager : MonoBehaviour
     {
         //Adjusts obstacles back to last saved position.
         Debug.Log("Resetting positions.");
+        if (!textToSpeech.IsSpeaking())
+            textToSpeech.StartSpeaking("Positions reset.");
+
 
         //int obstacleCount = 0;
         int cueCount = 0;
@@ -288,6 +313,8 @@ public class ObstacleManager : MonoBehaviour
             cuesParent.transform.eulerAngles = new Vector3(0f, 0f, 0f);
             cuesParent.transform.Rotate(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
             Debug.Log("Location set to doorway.");
+            textToSpeech.StartSpeaking("Location set.");
+
         }
 
         else
@@ -340,10 +367,14 @@ public class ObstacleManager : MonoBehaviour
         if (interfaceObject.activeSelf)
         {
             interfaceObject.SetActive(false);
+            textToSpeech.StartSpeaking("Interface hidden.");
+
         }
         else
         {
             interfaceObject.SetActive(true);
+            textToSpeech.StartSpeaking("Interface shown.");
+
         }
 
     }
@@ -368,6 +399,8 @@ public class ObstacleManager : MonoBehaviour
                 }
             }
             gestureLock = true;
+            textToSpeech.StartSpeaking("Gestures locked.");
+
         }
 
         else
@@ -387,6 +420,8 @@ public class ObstacleManager : MonoBehaviour
                 }
             }
             gestureLock = false;
+            textToSpeech.StartSpeaking("Gestures unlocked.");
+
         }
     }
 }
