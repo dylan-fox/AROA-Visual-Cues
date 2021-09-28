@@ -128,6 +128,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 890699802}
     m_Modifications:
+    - target: {fileID: 3774755536245398612, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755536546923311, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3774755537173763556, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -137,6 +147,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537173763557, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3774755537742592984, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
@@ -197,6 +212,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD Cue South
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537742592985, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6017124228d0b484790b946bf6012325, type: 3}
@@ -1083,10 +1103,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 890699802}
     m_Modifications:
+    - target: {fileID: 3774755536245398612, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755536546923311, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3774755537173763556, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537173763557, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3774755537742592984, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
@@ -1147,6 +1182,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD Cue North
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537742592985, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6017124228d0b484790b946bf6012325, type: 3}
@@ -1488,6 +1528,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 890699802}
     m_Modifications:
+    - target: {fileID: 3774755536245398612, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755536546923311, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537173763557, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3774755537742592984, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
       propertyPath: m_RootOrder
@@ -1547,6 +1602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD Cue West
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537742592985, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6017124228d0b484790b946bf6012325, type: 3}
@@ -3518,7 +3578,7 @@ GameObject:
   - component: {fileID: 890699805}
   - component: {fileID: 890699804}
   - component: {fileID: 890699803}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: HUD Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4904,6 +4964,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fcb6341cafc3f84994828d3606683d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handlePrefabColliderType: 1
+  showHandleForX: 0
+  showHandleForY: 0
+  showHandleForZ: 0
 --- !u!1 &1224487819
 GameObject:
   m_ObjectHideFlags: 0
@@ -5520,6 +5591,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36981d974b5546a4cbfa0b4bfa0c0ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handlePrefabColliderType: 1
+  showHandleForX: 1
+  showHandleForY: 1
+  showHandleForZ: 1
 --- !u!1 &1335286681
 GameObject:
   m_ObjectHideFlags: 0
@@ -5833,7 +5915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1376590892}
   - component: {fileID: 1376590893}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: HUD Revised
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5874,6 +5956,8 @@ MonoBehaviour:
   minDist: 0
   maxDist: 2.5
   minAngle: 43
+  angleInterval: 15
+  sphereRadius: 0.05
 --- !u!1 &1377672507
 GameObject:
   m_ObjectHideFlags: 0
@@ -7033,6 +7117,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae6b815054539c4cbce3013daf8f276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  proximityEffectActive: 0
+  objectMediumProximity: 0.1
+  objectCloseProximity: 0.03
+  farScale: 0
+  mediumScale: 1
+  closeScale: 1.5
+  farGrowRate: 0.3
+  mediumGrowRate: 0.2
+  closeGrowRate: 0.3
 --- !u!1001 &1571389380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7632,6 +7725,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d3e2fcd636d0243820f1bebf6e167b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handleMaterial: {fileID: 0}
+  handleGrabbedMaterial: {fileID: 0}
+  handlePrefab: {fileID: 0}
+  handleSize: 0.016
+  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
+  drawTetherWhenManipulating: 1
+  handlesIgnoreCollider: {fileID: 0}
+  handleSlatePrefab: {fileID: 0}
+  showScaleHandles: 1
+  scaleBehavior: 0
 --- !u!1 &1769118240
 GameObject:
   m_ObjectHideFlags: 0
@@ -8717,6 +8820,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wireframeMaterial: {fileID: 0}
+  wireframeEdgeRadius: 0.001
+  wireframeShape: 0
+  showWireframe: 1
 --- !u!1001 &3774755536967145691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8724,6 +8831,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 890699802}
     m_Modifications:
+    - target: {fileID: 3774755536245398612, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755536546923311, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537173763557, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3774755537742592984, guid: 6017124228d0b484790b946bf6012325,
         type: 3}
       propertyPath: m_RootOrder
@@ -8783,6 +8905,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HUD Cue East
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774755537742592985, guid: 6017124228d0b484790b946bf6012325,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6017124228d0b484790b946bf6012325, type: 3}
