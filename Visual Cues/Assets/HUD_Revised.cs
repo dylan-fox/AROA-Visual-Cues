@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Displays HUD indicators leading towards desired Obsts.
@@ -22,6 +23,9 @@ public class HUD_Revised : MonoBehaviour
     public float minWidth = 0.1f;
     public float maxWidth = 0.2f;
 
+    //Maximum multiplier for cue width - will scale to it as distance to obstacle shrinks
+    public float cueWidthMaxMultiplier = 2f;
+
     //Minimum and maximum Obst distance at which to show cues
     public float minDist = 0f;
     public float maxDist = 2.5f;
@@ -33,7 +37,9 @@ public class HUD_Revised : MonoBehaviour
     public float angleInterval = 15f;
 
     [Tooltip("Size of sphere to spherecast with.")]
-    public float sphereRadius = 0.05f;
+    public float sphereRadius = 0.2f;
+
+    public GameObject debugText;
 
 
 
@@ -64,70 +70,75 @@ public class HUD_Revised : MonoBehaviour
         var gazeDirection = Camera.main.transform.forward;
 
 
-
-        //Cast at intervals from -90 degrees to positive 90 degrees X and Y
-        for (float xAngle = -90; xAngle <= 90; xAngle += angleInterval)
+        if (angleInterval >= 5)
         {
-            for (float yAngle = -90; yAngle <= 90; yAngle += angleInterval)
+            //Cast at intervals from -90 degrees to positive 90 degrees X and Y
+            for (float xAngle = -80; xAngle <= 80; xAngle += angleInterval)
             {
-                //Determine new ray direction based on a certain angle off of the gaze direction
-                var rayDirection = gazeDirection;
-                rayDirection = Quaternion.AngleAxis(xAngle, Camera.main.transform.right) * rayDirection;
-                rayDirection = Quaternion.AngleAxis(yAngle, Camera.main.transform.up) * rayDirection;
-                
-
-                //Debug rays
-                if (Mathf.Abs(xAngle) <= minAngle && Mathf.Abs(yAngle) <= minAngle)
-                    Debug.DrawRay(headPosition, rayDirection * maxDist, Color.red);
-                else
-                    Debug.DrawRay(headPosition, rayDirection * maxDist, Color.green);
-
-                //Cast ray
-                RaycastHit hit;
-                Physics.SphereCast(headPosition, sphereRadius, rayDirection, out hit, maxDist);
-
-
-                //If ray hits something, log it
-                if (hit.transform != null)
+                for (float yAngle = -80; yAngle <= 80; yAngle += angleInterval)
                 {
+                    //Determine new ray direction based on a certain angle off of the gaze direction
+                    var rayDirection = gazeDirection;
+                    rayDirection = Quaternion.AngleAxis(xAngle, Camera.main.transform.right) * rayDirection;
+                    rayDirection = Quaternion.AngleAxis(yAngle, Camera.main.transform.up) * rayDirection;
 
-                    //If it hit an obstacle, update its information in the obstacle info list
-                    bool newObst = true;
 
-                    foreach (ObstInfo obst in ObstInfos)
+                    //Debug rays
+                    if (Mathf.Abs(xAngle) <= minAngle && Mathf.Abs(yAngle) <= minAngle)
+                        Debug.DrawRay(headPosition, rayDirection * maxDist, Color.red);
+                    else
+                        Debug.DrawRay(headPosition, rayDirection * maxDist, Color.green);
+
+                    //Cast ray
+                    RaycastHit hit;
+                    Physics.SphereCast(headPosition, sphereRadius, rayDirection, out hit, maxDist);
+
+
+                    //If ray hits something, log it
+                    if (hit.transform != null)
                     {
-                        if (obst.ObstObject == hit.transform.parent.gameObject)
+                        Debug.Log("Hit obstacle: " + hit.transform.parent.gameObject.ToString());
+                        //If it hit an obstacle, update its information in the obstacle info list
+                        bool newObst = true;
+
+                        foreach (ObstInfo obst in ObstInfos)
                         {
-                            Debug.Log("Existing obstacle found: " + hit.transform.parent.gameObject.ToString());
-                            newObst = false;
-                            //Check if the hit has a shorter or larger distance and angle than recorded
-                            if (hit.distance >= obst.ObstMaxDist)
-                                obst.ObstMaxDist = hit.distance;
+                            if (obst.ObstObject == hit.transform.parent.gameObject)
+                            {
+                                //Debug.Log("Existing obstacle found: " + hit.transform.parent.gameObject.ToString());
+                                newObst = false;
+                                //Check if the hit has a shorter or larger distance and angle than recorded
+                                if (hit.distance >= obst.ObstMaxDist)
+                                    obst.ObstMaxDist = hit.distance;
 
-                            if (hit.distance <= obst.ObstMinDist)
-                                obst.ObstMinDist = hit.distance;
+                                if (hit.distance <= obst.ObstMinDist)
+                                    obst.ObstMinDist = hit.distance;
 
-                            //Record X and Y angles
-                            obst.ObstXAngles.Add(xAngle);
-                            obst.ObstYAngles.Add(yAngle);
+                                //Record X and Y angles
+                                if (!obst.ObstXAngles.Contains(xAngle))
+                                    obst.ObstXAngles.Add(xAngle);
+
+                                if (!obst.ObstYAngles.Contains(yAngle))
+                                    obst.ObstYAngles.Add(yAngle);
+
+                            }
 
                         }
 
-                    }
 
-                    
 
-                    //Debug.Log("Onhit triggered");
-                    //If the obstacle was not found, create a new one
-                    if (newObst)
-                    {
-                        ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle)); 
-                        Debug.Log("New obstacle found: " + hit.transform.parent.gameObject.ToString());
+                        //Debug.Log("Onhit triggered");
+                        //If the obstacle was not found, create a new one
+                        if (newObst)
+                        {
+                            ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle));
+                            //Debug.Log("New obstacle found: " + hit.transform.parent.gameObject.ToString());
+                        }
+
+
                     }
-                    
 
                 }
-
             }
         }
 
@@ -144,8 +155,11 @@ public class HUD_Revised : MonoBehaviour
         foreach (GameObject Cue in HUDCues)
         {
             //Debug.Log("Cue name: " + Cue.name);
-            //Cues should be off by default
+            //Cues should be off and minimum width by default
             Cue.SetActive(false);
+            //float cueWidth = minWidth;
+            float cueMultiplier = 1;
+            Cue.transform.localScale = Vector3.one;
 
             foreach (ObstInfo obst in ObstInfos)
             {
@@ -165,7 +179,7 @@ public class HUD_Revised : MonoBehaviour
                     if (x >= maxX)
                         maxX = x;
 
-                    if (Mathf.Abs(absMinX) <= Mathf.Abs(x))
+                    if (Mathf.Abs(absMinX) >= Mathf.Abs(x))
                         absMinX = Mathf.Abs(x);
                 }
 
@@ -177,38 +191,79 @@ public class HUD_Revised : MonoBehaviour
                     if (y >= maxY)
                         maxY = y;
 
-                    if (Mathf.Abs(absMinY) <= Mathf.Abs(y))
+                    if (Mathf.Abs(absMinY) >= Mathf.Abs(y))
                         absMinY = Mathf.Abs(y);
                 }
 
-                Debug.Log("Obstacle name: " + obst.ObstName + "; min X: " + minX + "; max X: " + maxX + "; absMinX: " + absMinX);
+                //Debug.Log("X angles: " + string.Join(", ", obst.ObstXAngles));
+                //Debug.Log("Y angles: " + string.Join(", ", obst.ObstYAngles));
+                if (debugText!= null)
+                    debugText.GetComponent<TextMeshProUGUI>().text = ("X angles: " + string.Join(", ", obst.ObstXAngles) + "\n" + ("Y angles: " + string.Join(", ", obst.ObstYAngles)));
+
+
+                //Debug.Log("Obstacle name: " + obst.ObstName + "; min X: " + minX + "; max X: " + maxX + "; absMinX: " + absMinX + ";min Y: " + minY + "; max Y: " + maxY + "; absMinY: " + absMinY);
 
                 //Check that absolute value of X or Y exceed the min angle
                 if (absMinX > minAngle || absMinY > minAngle)
                 {
-                    //Check for each HUD cue portion whether or not to light up
-                    if (Cue.name == "HUD Cue East" && maxY > minAngle)
+                    //Check for each HUD cue portion whether or not to light up. Set cue multiplier based on closest object.
+                    if (Cue.name == "HUD Cue East" && maxY > minAngle && absMinX <= 30)
                     {
                         Cue.SetActive(true);
-                        Debug.Log("East cue on.");
+                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
+                        //Debug.Log("East cue on. Width = " + cueWidth);
+                        float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
+                        if (tempMultiplier >= cueMultiplier) 
+                        {
+                            cueMultiplier = tempMultiplier;
+                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            //Debug.Log("East cue on. Width multiplier: " + cueMultiplier);
+                        }
+
                     }
 
                     else if (Cue.name == "HUD Cue South" && maxX > minAngle)
                     {
                         Cue.SetActive(true);
-                        Debug.Log("South cue on.");
+                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
+                        //Debug.Log("South cue on. Width = " + cueWidth);
+                        float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
+                        if (tempMultiplier >= cueMultiplier)
+                        {
+                            cueMultiplier = tempMultiplier;
+                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            //Debug.Log("South cue on. Width multiplier: " + cueMultiplier);
+                        }
+
+
                     }
 
-                    else if (Cue.name == "HUD Cue West" && minY < minAngle * -1)
+                    else if (Cue.name == "HUD Cue West" && minY < minAngle * -1 && absMinX <=30)
                     {
                         Cue.SetActive(true);
-                        Debug.Log("West cue on.");
+                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
+                        //Debug.Log("West cue on. Width = " + cueWidth);
+                        float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
+                        if (tempMultiplier >= cueMultiplier)
+                        {
+                            cueMultiplier = tempMultiplier;
+                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            //Debug.Log("West cue on. Width multiplier: " + cueMultiplier);
+                        }
                     }
 
                     else if (Cue.name == "HUD Cue North" && minX < minAngle * -1)
                     {
                         Cue.SetActive(true);
-                        Debug.Log("North cue on.");
+                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
+                        //Debug.Log("North cue on. Width = " + cueWidth);
+                        float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
+                        if (tempMultiplier >= cueMultiplier)
+                        {
+                            cueMultiplier = tempMultiplier;
+                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            //Debug.Log("North cue on. Width multiplier: " + cueMultiplier);
+                        }
                     }
                 }
 
@@ -216,6 +271,19 @@ public class HUD_Revised : MonoBehaviour
             }
         }
 
+    }
+
+    public float CalculateCueWidth (float minWidth, float maxWidth, float minDist, float maxDist, float distance)
+    {
+        float cueWidth = maxWidth - (maxWidth - minWidth) * ((distance - minDist) / (maxDist - minDist));
+        //Debug.Log("Width set: " + cueWidth);
+        return cueWidth;
+    }
+
+    public float CalculateCueMultiplier (float MaxMultiplier, float minDist, float maxDist, float distance)
+    {
+        float cueMultiplier = 1 + (MaxMultiplier - 1) * ((distance - minDist) / (maxDist - minDist));
+        return cueMultiplier;
     }
 
     public class ObstInfo
