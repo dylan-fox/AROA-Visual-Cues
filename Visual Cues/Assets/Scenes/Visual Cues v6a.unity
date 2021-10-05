@@ -4117,7 +4117,7 @@ GameObject:
   - component: {fileID: 927415523}
   - component: {fileID: 927415522}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Debug Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6062,7 +6062,7 @@ MonoBehaviour:
   minDist: 0
   maxDist: 2.5
   minAngle: 43
-  angleInterval: 15
+  angleInterval: 10
   sphereRadius: 0.05
   debugText: {fileID: 2105630243}
 --- !u!1 &1377672507
@@ -8707,7 +8707,7 @@ GameObject:
   - component: {fileID: 2105630246}
   - component: {fileID: 2105630245}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Debug Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8729,8 +8729,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -70, y: 200}
-  m_SizeDelta: {x: 500, y: 50}
+  m_AnchoredPosition: {x: 0, y: 200}
+  m_SizeDelta: {x: 600, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2105630245
 MonoBehaviour:
@@ -8751,7 +8751,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Debug Text '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

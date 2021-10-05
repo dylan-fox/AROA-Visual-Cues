@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using TMPro;
+
+
 
 /// <summary>
 /// Displays HUD indicators leading towards desired Obsts.
@@ -56,9 +59,11 @@ public class HUD_Revised : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ObstInfos.Clear();
+        debugText.GetComponent<TextMeshProUGUI>().text = "Debug text: ";
+
         CueCast();
         ActivateHUD();
-        ObstInfos.Clear();
     }
 
     public void CueCast()
@@ -123,9 +128,8 @@ public class HUD_Revised : MonoBehaviour
 
                             }
 
+
                         }
-
-
 
                         //Debug.Log("Onhit triggered");
                         //If the obstacle was not found, create a new one
@@ -134,11 +138,16 @@ public class HUD_Revised : MonoBehaviour
                             ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle));
                             //Debug.Log("New obstacle found: " + hit.transform.parent.gameObject.ToString());
                         }
-
-
                     }
-
                 }
+            }
+            debugText.GetComponent<TextMeshProUGUI>().text += ("\nObstacles in obstacle list: " + ObstInfos.Count.ToString());
+            foreach (ObstInfo obst in ObstInfos)
+            {
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\n" + obst.ObstName.ToString());
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nX angles: " + string.Join(", ", obst.ObstXAngles));
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nY angles: " + string.Join(", ", obst.ObstYAngles));
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nMinimum hit distance: " + obst.ObstMinDist);
             }
         }
 
@@ -197,8 +206,7 @@ public class HUD_Revised : MonoBehaviour
 
                 //Debug.Log("X angles: " + string.Join(", ", obst.ObstXAngles));
                 //Debug.Log("Y angles: " + string.Join(", ", obst.ObstYAngles));
-                if (debugText!= null)
-                    debugText.GetComponent<TextMeshProUGUI>().text = ("X angles: " + string.Join(", ", obst.ObstXAngles) + "\n" + ("Y angles: " + string.Join(", ", obst.ObstYAngles)));
+
 
 
                 //Debug.Log("Obstacle name: " + obst.ObstName + "; min X: " + minX + "; max X: " + maxX + "; absMinX: " + absMinX + ";min Y: " + minY + "; max Y: " + maxY + "; absMinY: " + absMinY);
@@ -213,12 +221,14 @@ public class HUD_Revised : MonoBehaviour
                         //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
                         //Debug.Log("East cue on. Width = " + cueWidth);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
+
                         if (tempMultiplier >= cueMultiplier) 
                         {
                             cueMultiplier = tempMultiplier;
-                            Cue.transform.localScale = cueMultiplier * Vector3.one;
-                            //Debug.Log("East cue on. Width multiplier: " + cueMultiplier);
+                            Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                            Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);                        
                         }
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + cueMultiplier;
 
                     }
 
@@ -231,9 +241,11 @@ public class HUD_Revised : MonoBehaviour
                         if (tempMultiplier >= cueMultiplier)
                         {
                             cueMultiplier = tempMultiplier;
-                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                            Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.z);
                             //Debug.Log("South cue on. Width multiplier: " + cueMultiplier);
                         }
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + cueMultiplier;
 
 
                     }
@@ -247,9 +259,13 @@ public class HUD_Revised : MonoBehaviour
                         if (tempMultiplier >= cueMultiplier)
                         {
                             cueMultiplier = tempMultiplier;
-                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                            Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
+
                             //Debug.Log("West cue on. Width multiplier: " + cueMultiplier);
                         }
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + cueMultiplier;
+
                     }
 
                     else if (Cue.name == "HUD Cue North" && minX < minAngle * -1)
@@ -261,9 +277,12 @@ public class HUD_Revised : MonoBehaviour
                         if (tempMultiplier >= cueMultiplier)
                         {
                             cueMultiplier = tempMultiplier;
-                            Cue.transform.localScale = cueMultiplier * Vector3.one;
+                            Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                            Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.z);
                             //Debug.Log("North cue on. Width multiplier: " + cueMultiplier);
                         }
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + cueMultiplier;
+
                     }
                 }
 
@@ -282,8 +301,25 @@ public class HUD_Revised : MonoBehaviour
 
     public float CalculateCueMultiplier (float MaxMultiplier, float minDist, float maxDist, float distance)
     {
-        float cueMultiplier = 1 + (MaxMultiplier - 1) * ((distance - minDist) / (maxDist - minDist));
+        float cueMultiplier = 1 + (MaxMultiplier - 1) * (1 - (distance - minDist) / (maxDist - minDist));
         return cueMultiplier;
+    }
+
+    public void shiftHUDRight (float xShift)
+    {
+        var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
+        HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x + xShift, offsetVector.y, offsetVector.z);
+    }
+
+    public void shiftHUDUp (float yShift)
+    {
+        var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
+        HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x, offsetVector.y + yShift, offsetVector.z);
+    }
+
+    public void scaleHUD (float multiplier)
+    {
+        HUDFrame.transform.localScale *= multiplier;
     }
 
     public class ObstInfo
