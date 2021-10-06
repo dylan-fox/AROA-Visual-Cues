@@ -22,10 +22,6 @@ public class HUD_Revised : MonoBehaviour
     //List of obstacles and their relevant information for HUD cues
     private List<ObstInfo> ObstInfos = new List<ObstInfo>();
 
-    //Minimum and maximum bar width
-    public float minWidth = 0.1f;
-    public float maxWidth = 0.2f;
-
     //Maximum multiplier for cue width - will scale to it as distance to obstacle shrinks
     public float cueWidthMaxMultiplier = 2f;
 
@@ -152,7 +148,7 @@ public class HUD_Revised : MonoBehaviour
         }
 
         //Print list of obstacles
-        Debug.Log("Number of obstacles: " + ObstInfos.Count);
+        //Debug.Log("Number of obstacles: " + ObstInfos.Count);
 
     }
 
@@ -166,7 +162,6 @@ public class HUD_Revised : MonoBehaviour
             //Debug.Log("Cue name: " + Cue.name);
             //Cues should be off and minimum width by default
             Cue.SetActive(false);
-            //float cueWidth = minWidth;
             float cueMultiplier = 1;
             Cue.transform.localScale = Vector3.one;
 
@@ -218,25 +213,21 @@ public class HUD_Revised : MonoBehaviour
                     if (Cue.name == "HUD Cue East" && maxY > minAngle && absMinX <= 30)
                     {
                         Cue.SetActive(true);
-                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
-                        //Debug.Log("East cue on. Width = " + cueWidth);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
 
-                        if (tempMultiplier >= cueMultiplier) 
+                        if (tempMultiplier >= cueMultiplier)
                         {
                             cueMultiplier = tempMultiplier;
                             Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                            Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);                        
+                            Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
                         }
                         debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + cueMultiplier;
 
                     }
 
-                    else if (Cue.name == "HUD Cue South" && maxX > minAngle)
+                    else if (Cue.name == "HUD Cue South" && maxX > minAngle && absMinY <= 30)
                     {
                         Cue.SetActive(true);
-                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
-                        //Debug.Log("South cue on. Width = " + cueWidth);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
                         if (tempMultiplier >= cueMultiplier)
                         {
@@ -253,8 +244,6 @@ public class HUD_Revised : MonoBehaviour
                     else if (Cue.name == "HUD Cue West" && minY < minAngle * -1 && absMinX <=30)
                     {
                         Cue.SetActive(true);
-                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
-                        //Debug.Log("West cue on. Width = " + cueWidth);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
                         if (tempMultiplier >= cueMultiplier)
                         {
@@ -268,11 +257,9 @@ public class HUD_Revised : MonoBehaviour
 
                     }
 
-                    else if (Cue.name == "HUD Cue North" && minX < minAngle * -1)
+                    else if (Cue.name == "HUD Cue North" && minX < minAngle * -1 && absMinY <= 30)
                     {
                         Cue.SetActive(true);
-                        //cueWidth = CalculateCueWidth(minWidth, maxWidth, minDist, maxDist, obst.ObstMinDist);
-                        //Debug.Log("North cue on. Width = " + cueWidth);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
                         if (tempMultiplier >= cueMultiplier)
                         {
@@ -290,13 +277,6 @@ public class HUD_Revised : MonoBehaviour
             }
         }
 
-    }
-
-    public float CalculateCueWidth (float minWidth, float maxWidth, float minDist, float maxDist, float distance)
-    {
-        float cueWidth = maxWidth - (maxWidth - minWidth) * ((distance - minDist) / (maxDist - minDist));
-        //Debug.Log("Width set: " + cueWidth);
-        return cueWidth;
     }
 
     public float CalculateCueMultiplier (float MaxMultiplier, float minDist, float maxDist, float distance)

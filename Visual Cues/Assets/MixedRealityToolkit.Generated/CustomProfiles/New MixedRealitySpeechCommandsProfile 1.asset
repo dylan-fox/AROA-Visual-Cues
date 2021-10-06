@@ -170,3 +170,10 @@ MonoBehaviour:
       id: 0
       description: None
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Toggle Debug
+    keyCode: 100
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0

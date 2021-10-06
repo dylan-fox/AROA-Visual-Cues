@@ -38,9 +38,12 @@ public class ObstacleManager : MonoBehaviour
     public GameObject interfaceObject;
     public GameObject cuesParent;
     public GameObject calibrationCue;
+    public GameObject debugText;
 
     public GameObject HUDManager;
-    private HUDIndicator HUDIndicator;
+    //private HUDIndicator HUDIndicator;
+    private HUD_Revised HUD_Revised;
+
 
     public TextToSpeech textToSpeech;
 
@@ -58,7 +61,9 @@ public class ObstacleManager : MonoBehaviour
     void Start()
     {
         SavePositions();
-        HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
+        //HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
+        HUD_Revised = HUDManager.GetComponent<HUD_Revised>();
+
         numShown = visualCues.Count;
 
         //Hide cues until the number shown matches startingCues.
@@ -147,7 +152,8 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("HUD cues off.");
             textToSpeech.StartSpeaking("HUD cues off.");
 
-            HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().HideIndicators();
+            //HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().HideIndicators();
+            HUDManager.SetActive(false);
             hudCuesOn = false;
         }
 
@@ -156,7 +162,8 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("HUD cues on.");
             textToSpeech.StartSpeaking("HUD cues on.");
 
-            HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().ShowIndicators();
+            //HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().ShowIndicators();
+            HUDManager.SetActive(true);
             hudCuesOn = true;
 
         }
@@ -174,6 +181,21 @@ public class ObstacleManager : MonoBehaviour
         {
             calibrationCue.SetActive(true);
             textToSpeech.StartSpeaking("Calibration cue on.");
+        }
+    }
+
+    public void DebugToggle()
+    {
+        Debug.Log("Toggling debug text.");
+        if (debugText.activeSelf)
+        {
+            debugText.SetActive(false);
+            textToSpeech.StartSpeaking("Debug text off.");
+        }
+        else
+        {
+            debugText.SetActive(true);
+            textToSpeech.StartSpeaking("Debug text on.");
         }
     }
 
@@ -211,7 +233,7 @@ public class ObstacleManager : MonoBehaviour
         if (numShown < visualCues.Count)
         {
             visualCues[numShown].SetActive(true);
-            HUDIndicator.AddIndicator(cuesParent.transform.GetChild(numShown), numShown);
+            //HUDIndicator.AddIndicator(cuesParent.transform.GetChild(numShown), numShown);
 
             numShown++;
             numShownTextObject.GetComponent<TMP_Text>().text = "Show Cue (" + numShown + "/10)";
@@ -228,7 +250,7 @@ public class ObstacleManager : MonoBehaviour
         if (numShown >= 1)
         {
             visualCues[numShown - 1].SetActive(false);
-            HUDIndicator.RemoveIndicator(visualCues[numShown - 1].transform);
+            //HUDIndicator.RemoveIndicator(visualCues[numShown - 1].transform);
             //Debug.Log("Indicator removed.");
 
             numShown--;
@@ -346,7 +368,8 @@ public class ObstacleManager : MonoBehaviour
         cuesParent.transform.Rotate(0f, degrees, 0f);
     }
 
-    public void shiftHUD(float dist)
+    /* Replaced with methods in HUD_Revised
+     * public void shiftHUD(float dist)
     {
         HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX += dist;
         Debug.Log("HUD cues adjusted " + dist + " meters to the right. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX);
@@ -356,9 +379,8 @@ public class ObstacleManager : MonoBehaviour
     {
         HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius += dist;
         Debug.Log("HUD cue radius increased by " + dist + " meters. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius);
-
     }
-
+    */
 
     public void ToggleInterface()
     {

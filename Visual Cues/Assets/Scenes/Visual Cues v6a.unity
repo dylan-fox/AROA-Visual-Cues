@@ -2421,7 +2421,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664482709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0.004, z: 0.833}
   m_LocalScale: {x: 1.0664, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 585199946}
@@ -3678,7 +3678,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890699801}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4122,7 +4122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &927415521
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5319,7 +5319,8 @@ MonoBehaviour:
   interfaceObject: {fileID: 6115691680273273357}
   cuesParent: {fileID: 1948430007}
   calibrationCue: {fileID: 664482709}
-  HUDManager: {fileID: 1536247363}
+  debugText: {fileID: 927415520}
+  HUDManager: {fileID: 1376590891}
   textToSpeech: {fileID: 816797673}
   numShownTextObject: {fileID: 1696318003}
   startingCues: 2
@@ -5626,8 +5627,8 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: shiftHUD
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: shiftHUDRight
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5641,8 +5642,8 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: shiftHUD
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: shiftHUDRight
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5656,14 +5657,14 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: increaseHUDradius
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: scaleHUD
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: 0.05
+            m_FloatArgument: 1.05
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
@@ -5671,14 +5672,29 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: increaseHUDradius
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: scaleHUD
           m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
-            m_FloatArgument: -0.05
+            m_FloatArgument: 0.95238
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Toggle Debug
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: DebugToggle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.95238
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
@@ -6056,8 +6072,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HUDFrame: {fileID: 890699801}
   HUDCues: []
-  minWidth: 0.1
-  maxWidth: 0.2
   cueWidthMaxMultiplier: 2
   minDist: 0
   maxDist: 2.5
@@ -6842,7 +6856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1536247364
 Transform:
   m_ObjectHideFlags: 0
