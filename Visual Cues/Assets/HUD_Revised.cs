@@ -71,79 +71,100 @@ public class HUD_Revised : MonoBehaviour
         var gazeDirection = Camera.main.transform.forward;
 
 
+
+
         if (angleInterval >= 5)
         {
             //Cast at intervals from -90 degrees to positive 90 degrees X and Y
             for (float xAngle = -80; xAngle <= 80; xAngle += angleInterval)
             {
-                for (float yAngle = -80; yAngle <= 80; yAngle += angleInterval)
+                if (Mathf.Cos(Mathf.Deg2Rad * xAngle) > 0)
                 {
-                    //Determine new ray direction based on a certain angle off of the gaze direction
-                    var rayDirection = gazeDirection;
-                    rayDirection = Quaternion.AngleAxis(xAngle, Camera.main.transform.right) * rayDirection;
-                    rayDirection = Quaternion.AngleAxis(yAngle, Camera.main.transform.up) * rayDirection;
-
-
-                    //Debug rays
-                    if (Mathf.Abs(xAngle) <= minAngle && Mathf.Abs(yAngle) <= minAngle)
-                        Debug.DrawRay(headPosition, rayDirection * maxDist, Color.red);
-                    else
-                        Debug.DrawRay(headPosition, rayDirection * maxDist, Color.green);
-
-                    //Cast ray
-                    RaycastHit hit;
-                    Physics.SphereCast(headPosition, sphereRadius, rayDirection, out hit, maxDist);
-
-
-                    //If ray hits something, log it
-                    if (hit.transform != null)
+                    int yCount = 0; 
+                    //Adjust y angle interval based on x angle so you get equivalent sampling over a given area
+                    for (float yAngle = -80; yAngle <= 80; yAngle += angleInterval / Mathf.Cos(Mathf.Deg2Rad * xAngle))
                     {
-                        Debug.Log("Hit obstacle: " + hit.transform.parent.gameObject.ToString());
-                        //If it hit an obstacle, update its information in the obstacle info list
-                        bool newObst = true;
+                        Debug.Log("Y angle: " + yAngle);
+                        yCount++;
+                        //Determine new ray direction based on a certain angle off of the gaze direction
+                        var rayDirection = gazeDirection;
+                        rayDirection = Quaternion.AngleAxis(xAngle, Camera.main.transform.right) * rayDirection;
+                        rayDirection = Quaternion.AngleAxis(yAngle, Camera.main.transform.up) * rayDirection;
 
-                        foreach (ObstInfo obst in ObstInfos)
+
+                        //Debug rays
+                        if (Mathf.Abs(xAngle) <= minAngle && Mathf.Abs(yAngle) <= minAngle)
+                            Debug.DrawRay(headPosition, rayDirection * maxDist, Color.red);
+                        else
+                            Debug.DrawRay(headPosition, rayDirection * maxDist, Color.green);
+
+                        //Cast ray
+                        RaycastHit hit;
+                        Physics.SphereCast(headPosition, sphereRadius, rayDirection, out hit, maxDist);
+
+
+                        //If ray hits something, log it
+                        if (hit.transform != null)
                         {
-                            if (obst.ObstObject == hit.transform.parent.gameObject)
+                            Debug.Log("Hit obstacle: " + hit.transform.parent.gameObject.ToString());
+                            //If it hit an obstacle, update its information in the obstacle info list
+                            bool newObst = true;
+
+                            foreach (ObstInfo obst in ObstInfos)
                             {
-                                //Debug.Log("Existing obstacle found: " + hit.transform.parent.gameObject.ToString());
-                                newObst = false;
-                                //Check if the hit has a shorter or larger distance and angle than recorded
-                                if (hit.distance >= obst.ObstMaxDist)
-                                    obst.ObstMaxDist = hit.distance;
+                                if (obst.ObstObject == hit.transform.parent.gameObject)
+                                {
+                                    //Debug.Log("Existing obstacle found: " + hit.transform.parent.gameObject.ToString());
+                                    newObst = false;
+                                    //Check if the hit has a shorter or larger distance and angle than recorded
+                                    if (hit.distance >= obst.ObstMaxDist)
+                                        obst.ObstMaxDist = hit.distance;
 
-                                if (hit.distance <= obst.ObstMinDist)
-                                    obst.ObstMinDist = hit.distance;
+                                    /* Trying to use distance from camera to center of object to maintain consistency
+                                    if (hit.distance <= obst.ObstMinDist)
+                                        obst.ObstMinDist = hit.distance;
+                                    */
+                                    obst.ObstMinDist = (headPosition - obst.ObstObject.transform.position).magnitude;
 
-                                //Record X and Y angles
-                                if (!obst.ObstXAngles.Contains(xAngle))
-                                    obst.ObstXAngles.Add(xAngle);
+                                    //Record X and Y angles
+                                    if (!obst.ObstXAngles.Contains(xAngle))
+                                        obst.ObstXAngles.Add(xAngle);
 
-                                if (!obst.ObstYAngles.Contains(yAngle))
-                                    obst.ObstYAngles.Add(yAngle);
+                                    if (!obst.ObstYAngles.Contains(yAngle))
+                                        obst.ObstYAngles.Add(yAngle);
+
+                                }
+
 
                             }
 
+                            //Debug.Log("Onhit triggered");
+                            //If the obstacle was not found, create a new one
+                            if (newObst)
+                            {
+                                //ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle));
+                                float minDist = (headPosition - hit.transform.parent.transform.position).magnitude; //Using distance from head position to object to keep things consistent
+                                ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, minDist, hit.distance, xAngle, yAngle));
 
-                        }
 
-                        //Debug.Log("Onhit triggered");
-                        //If the obstacle was not found, create a new one
-                        if (newObst)
-                        {
-                            ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle));
-                            //Debug.Log("New obstacle found: " + hit.transform.parent.gameObject.ToString());
+                                //Debug.Log("New obstacle found: " + hit.transform.parent.gameObject.ToString());
+                            }
                         }
                     }
+                    Debug.Log("Y count for X angle " + xAngle + ": " + yCount);
                 }
             }
             debugText.GetComponent<TextMeshProUGUI>().text += ("\nObstacles in obstacle list: " + ObstInfos.Count.ToString());
             foreach (ObstInfo obst in ObstInfos)
             {
                 debugText.GetComponent<TextMeshProUGUI>().text += ("\n" + obst.ObstName.ToString());
-                debugText.GetComponent<TextMeshProUGUI>().text += ("\nX angles: " + string.Join(", ", obst.ObstXAngles));
-                debugText.GetComponent<TextMeshProUGUI>().text += ("\nY angles: " + string.Join(", ", obst.ObstYAngles));
-                debugText.GetComponent<TextMeshProUGUI>().text += ("\nMinimum hit distance: " + obst.ObstMinDist);
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nX angles: ");
+                foreach (float angle in obst.ObstXAngles)
+                    debugText.GetComponent<TextMeshProUGUI>().text += Mathf.Round(angle) + ", ";
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nY angles: ");
+                foreach (float angle in obst.ObstYAngles)
+                    debugText.GetComponent<TextMeshProUGUI>().text += Mathf.Round(angle) + ", ";
+                debugText.GetComponent<TextMeshProUGUI>().text += ("\nMinimum hit distance: " + Mathf.Round(obst.ObstMinDist * 100)/100);
             }
         }
 
@@ -210,7 +231,7 @@ public class HUD_Revised : MonoBehaviour
                 if (absMinX > minAngle || absMinY > minAngle)
                 {
                     //Check for each HUD cue portion whether or not to light up. Set cue multiplier based on closest object.
-                    if (Cue.name == "HUD Cue East" && maxY > minAngle && absMinX <= 30)
+                    if (Cue.name == "HUD Cue East" && maxY > minAngle && absMinX <= minAngle)
                     {
                         Cue.SetActive(true);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
@@ -221,11 +242,11 @@ public class HUD_Revised : MonoBehaviour
                             Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
                             Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
                         }
-                        debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + cueMultiplier;
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + Mathf.Round(cueMultiplier * 100)/100;
 
                     }
 
-                    else if (Cue.name == "HUD Cue South" && maxX > minAngle && absMinY <= 30)
+                    else if (Cue.name == "HUD Cue South" && maxX > minAngle && absMinY <= minAngle)
                     {
                         Cue.SetActive(true);
                         float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
@@ -236,7 +257,7 @@ public class HUD_Revised : MonoBehaviour
                             Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.z);
                             //Debug.Log("South cue on. Width multiplier: " + cueMultiplier);
                         }
-                        debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + cueMultiplier;
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
 
 
                     }
@@ -253,7 +274,7 @@ public class HUD_Revised : MonoBehaviour
 
                             //Debug.Log("West cue on. Width multiplier: " + cueMultiplier);
                         }
-                        debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + cueMultiplier;
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
 
                     }
 
@@ -268,7 +289,7 @@ public class HUD_Revised : MonoBehaviour
                             Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.z);
                             //Debug.Log("North cue on. Width multiplier: " + cueMultiplier);
                         }
-                        debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + cueMultiplier;
+                        debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
 
                     }
                 }
@@ -287,19 +308,24 @@ public class HUD_Revised : MonoBehaviour
 
     public void shiftHUDRight (float xShift)
     {
-        var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
-        HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x + xShift, offsetVector.y, offsetVector.z);
+        //var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
+        //HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x + xShift, offsetVector.y, offsetVector.z);
+        var curPos = HUDFrame.transform.localPosition;
+        HUDFrame.transform.localPosition = new Vector3(curPos.x + xShift, curPos.y, curPos.z);
     }
 
     public void shiftHUDUp (float yShift)
     {
-        var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
-        HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x, offsetVector.y + yShift, offsetVector.z);
+        //var offsetVector = HUDFrame.GetComponent<SolverHandler>().AdditionalOffset;
+        //HUDFrame.GetComponent<SolverHandler>().AdditionalOffset = new Vector3(offsetVector.x, offsetVector.y + yShift, offsetVector.z);
+        var curPos = HUDFrame.transform.localPosition;
+        HUDFrame.transform.localPosition = new Vector3(curPos.x, curPos.y + yShift, curPos.z);
     }
 
     public void scaleHUD (float multiplier)
     {
-        HUDFrame.transform.localScale *= multiplier;
+        var currentScale = HUDFrame.transform.localScale;
+        HUDFrame.transform.localScale = new Vector3(currentScale.x * multiplier, currentScale.y, currentScale.z);
     }
 
     public class ObstInfo
