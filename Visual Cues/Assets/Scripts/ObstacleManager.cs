@@ -18,9 +18,9 @@ public class ObstacleManager : MonoBehaviour
     //public List<Quaternion> obstacleStartingRotations;
     //public List<Vector3> obstacleStartingScales;
 
-    private bool collocatedCuesOn = true;
-    private bool hudCuesOn = true;
-    private bool gestureLock = false;
+    public bool collocatedCuesOn = true;
+    public bool hudCuesOn = true;
+    public bool gestureLock = false;
 
     [HideInInspector]
     public List<GameObject> visualCues;

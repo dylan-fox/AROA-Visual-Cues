@@ -300,6 +300,7 @@ MonoBehaviour:
   obstHigh: {fileID: 1257230119}
   obstWide: {fileID: 936723477}
   obstacleCollection: {fileID: 1948430007}
+  layout: 
   textToSpeech: {fileID: 816797673}
   obstacleManager: {fileID: 1264387024}
 --- !u!1 &32149977
@@ -1466,7 +1467,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440831915}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05, z: 2}
+  m_LocalPosition: {x: 0, y: 0.05, z: 3}
   m_LocalScale: {x: 4, y: 0.1, z: 0.25}
   m_Children:
   - {fileID: 817811858}
@@ -3709,12 +3710,12 @@ PrefabInstance:
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.779
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
@@ -4543,17 +4544,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fcb6341cafc3f84994828d3606683d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleMaterial: {fileID: 0}
-  handleGrabbedMaterial: {fileID: 0}
-  handlePrefab: {fileID: 0}
-  handleSize: 0.016
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  drawTetherWhenManipulating: 1
-  handlesIgnoreCollider: {fileID: 0}
-  handlePrefabColliderType: 1
-  showHandleForX: 0
-  showHandleForY: 0
-  showHandleForZ: 0
 --- !u!1001 &1257230117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4604,7 +4594,7 @@ PrefabInstance:
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
@@ -4707,6 +4697,7 @@ GameObject:
   - component: {fileID: 1264387025}
   - component: {fileID: 1264387024}
   - component: {fileID: 1264387026}
+  - component: {fileID: 1264387027}
   m_Layer: 0
   m_Name: Obstacle Manager
   m_TagString: Untagged
@@ -4726,6 +4717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666996457bbbf24478a282383cec654d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collocatedCuesOn: 1
+  hudCuesOn: 1
+  gestureLock: 0
   visualCues: []
   cueStartingLocations: []
   cueStartingRotations: []
@@ -5112,8 +5106,59 @@ MonoBehaviour:
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
+  - keyword: Begin Logging
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387027}
+          m_MethodName: BeginLogging
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.95238
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: End Logging
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387027}
+          m_MethodName: EndLogging
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.95238
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
   persistentKeywords: 0
   speechConfirmationTooltipPrefab: {fileID: 0}
+--- !u!114 &1264387027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264387023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef547e2e44bfa6c4dbe0b0fd916dbf19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 963194225}
+  obstacleManager: {fileID: 1264387024}
+  qRCodes_AROA: {fileID: 11173241}
+  textToSpeech: {fileID: 816797673}
+  cueCondition: 
+  layout: 
+  startTime: 0
+  endTime: 0
+  beganLogging: 0
 --- !u!114 &1303072127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5126,17 +5171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36981d974b5546a4cbfa0b4bfa0c0ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleMaterial: {fileID: 0}
-  handleGrabbedMaterial: {fileID: 0}
-  handlePrefab: {fileID: 0}
-  handleSize: 0.016
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  drawTetherWhenManipulating: 1
-  handlesIgnoreCollider: {fileID: 0}
-  handlePrefabColliderType: 1
-  showHandleForX: 1
-  showHandleForY: 1
-  showHandleForZ: 1
 --- !u!1 &1335286681
 GameObject:
   m_ObjectHideFlags: 0
@@ -6387,15 +6421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae6b815054539c4cbce3013daf8f276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  proximityEffectActive: 0
-  objectMediumProximity: 0.1
-  objectCloseProximity: 0.03
-  farScale: 0
-  mediumScale: 1
-  closeScale: 1.5
-  farGrowRate: 0.3
-  mediumGrowRate: 0.2
-  closeGrowRate: 0.3
 --- !u!1001 &1571389380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6850,16 +6875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d3e2fcd636d0243820f1bebf6e167b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleMaterial: {fileID: 0}
-  handleGrabbedMaterial: {fileID: 0}
-  handlePrefab: {fileID: 0}
-  handleSize: 0.016
-  colliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  drawTetherWhenManipulating: 1
-  handlesIgnoreCollider: {fileID: 0}
-  handleSlatePrefab: {fileID: 0}
-  showScaleHandles: 1
-  scaleBehavior: 0
 --- !u!1 &1769118240
 GameObject:
   m_ObjectHideFlags: 0
@@ -8146,10 +8161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wireframeMaterial: {fileID: 0}
-  wireframeEdgeRadius: 0.001
-  wireframeShape: 0
-  showWireframe: 1
 --- !u!1001 &3774755536967145691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9503,7 +9514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4310497907214298780}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.444, z: 4}
+  m_LocalPosition: {x: 0.08, y: 0.444, z: 6}
   m_LocalScale: {x: 1.02, y: 1.62, z: 0.92}
   m_Children:
   - {fileID: 4310497906842595493}
