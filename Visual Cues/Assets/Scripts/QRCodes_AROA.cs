@@ -17,7 +17,7 @@ namespace QRTracking
         public GameObject obstHigh;
         public GameObject obstWide;
         public GameObject obstacleCollection;
-        public string layout = "Layout 1";
+        public string layout = "Default Layout";
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
