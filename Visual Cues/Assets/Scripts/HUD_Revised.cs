@@ -290,11 +290,20 @@ public class HUD_Revised : MonoBehaviour
             {
                 foreach (ObstInfo obst in ObstInfos)
                 {
-                    //Check that absolute value of X or Y exceed the min angle
-                    if (obst.ObstMinAbsX > minAngle || obst.ObstMinAbsY > minAngle)
+                    //Check whether the obstacle is behind the user
+                    bool isFront = true;
+                    var heading = Vector3.Normalize(obst.ObstObject.transform.position - Camera.main.transform.position);
+                    float dot = Vector3.Dot(heading, Camera.main.transform.forward);
+                    if (dot < 0)
+                        isFront = false;
+
+                    //Debug.Log("Dot for " + obst.ObstName + ": " + (Mathf.Round(dot * 100))/100);
+
+                    //Check that absolute value of X or Y exceed the min angle, and that it's not behind the user
+                    if ((obst.ObstMinAbsX > minAngle || obst.ObstMinAbsY > minAngle) && isFront)
                     {
                         //Check for each HUD cue portion whether or not to light up. Set cue multiplier based on closest object.
-                        if (Cue.name == "HUD Cue East" && obst.ObstMaxY > minAngle && !(obst.ObstMinY < minAngle * -1)) //&& obst.ObstMinAbsX <= minAngle)
+                        if (Cue.name == "HUD Cue East" && obst.ObstMinY > minAngle && !(obst.ObstMaxY < minAngle * -1)) //&& obst.ObstMinAbsX <= minAngle)
                         {
                             Cue.SetActive(true);
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
@@ -310,7 +319,7 @@ public class HUD_Revised : MonoBehaviour
 
                         }
 
-                        else if (Cue.name == "HUD Cue South" && obst.ObstMaxX > minAngle && !(obst.ObstMinX < minAngle * -1)) //&& obst.ObstMinAbsY <= minAngle)
+                        else if (Cue.name == "HUD Cue South" && obst.ObstMinX > minAngle && !(obst.ObstMaxX < minAngle * -1)) //&& obst.ObstMinAbsY <= minAngle)
                         {
                             Cue.SetActive(true);
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
@@ -327,7 +336,7 @@ public class HUD_Revised : MonoBehaviour
 
                         }
 
-                        else if (Cue.name == "HUD Cue West" && obst.ObstMinY < minAngle * -1 && !(obst.ObstMaxY > minAngle))  //&& obst.ObstMinAbsX <= minAngle)
+                        else if (Cue.name == "HUD Cue West" && obst.ObstMaxY < minAngle * -1 && !(obst.ObstMinY > minAngle))  //&& obst.ObstMinAbsX <= minAngle)
                         {
                             Cue.SetActive(true);
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
@@ -344,7 +353,7 @@ public class HUD_Revised : MonoBehaviour
 
                         }
 
-                        else if (Cue.name == "HUD Cue North" && obst.ObstMinX < minAngle * -1 && !(obst.ObstMaxX > minAngle)) //&& obst.ObstMinAbsY <= minAngle)
+                        else if (Cue.name == "HUD Cue North" && obst.ObstMaxX < minAngle * -1 && !(obst.ObstMinX > minAngle)) //&& obst.ObstMinAbsY <= minAngle)
                         {
                             Cue.SetActive(true);
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);

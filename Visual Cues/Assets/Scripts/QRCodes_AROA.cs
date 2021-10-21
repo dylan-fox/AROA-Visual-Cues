@@ -17,7 +17,7 @@ namespace QRTracking
         public GameObject obstHigh;
         public GameObject obstWide;
         public GameObject obstacleCollection;
-        public string layout = "Default Layout";
+        public string layout = "Default";
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
@@ -190,7 +190,7 @@ namespace QRTracking
                                 //Assign obstacles to position 1
                                 obstLow.transform.localPosition = new Vector3(0f, 0.05f, 3f);
                                 obstMid.transform.localPosition = new Vector3(0f, 0.444f, 6f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
+                                obstHigh.transform.localPosition = new Vector3(0f, 1.5f, 9f);
                                 obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 12f);
                             }
 
@@ -201,7 +201,7 @@ namespace QRTracking
                                 //Assign obstacles to position 2
                                 obstLow.transform.localPosition = new Vector3(0f, 0.05f, 12f);
                                 obstMid.transform.localPosition = new Vector3(0.5f, 0.444f, 9f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 6f);
+                                obstHigh.transform.localPosition = new Vector3(0f, 1.5f, 6f);
                                 obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 3f);
                             }
 

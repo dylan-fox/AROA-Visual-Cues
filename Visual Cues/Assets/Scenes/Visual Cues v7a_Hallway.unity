@@ -300,7 +300,7 @@ MonoBehaviour:
   obstHigh: {fileID: 1257230119}
   obstWide: {fileID: 936723477}
   obstacleCollection: {fileID: 1948430007}
-  layout: 
+  layout: Default
   textToSpeech: {fileID: 816797673}
   obstacleManager: {fileID: 1264387024}
 --- !u!1 &32149977
@@ -4809,7 +4809,7 @@ PrefabInstance:
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.375
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}

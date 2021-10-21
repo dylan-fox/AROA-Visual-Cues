@@ -66,9 +66,12 @@ public class Experiment_Logger : MonoBehaviour
         layout = qRCodes_AROA.layout;
         Debug.Log("Layout: " + layout);
 
+        //Track start time
+        startTime = Time.time;
+
         //Set timestamp and path name
-        string timeStamp = string.Format("_{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
-        fileName = cueCondition + '_' + layout + '_' + timeStamp + ".txt";
+        string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
+        fileName = timeStamp + '_' + cueCondition + '_' + layout + ".txt";
         Debug.Log("Filename: " + fileName);
         filePath = Path.Combine(Application.persistentDataPath, fileName);
         Debug.Log("File path: " + filePath);
