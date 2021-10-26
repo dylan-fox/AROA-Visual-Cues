@@ -44,8 +44,20 @@ public class HUD_Revised : MonoBehaviour
 
     private LayerMask obstacleMask;
 
+    [Tooltip("Time in seconds for a cue to stay on after being triggered.")]
+    public float fadeTime = 0.25f;
 
+    //Time each HUD cue was last triggered
+    private float northTrigger = 0;
+    private float eastTrigger = 0;
+    private float westTrigger = 0;
+    private float southTrigger = 0;
 
+    //Cue width multipliers
+    private float northMultiplier = 1.0f;
+    private float eastMultiplier = 1.0f;
+    private float southMultiplier = 1.0f;
+    private float westMultiplier = 1.0f;
 
     // Start is called before the first frame update
     void Awake()
@@ -266,10 +278,78 @@ public class HUD_Revised : MonoBehaviour
         foreach (GameObject Cue in HUDCues)
         {
             //Debug.Log("Cue name: " + Cue.name);
-            //Cues should be off and minimum width by default
-            Cue.SetActive(false);
-            float cueMultiplier = 1;
-            Cue.transform.localScale = Vector3.one;
+            bool resetTrigger = false;
+
+            //If cue is on from a previous frame and hasn't passed the fade time threshold yet, keep it on; otherwise, reset it
+            if (Cue.name == "HUD Cue East")
+            {
+                if (Time.time <= eastTrigger + fadeTime)
+                {
+                    //Do nothing
+                }
+
+                else
+                {
+                    Cue.SetActive(false);
+                    eastMultiplier = 1.0f;
+                    Cue.transform.localScale = Vector3.one;
+                    resetTrigger = true;
+                }
+            }
+
+            else if (Cue.name == "HUD Cue South")
+            {
+                if (Time.time <= southTrigger + fadeTime)
+                {
+                    //Do nothing
+                }
+
+                else
+                {
+                    Cue.SetActive(false);
+                    southMultiplier = 1.0f;
+                    Cue.transform.localScale = Vector3.one;
+                    resetTrigger = true;
+                    Debug.Log("South cue reset.");
+                }
+            }
+
+            else if (Cue.name == "HUD Cue West")
+            {
+                if (Time.time <= westTrigger + fadeTime)
+                {
+                    //Do nothing
+                }
+
+                else
+                {
+                    Cue.SetActive(false);
+                    westMultiplier = 1.0f;
+                    Cue.transform.localScale = Vector3.one;
+                    resetTrigger = true;
+                }
+            }
+
+            else if (Cue.name == "HUD Cue North")
+            {
+                if (Time.time <= northTrigger + fadeTime)
+                {
+                    //Do nothing
+                }
+
+                else
+                {
+                    Cue.SetActive(false);
+                    northMultiplier = 1.0f;
+                    Cue.transform.localScale = Vector3.one;
+                    resetTrigger = true;
+                }
+            }
+
+            else
+            {
+                Debug.Log("Strange item found in Cues list.");
+            }
 
 
             if (HUDCalibration) 
@@ -277,14 +357,16 @@ public class HUD_Revised : MonoBehaviour
                 //Keep all cues visible and reset to default positions
                 Cue.SetActive(true);
                 if (Cue.name == "HUD Cue East")
-                    Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
+                    Cue.transform.localPosition = new Vector3(0.5f - 0.05f, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
                 else if (Cue.name == "HUD Cue South")
-                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.z);
+                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f, Cue.transform.localPosition.z);
                 else if (Cue.name == "HUD Cue West")
-                    Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
+                    Cue.transform.localPosition = new Vector3(-0.5f + 0.05f, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
                 else if (Cue.name == "HUD Cue North")
-                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.z);
+                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f, Cue.transform.localPosition.z);
             }
+
+
 
             else
             {
@@ -306,32 +388,38 @@ public class HUD_Revised : MonoBehaviour
                         if (Cue.name == "HUD Cue East" && obst.ObstMinY > minAngle && !(obst.ObstMaxY < minAngle * -1)) //&& obst.ObstMinAbsX <= minAngle)
                         {
                             Cue.SetActive(true);
+                            if (resetTrigger) 
+                                eastTrigger = Time.time;
+                            eastMultiplier = 1.0f;
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
 
-                            if (tempMultiplier >= cueMultiplier)
+                            if (tempMultiplier >= eastMultiplier)
                             {
-                                cueMultiplier = tempMultiplier;
-                                Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                                Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
+                                eastMultiplier = tempMultiplier;
+                                Cue.transform.localScale = new Vector3(Vector3.one.x * eastMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                                Cue.transform.localPosition = new Vector3(0.5f - 0.05f * eastMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
                             }
                             if (debugText.activeSelf)
-                                debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
+                                debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + Mathf.Round(eastMultiplier * 100) / 100;
 
                         }
 
                         else if (Cue.name == "HUD Cue South" && obst.ObstMinX > minAngle && !(obst.ObstMaxX < minAngle * -1)) //&& obst.ObstMinAbsY <= minAngle)
                         {
                             Cue.SetActive(true);
+                            if (resetTrigger)
+                                southTrigger = Time.time;
+                            southMultiplier = 1.0f;
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
-                            if (tempMultiplier >= cueMultiplier)
+                            if (tempMultiplier >= southMultiplier)
                             {
-                                cueMultiplier = tempMultiplier;
-                                Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.z);
+                                southMultiplier = tempMultiplier;
+                                Cue.transform.localScale = new Vector3(Vector3.one.x * southMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * southMultiplier, Cue.transform.localPosition.z);
                                 //Debug.Log("South cue on. Width multiplier: " + cueMultiplier);
                             }
                             if (debugText.activeSelf)
-                                debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
+                                debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + Mathf.Round(southMultiplier * 100) / 100;
 
 
                         }
@@ -339,33 +427,39 @@ public class HUD_Revised : MonoBehaviour
                         else if (Cue.name == "HUD Cue West" && obst.ObstMaxY < minAngle * -1 && !(obst.ObstMinY > minAngle))  //&& obst.ObstMinAbsX <= minAngle)
                         {
                             Cue.SetActive(true);
+                            if (resetTrigger)
+                                westTrigger = Time.time;
+                            westMultiplier = 1.0f;
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
-                            if (tempMultiplier >= cueMultiplier)
+                            if (tempMultiplier >= westMultiplier)
                             {
-                                cueMultiplier = tempMultiplier;
-                                Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                                Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * cueMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
+                                westMultiplier = tempMultiplier;
+                                Cue.transform.localScale = new Vector3(Vector3.one.x * westMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                                Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * westMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
 
                                 //Debug.Log("West cue on. Width multiplier: " + cueMultiplier);
                             }
                             if (debugText.activeSelf)
-                                debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
+                                debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + Mathf.Round(westMultiplier * 100) / 100;
 
                         }
 
                         else if (Cue.name == "HUD Cue North" && obst.ObstMaxX < minAngle * -1 && !(obst.ObstMinX > minAngle)) //&& obst.ObstMinAbsY <= minAngle)
                         {
                             Cue.SetActive(true);
+                            if (resetTrigger)
+                                northTrigger = Time.time;
+                            northMultiplier = 1.0f;
                             float tempMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, obst.ObstMinDist);
-                            if (tempMultiplier >= cueMultiplier)
+                            if (tempMultiplier >= northMultiplier)
                             {
-                                cueMultiplier = tempMultiplier;
-                                Cue.transform.localScale = new Vector3(Cue.transform.localScale.x * cueMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * cueMultiplier, Cue.transform.localPosition.z);
+                                northMultiplier = tempMultiplier;
+                                Cue.transform.localScale = new Vector3(Vector3.one.x * northMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * northMultiplier, Cue.transform.localPosition.z);
                                 //Debug.Log("North cue on. Width multiplier: " + cueMultiplier);
                             }
                             if (debugText.activeSelf)
-                                debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + Mathf.Round(cueMultiplier * 100) / 100;
+                                debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + Mathf.Round(northMultiplier * 100) / 100;
 
                         }
                     }
@@ -450,7 +544,23 @@ public class HUD_Revised : MonoBehaviour
             ObstMinAbsX = Mathf.Abs(angleX);
             ObstMinAbsY = Mathf.Abs(angleY);
         }
+    }
 
+    public class HUDCue
+    {
+        public string CueName { get; set; }
+        public GameObject CueObject { get; set; }
+        public float LastTriggered { get; set; }
+        public bool IsOn { get; set; }
+        public float CueWidth { get; set; }
 
+        public HUDCue (string cueName, GameObject cueObject)
+        {
+            CueName = cueName;
+            CueObject = cueObject;
+            LastTriggered = 0f;
+            IsOn = false;
+            CueWidth = 1.0f;
+        }
     }
 }
