@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using TMPro;
+using Microsoft.MixedReality.Toolkit.Audio;
 
 
 
@@ -15,6 +16,7 @@ using TMPro;
 public class HUD_Revised : MonoBehaviour
 {
     public GameObject HUDFrame; //Frame containing HUD cues
+    public TextToSpeech textToSpeech;
 
     [HideInInspector]
     public List<GameObject> HUDCues; //All HUD cue objects
@@ -310,7 +312,7 @@ public class HUD_Revised : MonoBehaviour
                     southMultiplier = 1.0f;
                     Cue.transform.localScale = Vector3.one;
                     resetTrigger = true;
-                    Debug.Log("South cue reset.");
+                    //Debug.Log("South cue reset.");
                 }
             }
 
@@ -496,6 +498,53 @@ public class HUD_Revised : MonoBehaviour
         HUDFrame.transform.localScale = new Vector3(currentScale.x * multiplier, currentScale.y, currentScale.z);
     }
 
+    public void HUDCalibrationToggle ()
+    {
+        if (HUDCalibration)
+        {
+            HUDCalibration = false;
+            Debug.Log("HUD calibration off.");
+            textToSpeech.StartSpeaking("HUD Calibration off.");
+        }
+
+        else
+        {
+            HUDCalibration = true;
+            Debug.Log("HUD calibration on.");
+            textToSpeech.StartSpeaking("HUD Calibration on.");
+        }
+    }
+
+    public void AdjustMinAngle (float x)
+    {
+        minAngle += x;
+        if (minAngle < 0)
+            minAngle = 0;
+        if (minAngle > 90)
+            minAngle = 90;
+        Debug.Log("Min angle now " + minAngle);
+        textToSpeech.StartSpeaking("Min angle now " + minAngle);
+    }
+
+    public void AdjustSphereRadius (float x)
+    {
+        sphereRadius += x;
+        if (sphereRadius < 0)
+            sphereRadius = 0;
+
+        Debug.Log("Sphere radius now " + sphereRadius);
+        textToSpeech.StartSpeaking("Sphere radius now " + sphereRadius);
+    }
+
+    public void AdjustAngleInterval (float x)
+    {
+        angleInterval += x;
+        if (angleInterval < 5)
+            angleInterval = 5;
+        Debug.Log("Angle interval now " + angleInterval);
+        textToSpeech.StartSpeaking("Angle interval now " + angleInterval);
+    }
+
     public class ObstInfo
     {
         public string ObstName { get; set; }
@@ -546,6 +595,8 @@ public class HUD_Revised : MonoBehaviour
         }
     }
 
+
+    /* Potential HUDCue class; not used in current implementation
     public class HUDCue
     {
         public string CueName { get; set; }
@@ -563,4 +614,5 @@ public class HUD_Revised : MonoBehaviour
             CueWidth = 1.0f;
         }
     }
+    */
 }

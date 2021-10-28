@@ -86,9 +86,11 @@ public class ObstacleManager : MonoBehaviour
         obstacleMask = LayerMask.GetMask("Obstacles");
         obstacleMask = ~obstacleMask;
 
-        //Start with cues and interface off
+        Camera.main.farClipPlane = maxDisplayDistance;
+
+        //Start with gestures and interface off
         CollocatedCuesToggle();
-        HUDCuesToggle();
+        //HUDCuesToggle();
         ToggleInterface();
         ToggleGestures();
 
@@ -97,7 +99,7 @@ public class ObstacleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Camera.main.farClipPlane = maxDisplayDistance;
+
     }
 
 
@@ -275,7 +277,7 @@ public class ObstacleManager : MonoBehaviour
     public void SetLocation(string posName)
     {
         //Sets location of user to a given position by moving entire Collocated Cues object.
-        if (posName == "doorway")
+        if (posName == "front")
         {
             //Set cues parent to be at user's location and lower by height
             cuesParent.transform.position = Camera.main.transform.position - new Vector3 (0.0f, defaultHeight, 0.0f);
@@ -393,6 +395,23 @@ public class ObstacleManager : MonoBehaviour
             gestureLock = false;
             textToSpeech.StartSpeaking("Gestures unlocked.");
 
+        }
+    }
+
+    public void ToggleDistanceCap ()
+    {
+        if (Camera.main.farClipPlane == maxDisplayDistance)
+        {
+            Camera.main.farClipPlane = 1000;
+            Debug.Log("Display distance uncapped.");
+            textToSpeech.StartSpeaking("Display distance uncapped.");
+        }
+
+        else
+        {
+            Camera.main.farClipPlane = maxDisplayDistance;
+            Debug.Log("Display distance capped.");
+            textToSpeech.StartSpeaking("Display distance capped.");
         }
     }
 }

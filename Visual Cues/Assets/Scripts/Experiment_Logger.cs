@@ -7,6 +7,8 @@ using System.IO;
 using UnityEngine.Windows.Speech;
 using QRTracking;
 using Microsoft.MixedReality.Toolkit.Audio;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit;
 
 public class Experiment_Logger : MonoBehaviour
 {
@@ -29,6 +31,8 @@ public class Experiment_Logger : MonoBehaviour
     private Vector3 tempRot;
     private float tempTime;
     private float timeStamp;
+    private bool eyeTrackingEnabled;
+    private Vector3 gazeDirection;
 
   //private PTDataFileWriter dataWriter = new PTDataFileWriter();
 
@@ -42,7 +46,15 @@ public class Experiment_Logger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log("Is eye tracking enabled: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabled);
+        Debug.Log("Is eye calibration valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid);
+        Debug.Log("Is eye tracking enabled and valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
+        Debug.Log("Is eye tracking data valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingDataValid);
+        Debug.Log("Gaze origin: " + CoreServices.InputSystem.EyeGazeProvider.GazeOrigin.ToString());
+        Debug.Log("Camera forward vector (not normalized): + " + Camera.transform.forward.ToString());
+        Debug.Log("Camera forward vector (normalized): " + Camera.transform.forward.normalized.ToString());
+        Debug.Log("Camera direction (normalized): " + Camera.transform.rotation.eulerAngles.normalized.ToString());
+        Debug.Log("Gaze direction (normalized): " + CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized.ToString());
     }
 
     public void BeginLogging()
@@ -79,14 +91,16 @@ public class Experiment_Logger : MonoBehaviour
 
         //define variable values at start
         tempPos = Camera.transform.position;
-        tempRot = Camera.transform.rotation.eulerAngles;
+        tempRot = Camera.transform.rotation.eulerAngles.normalized;
+        gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized;
 
         // create output file and write header
         //System.IO.File.WriteAllText(filePath, fileName);
 
         using (TextWriter writer = File.AppendText(filePath))
         {
-            writer.WriteLine("Logging begun. Format: Cue Condition; Layout; Position X; Y; Z; Rotation X; Y; Z");
+            writer.WriteLine("Logging begun. Format: Cue Condition; Layout; Time; Position X; Y; Z; " +
+                "Rotation X; Y; Z; Eye Tracking Enabled (true/false); Gaze Direction X; Y; Z");
         }
 
         beganLogging = true;
@@ -110,16 +124,19 @@ public class Experiment_Logger : MonoBehaviour
         {
 
             tempPos = Camera.transform.position;
-            tempRot = Camera.transform.rotation.eulerAngles;
+            tempRot = Camera.transform.rotation.eulerAngles.normalized;
             tempTime = Time.time - startTime;
-
+            eyeTrackingEnabled = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid;
+            gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized;
 
 
             using (TextWriter writer = File.AppendText(filePath))
             {
                 writer.WriteLine(cueCondition + "; " + layout + "; " + tempTime + "; " +
                     tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
-                    tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "\n");
+                    tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "; " + 
+                    eyeTrackingEnabled + "; " + 
+                    gazeDirection.x + "; " + gazeDirection.y + "; " + gazeDirection.z + "\n");
             }
         }
     }

@@ -2222,7 +2222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &664482710
 Transform:
   m_ObjectHideFlags: 0
@@ -3560,7 +3560,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &927415521
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3575,7 +3575,7 @@ RectTransform:
   - {fileID: 1813194136}
   - {fileID: 2105630244}
   m_Father: {fileID: 963194228}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4112,8 +4112,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 816797672}
-  - {fileID: 927415521}
   - {fileID: 1376590892}
+  - {fileID: 927415521}
   - {fileID: 664482710}
   m_Father: {fileID: 1490066230}
   m_RootOrder: 0
@@ -5066,36 +5066,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - keyword: Show Cue
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: ShowCue
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Hide Cue
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: HideCue
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - keyword: Save Position
     response:
       m_PersistentCalls:
@@ -5126,7 +5096,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - keyword: Set Location Doorway
+  - keyword: Obstacles Front
     response:
       m_PersistentCalls:
         m_Calls:
@@ -5138,141 +5108,21 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Up
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveUp
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0.01
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Down
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveUp
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -0.01
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Rotate Left
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: ManualRotate
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -1
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Rotate Right
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: ManualRotate
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 1
-            m_StringArgument: doorway
+            m_StringArgument: front
             m_BoolArgument: 0
           m_CallState: 2
   - keyword: Toggle Calibration
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: CalibrationToggle
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: HUDCalibrationToggle
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 5
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Forward
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveForward
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0.02
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Back
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveForward
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -0.02
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Right
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveRight
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0.02
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Move Left
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: MoveRight
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -0.02
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
@@ -5321,7 +5171,7 @@ MonoBehaviour:
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
-  - keyword: Increase HUD Radius
+  - keyword: Increase HUD Size
     response:
       m_PersistentCalls:
         m_Calls:
@@ -5336,7 +5186,7 @@ MonoBehaviour:
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
-  - keyword: Decrease HUD Radius
+  - keyword: Decrease HUD Size
     response:
       m_PersistentCalls:
         m_Calls:
@@ -5393,6 +5243,111 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0.95238
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase Min Angle
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustMinAngle
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease Min Angle
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustMinAngle
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase Sphere Radius
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustSphereRadius
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.01
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease Sphere Radius
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustSphereRadius
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -0.01
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase Angle Interval
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustAngleInterval
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease Angle Interval
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590893}
+          m_MethodName: AdjustAngleInterval
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Toggle Distance Cap
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: ToggleDistanceCap
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -1
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
@@ -5762,7 +5717,7 @@ Transform:
   m_Children:
   - {fileID: 890699802}
   m_Father: {fileID: 963194228}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1376590893
 MonoBehaviour:
@@ -5777,6 +5732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HUDFrame: {fileID: 890699801}
+  textToSpeech: {fileID: 816797673}
   HUDCues: []
   cueWidthMaxMultiplier: 4
   minDist: 0
@@ -5786,7 +5742,8 @@ MonoBehaviour:
   sphereRadius: 0.15
   debugText: {fileID: 2105630243}
   DebugRays: 0
-  HUDCalibration: 0
+  HUDCalibration: 1
+  fadeTime: 0.25
 --- !u!1 &1377672507
 GameObject:
   m_ObjectHideFlags: 0
@@ -9774,7 +9731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4310497907214298780}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.08, y: 0.444, z: 6}
+  m_LocalPosition: {x: 0, y: 0.444, z: 6}
   m_LocalScale: {x: 1.02, y: 1.62, z: 0.92}
   m_Children:
   - {fileID: 4310497906842595493}
