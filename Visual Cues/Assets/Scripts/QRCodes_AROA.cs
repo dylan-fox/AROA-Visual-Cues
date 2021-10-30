@@ -167,6 +167,17 @@ namespace QRTracking
                             obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 9f);
                         }
 
+                        else if (action.qrCode.Data == "QR Code 5")
+                        {
+                            layout = "Demo Layout";
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            //Assign the medium chair to the middle of the room, and put the rest far away.
+                            obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstMid.transform.localPosition = new Vector3(2f, 0.444f, 2f); //2 meters forward and 2m + hallway width right of QR code
+                            obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                        }
+
 
                     }
                     else if (action.type == ActionData.Type.Updated)
@@ -227,7 +238,16 @@ namespace QRTracking
                                 obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 9f);
                             }
 
-
+                            else if (action.qrCode.Data == "QR Code 5")
+                            {
+                                layout = "Demo Layout";
+                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                                //Assign the medium chair to the middle of the room, and put the rest far away.
+                                obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                                obstMid.transform.localPosition = new Vector3(2f, 0.444f, 2f); //2 meters forward and 2m + hallway width right of QR code
+                                obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                                obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            }
 
                         }
                     }
