@@ -123,59 +123,67 @@ namespace QRTracking
                         qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                         qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
 
+                        
+
                         if (action.qrCode.Data == "QR Code 1")
                         {
                             layout = "Layout 1";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            //Assign obstacles to position 1
-                            obstLow.transform.localPosition = new Vector3(0f, 0.05f, 3f);
-                            obstMid.transform.localPosition = new Vector3(0f, 0.444f, 6f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                            obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 12f);
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
+
                         }
 
                         else if (action.qrCode.Data == "QR Code 2")
                         {
                             layout = "Layout 2";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            //Assign obstacles to position 2
-                            obstLow.transform.localPosition = new Vector3(0f, 0.05f, 12f);
-                            obstMid.transform.localPosition = new Vector3(0.5f, 0.444f, 9f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 6f);
-                            obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 3f);
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                         }
 
                         else if (action.qrCode.Data == "QR Code 3")
                         {
                             layout = "Layout 3";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            //Assign obstacles to position 3
-                            obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
-                            obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 3f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                            obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 12f);
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                         }
 
                         else if (action.qrCode.Data == "QR Code 4")
                         {
                             layout = "Layout 4";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            //Assign obstacles to position 4
-                            obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
-                            obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 12f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 3f);
-                            obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 9f);
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                         }
 
                         else if (action.qrCode.Data == "QR Code 5")
                         {
                             layout = "Demo Layout";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                            //Assign the medium chair to the middle of the room, and put the rest far away.
-                            obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                            obstMid.transform.localPosition = new Vector3(2f, 0.444f, 2f); //2 meters forward and 2m + hallway width right of QR code
-                            obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                            obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                         }
 
 
@@ -197,56 +205,61 @@ namespace QRTracking
                             if (action.qrCode.Data == "QR Code 1")
                             {
                                 layout = "Layout 1";
+                                qrCodeObject.GetComponent<QRCode>().layout = layout;
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                                //Assign obstacles to position 1
-                                obstLow.transform.localPosition = new Vector3(0f, 0.05f, 3f);
-                                obstMid.transform.localPosition = new Vector3(0f, 0.444f, 6f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                                obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 12f);
+                                //Assign obstacles to QR Code object
+                                qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                                qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                                qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                                qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                             }
 
                             else if (action.qrCode.Data == "QR Code 2")
                             {
                                 layout = "Layout 2";
+                                qrCodeObject.GetComponent<QRCode>().layout = layout;
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                                //Assign obstacles to position 2
-                                obstLow.transform.localPosition = new Vector3(0f, 0.05f, 12f);
-                                obstMid.transform.localPosition = new Vector3(0.5f, 0.444f, 9f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 6f);
-                                obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 3f);
+                                //Assign obstacles to QR Code object
+                                qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                                qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                                qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                                qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                             }
 
                             else if (action.qrCode.Data == "QR Code 3")
                             {
                                 layout = "Layout 3";
+                                qrCodeObject.GetComponent<QRCode>().layout = layout;
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                                //Assign obstacles to position 3
-                                obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
-                                obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 3f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                                obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 12f);
+                                //Assign obstacles to QR Code object
+                                qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                                qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                                qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                                qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                             }
 
                             else if (action.qrCode.Data == "QR Code 4")
                             {
                                 layout = "Layout 4";
+                                qrCodeObject.GetComponent<QRCode>().layout = layout;
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                                //Assign obstacles to position 4
-                                obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
-                                obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 12f);
-                                obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 3f);
-                                obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 9f);
+                                //Assign obstacles to QR Code object
+                                qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                                qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                                qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                                qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                             }
 
                             else if (action.qrCode.Data == "QR Code 5")
                             {
                                 layout = "Demo Layout";
+                                qrCodeObject.GetComponent<QRCode>().layout = layout;
                                 qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
-                                //Assign the medium chair to the middle of the room, and put the rest far away.
-                                obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                                obstMid.transform.localPosition = new Vector3(2f, 0.444f, 2f); //2 meters forward and 2m + hallway width right of QR code
-                                obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                                obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                                //Assign obstacles to QR Code object
+                                qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                                qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                                qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                                qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
                             }
 
                         }
