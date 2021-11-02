@@ -106,11 +106,12 @@ namespace QRTracking
                         //obstacleManager.ResetPositions(); //Reset positions of obstacles
                         trackedObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
                         trackedObject.transform.Rotate(0f, qrCodeCube.transform.rotation.eulerAngles.y + 90f, 0f);//Rotate to match QR code, then 90 degrees 
-                        trackedObject.transform.position = qrCodeCube.transform.position + new Vector3 (0.9f, 0f, 0f);  //Adjust position to QR code location; move based on width of hallway
+                        trackedObject.transform.position = qrCodeCube.transform.position; //new Vector3 (0.9f, 0f, 0f);  //Adjust position to QR code location
                         //make local changes to adjust
                         //trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
                         trackedObject.transform.localPosition -= trackedObject.transform.up * 1.5f; //Assumes height of QR Code is 1.5m (~5ft) off the ground
-                        //trackedObject.transform.localPosition += trackedObject.transform.right * 0.36f;
+                        trackedObject.transform.localPosition += trackedObject.transform.right * 0.9f; //Assumes hallway is 1.8m wide
+
 
 
                         if (layout == "Layout 1")

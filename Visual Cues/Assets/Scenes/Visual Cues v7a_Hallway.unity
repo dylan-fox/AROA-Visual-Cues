@@ -5382,7 +5382,7 @@ MonoBehaviour:
   textToSpeech: {fileID: 816797673}
   HUDFrame: {fileID: 890699801}
   HUDCues: []
-  beganLogging: 0
+  loggingInProcess: 0
 --- !u!114 &1303072127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5759,7 +5759,7 @@ MonoBehaviour:
   cueWidthMaxMultiplier: 4
   minDist: 0
   maxDist: 2.5
-  minAngle: 15
+  minAngle: 10
   angleInterval: 10
   sphereRadius: 0.15
   debugText: {fileID: 2105630243}

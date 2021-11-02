@@ -88,8 +88,8 @@ public class ObstacleManager : MonoBehaviour
 
         Camera.main.farClipPlane = maxDisplayDistance;
 
-        //Start with gestures and interface off
-        CollocatedCuesToggle();
+        //Start with cues on, calibration on, gestures and interface off
+        //CollocatedCuesToggle();
         //HUDCuesToggle();
         ToggleInterface();
         ToggleGestures();

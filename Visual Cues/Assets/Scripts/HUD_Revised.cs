@@ -96,6 +96,7 @@ public class HUD_Revised : MonoBehaviour
 
         //Capture camera's location and orientation
         var headPosition = Camera.main.transform.position;
+        var headPositionCorrected = headPosition - new Vector3(0f, 0.75f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
         var gazeDirection = Camera.main.transform.forward;
 
 
@@ -124,14 +125,14 @@ public class HUD_Revised : MonoBehaviour
                         if (DebugRays)
                         {
                             if (Mathf.Abs(xAngle) <= minAngle && Mathf.Abs(yAngle) <= minAngle)
-                                Debug.DrawRay(headPosition, rayDirection * maxDist, Color.red);
+                                Debug.DrawRay(headPositionCorrected, rayDirection * maxDist, Color.red);
                             else
-                                Debug.DrawRay(headPosition, rayDirection * maxDist, Color.green);
+                                Debug.DrawRay(headPositionCorrected, rayDirection * maxDist, Color.green);
                         }
 
                         //Cast ray
                         RaycastHit hit;
-                        Physics.SphereCast(headPosition, sphereRadius, rayDirection, out hit, maxDist, obstacleMask);
+                        Physics.SphereCast(headPositionCorrected, sphereRadius, rayDirection, out hit, maxDist, obstacleMask);
 
 
                         //If ray hits something, log it
@@ -155,7 +156,7 @@ public class HUD_Revised : MonoBehaviour
                                     if (hit.distance <= obst.ObstMinDist)
                                         obst.ObstMinDist = hit.distance;
                                     */
-                                    obst.ObstMinDist = (headPosition - obst.ObstObject.transform.position).magnitude;
+                                    obst.ObstMinDist = (headPositionCorrected - obst.ObstObject.transform.position).magnitude;
 
                                     //Record X and Y angles
                                     if (!obst.ObstXAngles.Contains(xAngle))
@@ -174,7 +175,7 @@ public class HUD_Revised : MonoBehaviour
                             if (newObst)
                             {
                                 //ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, hit.distance, hit.distance, xAngle, yAngle));
-                                float minDist = (headPosition - hit.transform.parent.transform.position).magnitude; //Using distance from head position to object to keep things consistent
+                                float minDist = (headPositionCorrected - hit.transform.parent.transform.position).magnitude; //Using distance from head position to object to keep things consistent
                                 //ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, minDist, hit.distance, xAngle, yAngle));
                                 ObstInfos.Add(new ObstInfo(hit.transform.parent.gameObject.ToString(), hit.transform.parent.gameObject, minDist, xAngle, yAngle));
 
