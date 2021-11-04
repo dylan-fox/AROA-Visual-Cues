@@ -119,26 +119,26 @@ namespace QRTracking
                             //Assign obstacles to position 1
                             obstLow.transform.localPosition = new Vector3(0f, 0.05f, 3f);
                             obstMid.transform.localPosition = new Vector3(0f, 0.444f, 6f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                            obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 12f);
+                            obstHigh.transform.localPosition = new Vector3(0f, 1.7f, 9f);
+                            obstWide.transform.localPosition = new Vector3(0.45f, 0.8f, 12f);
                         }
 
                         else if (layout == "Layout 2")
                         {
                             //Assign obstacles to position 2
                             obstLow.transform.localPosition = new Vector3(0f, 0.05f, 12f);
-                            obstMid.transform.localPosition = new Vector3(0.5f, 0.444f, 9f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 6f);
-                            obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 3f);
+                            obstMid.transform.localPosition = new Vector3(0.6f, 0.444f, 9f);
+                            obstHigh.transform.localPosition = new Vector3(0f, 1.7f, 6f);
+                            obstWide.transform.localPosition = new Vector3(-0.45f, 0.8f, 3f);
                         }
 
                         else if (layout == "Layout 3")
                         {
                             //Assign obstacles to position 3
                             obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
-                            obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 3f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 9f);
-                            obstWide.transform.localPosition = new Vector3(-0.4f, 0.8f, 12f);
+                            obstMid.transform.localPosition = new Vector3(-0.3f, 0.444f, 3f);
+                            obstHigh.transform.localPosition = new Vector3(0f, 1.7f, 9f);
+                            obstWide.transform.localPosition = new Vector3(-0.45f, 0.8f, 12f);
                         }
 
                         else if (layout == "Layout 4")
@@ -146,8 +146,8 @@ namespace QRTracking
                             //Assign obstacles to position 4
                             obstLow.transform.localPosition = new Vector3(0f, 0.05f, 6f);
                             obstMid.transform.localPosition = new Vector3(0.3f, 0.444f, 12f);
-                            obstHigh.transform.localPosition = new Vector3(0f, 1.375f, 3f);
-                            obstWide.transform.localPosition = new Vector3(0.4f, 0.8f, 9f);
+                            obstHigh.transform.localPosition = new Vector3(0f, 1.7f, 3f);
+                            obstWide.transform.localPosition = new Vector3(0.45f, 0.8f, 9f);
                         }
 
                         else if (layout == "Demo Layout")
