@@ -96,7 +96,7 @@ public class HUD_Revised : MonoBehaviour
 
         //Capture camera's location and orientation
         var headPosition = Camera.main.transform.position;
-        var headPositionCorrected = headPosition - new Vector3(0f, 0.75f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
+        var headPositionCorrected = headPosition - new Vector3(0f, 0.5f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
         var gazeDirection = Camera.main.transform.forward;
 
 

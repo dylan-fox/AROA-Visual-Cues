@@ -35,6 +35,7 @@ public class Experiment_Logger : MonoBehaviour
     private float tempTime;
     private float timeStamp;
     private bool eyeTrackingEnabled;
+    private bool eyeTrackingDataValid;
     private Vector3 gazeDirection;
     private Vector3 eyeMovement;
 
@@ -160,7 +161,7 @@ public class Experiment_Logger : MonoBehaviour
                 writer.WriteLine("Logging begun. Format: \n" +
                     "Cue Condition; Layout; Time; Position X; Position Y; Position Z; " +
                     "Rotation X; Rotation Y; Rotation Z; " +
-                    "Eye Tracking Enabled (true/false); " +
+                    "Eye Tracking Enabled (true/false); " + "Eye Tracking Data Valid (true/false); " + 
                     "Gaze Direction X; Gaze Direction Y; Gaze Direction Z; " +
                     "Eye Movement X; Eye Movement Y; Eye Movement Z; " +
                     "HUD Cue Up; HUD Cue Right; HUD Cue Down; HUD Cue Left");
@@ -203,7 +204,8 @@ public class Experiment_Logger : MonoBehaviour
             tempPos = Camera.transform.position;
             tempRot = Camera.transform.rotation.eulerAngles;
             tempTime = Time.time - startTime;
-            eyeTrackingEnabled = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid;
+            eyeTrackingEnabled = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabled;
+            eyeTrackingDataValid = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingDataValid;
             gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection;
             eyeMovement = Camera.transform.forward - gazeDirection;
 
@@ -213,7 +215,7 @@ public class Experiment_Logger : MonoBehaviour
                 writer.WriteLine(cueCondition + "; " + layout + "; " + tempTime + "; " +
                     tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
                     tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "; " + 
-                    eyeTrackingEnabled + "; " + 
+                    eyeTrackingEnabled + "; " + eyeTrackingDataValid + "; " + 
                     gazeDirection.x + "; " + gazeDirection.y + "; " + gazeDirection.z + "; " +
                     eyeMovement.x + "; " + eyeMovement.y + "; " + eyeMovement.z + "; " +  
                     northOn + "; " + eastOn + "; " + southOn + "; " + westOn);

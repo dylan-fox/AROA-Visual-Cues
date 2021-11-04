@@ -93,7 +93,7 @@ public class ObstacleManager : MonoBehaviour
         //HUDCuesToggle();
         ToggleInterface();
         ToggleGestures();
-
+        textToSpeech.StartSpeaking("Ready");
     }
 
     // Update is called once per frame
