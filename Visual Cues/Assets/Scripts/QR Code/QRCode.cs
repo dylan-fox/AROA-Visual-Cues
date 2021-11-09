@@ -153,7 +153,7 @@ namespace QRTracking
                         else if (layout == "Demo Layout")
                         {
                             //Assign the medium chair to the middle of the room, and put the rest far away.
-                            obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstLow.transform.localPosition = new Vector3(0f, 0.05f, 2f);
                             obstMid.transform.localPosition = new Vector3(2f, 0.444f, 2f); //2 meters forward and 2m + hallway width right of QR code
                             obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
                             obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
