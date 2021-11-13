@@ -176,6 +176,18 @@ namespace QRTracking
 
                         else if (action.qrCode.Data == "QR Code 5")
                         {
+                            layout = "Layout 5";
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
+                        }
+
+                        else if (action.qrCode.Data == "Demo")
+                        {
                             layout = "Demo Layout";
                             qrCodeObject.GetComponent<QRCode>().layout = layout;
                             qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
