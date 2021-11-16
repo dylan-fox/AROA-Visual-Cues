@@ -39,6 +39,8 @@ public class ObstacleManager : MonoBehaviour
     public GameObject cuesParent;
     public GameObject calibrationCue;
     public GameObject debugText;
+    public Experiment_Logger experimentLogger;
+    
 
     public GameObject HUDManager;
     //private HUDIndicator HUDIndicator;
@@ -64,6 +66,8 @@ public class ObstacleManager : MonoBehaviour
 
     private LayerMask defaultMask = ~0;
     private LayerMask obstacleMask;
+    [HideInInspector]
+    public bool distanceCap = true;
 
 
     // Start is called before the first frame update
@@ -99,7 +103,15 @@ public class ObstacleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (debugText.activeSelf)
+        {
+            Debug.Log("Debug text object: " + debugText.ToString());
+            debugText.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>().text =
+                "Mode: " + experimentLogger.cueCondition + "\n" +
+                "Distance capped: " + distanceCap + "\n" +
+                "HUD calibration: " + HUD_Revised.HUDCalibration + "\n" + 
+                "Layout: " + experimentLogger.layout;
+        }
     }
 
 
@@ -400,9 +412,10 @@ public class ObstacleManager : MonoBehaviour
 
     public void ToggleDistanceCap ()
     {
-        if (Camera.main.farClipPlane == maxDisplayDistance)
+        if (distanceCap)
         {
             Camera.main.farClipPlane = 1000;
+            distanceCap = false;
             Debug.Log("Display distance uncapped.");
             textToSpeech.StartSpeaking("Display distance uncapped.");
         }
@@ -410,6 +423,7 @@ public class ObstacleManager : MonoBehaviour
         else
         {
             Camera.main.farClipPlane = maxDisplayDistance;
+            distanceCap = true;
             Debug.Log("Display distance capped.");
             textToSpeech.StartSpeaking("Display distance capped.");
         }

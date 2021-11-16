@@ -21,8 +21,11 @@ public class Experiment_Logger : MonoBehaviour
     [HideInInspector]
     public List<GameObject> HUDCues; //All HUD cue objects
 
-    private string cueCondition = "Default Condition";
-    private string layout = "Default Layout";
+    [HideInInspector]
+    public string cueCondition = "Default Condition";
+
+    [HideInInspector]
+    public string layout = "Default Layout";
     private float startTime;
     private float endTime;
 
@@ -73,6 +76,21 @@ public class Experiment_Logger : MonoBehaviour
         Debug.Log("Eye movement: " + (Camera.transform.forward - CoreServices.InputSystem.EyeGazeProvider.GazeDirection).ToString());
         */
 
+        //Set cue condition
+        if (obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
+            cueCondition = "Combined";
+        else if (obstacleManager.collocatedCuesOn && !obstacleManager.hudCuesOn)
+            cueCondition = "Collocated";
+        else if (!obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
+            cueCondition = "HUD";
+        else
+            cueCondition = "Control";
+        //Debug.Log("Cue condition: " + cueCondition);
+
+        //Get obstacle layout
+        layout = qRCodes_AROA.layout;
+        //Debug.Log("Layout: " + layout);
+
 
         //Check if each of the HUD cues is on.
         foreach (GameObject Cue in HUDCues)
@@ -122,20 +140,6 @@ public class Experiment_Logger : MonoBehaviour
             textToSpeech.StartSpeaking("Beginning logging.");
 
             // Create filename with experiment conditions
-            //Set cue condition
-            if (obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
-                cueCondition = "Combined";
-            else if (obstacleManager.collocatedCuesOn && !obstacleManager.hudCuesOn)
-                cueCondition = "Collocated";
-            else if (!obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
-                cueCondition = "HUD";
-            else
-                cueCondition = "Control";
-            Debug.Log("Cue condition: " + cueCondition);
-
-            //Get obstacle layout
-            layout = qRCodes_AROA.layout;
-            Debug.Log("Layout: " + layout);
 
             //Track start time
             startTime = Time.time;

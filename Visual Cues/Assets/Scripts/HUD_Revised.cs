@@ -17,6 +17,9 @@ public class HUD_Revised : MonoBehaviour
 {
     public GameObject HUDFrame; //Frame containing HUD cues
     public TextToSpeech textToSpeech;
+    public ObstacleManager obstacleManager;
+    public Experiment_Logger experimentLogger;
+ 
 
     [HideInInspector]
     public List<GameObject> HUDCues; //All HUD cue objects
@@ -76,8 +79,16 @@ public class HUD_Revised : MonoBehaviour
     void Update()
     {
         ObstInfos.Clear();
+        /* moved to ObstacleManager
         if (debugText.activeSelf)
-            debugText.GetComponent<TextMeshProUGUI>().text = "Debug text: ";
+        {
+            debugText.GetComponent<TextMeshProUGUI>().text = 
+                "Mode: " + experimentLogger.cueCondition + "\n" + 
+                "Distance cap: " + obstacleManager.distanceCap + "\n" + 
+                "Layout: " + experimentLogger.layout;
+        }
+        */
+
 
         CueCast();
         ActivateHUD();
