@@ -74,14 +74,14 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Left
-    keyCode: 44
+    keyCode: 276
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Right
-    keyCode: 46
+    keyCode: 275
     action:
       id: 0
       description: None

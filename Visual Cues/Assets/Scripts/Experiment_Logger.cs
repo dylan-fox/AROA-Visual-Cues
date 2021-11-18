@@ -84,11 +84,11 @@ public class Experiment_Logger : MonoBehaviour
         else if (!obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
             cueCondition = "HUD";
         else
-            cueCondition = "Control";
+            cueCondition = "No Cues";
         //Debug.Log("Cue condition: " + cueCondition);
 
         //Get obstacle layout
-        layout = qRCodes_AROA.layout;
+        //layout = qRCodes_AROA.layout; //Now passed directly from QRCodes_AROA when a QR code is scanned
         //Debug.Log("Layout: " + layout);
 
 

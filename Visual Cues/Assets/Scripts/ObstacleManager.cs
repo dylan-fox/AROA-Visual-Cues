@@ -38,7 +38,7 @@ public class ObstacleManager : MonoBehaviour
     public GameObject interfaceObject;
     public GameObject cuesParent;
     public GameObject calibrationCue;
-    public GameObject debugText;
+    public GameObject debugCanvas;
     public Experiment_Logger experimentLogger;
     
 
@@ -103,10 +103,10 @@ public class ObstacleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (debugText.activeSelf)
+        if (debugCanvas.activeSelf)
         {
-            Debug.Log("Debug text object: " + debugText.ToString());
-            debugText.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>().text =
+            Debug.Log("Debug text object: " + debugCanvas.ToString());
+            debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>().text =
                 "Mode: " + experimentLogger.cueCondition + "\n" +
                 "Distance capped: " + distanceCap + "\n" +
                 "HUD calibration: " + HUD_Revised.HUDCalibration + "\n" + 
@@ -185,14 +185,14 @@ public class ObstacleManager : MonoBehaviour
     public void DebugToggle()
     {
         Debug.Log("Toggling debug text.");
-        if (debugText.activeSelf)
+        if (debugCanvas.activeSelf)
         {
-            debugText.SetActive(false);
+            debugCanvas.SetActive(false);
             textToSpeech.StartSpeaking("Debug text off.");
         }
         else
         {
-            debugText.SetActive(true);
+            debugCanvas.SetActive(true);
             textToSpeech.StartSpeaking("Debug text on.");
         }
     }

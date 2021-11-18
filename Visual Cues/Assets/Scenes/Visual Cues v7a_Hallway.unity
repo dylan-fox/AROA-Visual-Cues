@@ -300,6 +300,7 @@ MonoBehaviour:
   obstHigh: {fileID: 1257230119}
   obstWide: {fileID: 936723477}
   obstacleCollection: {fileID: 1948430007}
+  experimentLogger: {fileID: 1264387027}
   layout: Default
   textToSpeech: {fileID: 816797673}
   obstacleManager: {fileID: 1264387024}
@@ -4992,7 +4993,7 @@ MonoBehaviour:
   interfaceObject: {fileID: 6115691680273273357}
   cuesParent: {fileID: 1948430007}
   calibrationCue: {fileID: 664482709}
-  debugText: {fileID: 927415520}
+  debugCanvas: {fileID: 927415520}
   experimentLogger: {fileID: 1264387027}
   HUDManager: {fileID: 1376590891}
   textToSpeech: {fileID: 816797673}
@@ -5350,6 +5351,36 @@ MonoBehaviour:
         - m_Target: {fileID: 1264387024}
           m_MethodName: ToggleDistanceCap
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Rotate Right
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: ManualRotate
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Rotate Left
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1264387024}
+          m_MethodName: ManualRotate
+          m_Mode: 4
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
