@@ -31,6 +31,7 @@ namespace QRTracking
         public GameObject trackedObject; //Object that will mimic position of QR Code
         public TextToSpeech textToSpeech;
         public ObstacleManager obstacleManager;
+        public Experiment_Logger experimentLogger;
         public string layout;
         public GameObject obstLow;
         public GameObject obstMid;
@@ -183,6 +184,7 @@ namespace QRTracking
                             obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
                         }
 
+                        experimentLogger.layout = layout;
                         Debug.Log("Room position adjusted via QR code.");
 
 
