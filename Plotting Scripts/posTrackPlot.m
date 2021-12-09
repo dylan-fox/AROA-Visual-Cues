@@ -5,12 +5,9 @@ close all;
 
 %Set datapath to the PCA folder
 
-datapath = './Data/PCA/';
+datapath = '../PosPCAData/'; %'./Data/PCA/';
 
 %List of Files
-% files = dir(datapath); %Finding the PCA csv files in the directory
-% files = files(3:end);
-
 listing = dir(datapath);
 listing = listing(3:end); 
 
@@ -196,79 +193,18 @@ for s = 1:length(listing); %goes through all folders
     lgd = legend(string(dataSetNames), 'Location', [0.85 0.1 0.02 0.1]);
     lgd.FontSize = 12;
     
+
+    %Defines folderpath to save the figures to
+    folderPath = '../PosFigures/';
+    if ~exist(folderPath, 'dir')
+        mkdir(folderPath)
+    end
+
+    
     %Saves the figure as a .png 
-    saveas(fig, strcat(sbjFileName,'.fig'));
-    saveas(fig, strcat(sbjFileName,'.png'));
+    filePath = strcat('../PosFigures/', sbjFileName);
+    saveas(fig, strcat(filePath,'.fig'));
+    saveas(fig, strcat(filePath,'.png'));
 end
 
-% for f = 1:length(files);
-% 
-%     if true % listing(s).isdir
-% 
-%         if strfind(files(f).name,'csv')
-%             
-%            %TODO - Need to reformat when the naming convention for files has been set
-%             sbjFileName = files(f).name(1:end-4);
-% 
-%             % read in data from csv, convert from table to array
-%             C = table2array(readtable([datapath '/' files(f).name]));
-% 
-%             %Get z, x, t
-%             z = C(:,1);
-%             x = C(:,2);
-%             t = C(:,3);
-%             
-%             %Find max and min values for the x and y axes
-%             %there's probably a less clunky way to do this
-%             if(max(z) > maxX)
-%                 maxX = max(z);
-%             end
-%             
-%             if(max(x) > maxY)
-%                 maxY = max(x);
-%             end
-%             
-%             if(min(z) < minX)
-%                 minX = min(z);
-%             end
-%             
-%             if(min(x) < minY)
-%                 minY = min(x);
-%             end
-%             
-%             %Get the differences between adjacent elements of the vector
-%             zDiffs = diff(z);
-%             xDiffs = diff(x);
-%             tDiffs = diff(t);
-%             
-%             %Distance
-%             dists = sqrt(xDiffs.^2 + zDiffs.^2);
-%             
-%             
-%             %The cumuSum and speed calcs were in the R script so I've kept 
-%             %them but they don't seem to be useful in trajectory plotting 
-%             
-%             %Calculate cumulative differences for each vector
-%             zCumuSum = cumsum(abs(z));
-%             xCumuSum = cumsum(abs(x));
-%             tCumuSum = cumsum(abs(t));
-%             
-%             %Speed calculations (m/s)
-%             subjSpeed = dists.*sampRate;
-%             xSpeed = x.*sampRate;
-%             zSpeed = z.*sampRate;
-% 
-%             %Plotting
-%             plot(z, x, 'LineWidth',1.25, 'Color', colours(f, :));
-% 
-%             xlim([minX-0 maxX+0]);
-%             ylim([-0.8 1.25]);
-% 
-%             %Sets the size of the graph in pixels
-%             set(gcf,'position',[0,0,maxX*400,maxY*400]);
-%             %Tight border around the graph
-%             set(gca,'LooseInset',get(gca,'TightInset'));
-%             
-%         end
-%     end
-% end
+

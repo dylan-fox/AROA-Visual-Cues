@@ -2,7 +2,7 @@ clear all;
 close all;
 
 %Sets directory path to the raw data folder
-datapath = './Data/raw data/';
+datapath = '../PosRawData/';%'./Data/raw data/';
 
 % subject directory list
 listing = dir(datapath);
@@ -20,9 +20,9 @@ for s = 1:length(listing); %goes through all folders
         files = dir([datapath dirname]);
         
         if isempty(strfind(dirname,'exclude'))
-            %d = 'etnered'
+            
             for f = 1:length(files)
-               % d = 'etnered2'
+               
                 if strfind(files(f).name,'txt')
                    d = files(f).name;
                    
@@ -81,10 +81,9 @@ for s = 1:length(listing); %goes through all folders
                         x = -x;
                     end
                     
-                    %TODO - change the file naming scheme after "official"
                     %position-tracking datafiles are made
                     
-                    folderPath = strcat('./Data/PCA/',dirname, '/');
+                    folderPath = strcat('../PosPCAData/',dirname, '/');
 
                     if ~exist(folderPath, 'dir')
                         mkdir(folderPath)
