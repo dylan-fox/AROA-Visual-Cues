@@ -39,8 +39,10 @@ for s = 1:length(listing); %goes through all folders
     if listing(s).isdir
         
         dirname = listing(s).name;
-
+        
+        %Each condition has an ID number
         typeID = 1;
+        %Ordered set of typeID for the legend
         typeIDSet = [];
 
         
@@ -52,7 +54,6 @@ for s = 1:length(listing); %goes through all folders
             dataSetNames{p} = '';
         end
         
-        hasRepeatName = [0 0 0 0];
 
         if isempty(strfind(dirname,'exclude'))
            
@@ -115,16 +116,12 @@ for s = 1:length(listing); %goes through all folders
                     %Finding out which trial type it is
                     if strcmp(trialType, 'No Cues')
                         typeID = 1;
-                        hasRepeatName(1) = 1;
                     elseif strcmp(trialType, 'Collocated')
                         typeID = 2;
-                        hasRepeatName(2) = 1;
                     elseif strcmp(trialType, 'Combined')
                         typeID = 3;
-                        hasRepeatName(3) = 1;
                     elseif strcmp(trialType, 'HUD')
                         typeID = 4;
-                        hasRepeatName(4) = 1;
                     else
                         warning(strcat("Unknown Trial Type!!: ", trialType));
                         typeID = 5;
@@ -192,7 +189,6 @@ for s = 1:length(listing); %goes through all folders
     %Legend
     lgd = legend(string(dataSetNames), 'Location', [0.85 0.1 0.02 0.1]);
     lgd.FontSize = 12;
-    
 
     %Defines folderpath to save the figures to
     folderPath = '../PosFigures/';

@@ -28,18 +28,16 @@ for s = 1:length(listing); %goes through all folders
                    
                     task = 'posTracking';
                     trial = 'sample';
-
-                    %assigns subjectID value as the first 3 digits of the filename
-                    %sbj = files(f).name(1:4); 
     
                     
-                    %TODO - change sbj naming
+                    %Sets filename
                     sbjFileName = strcat(dirname, files(f).name(23:end-4));
 
 
                     % read in data from txt
                     fileID = fopen([ datapath dirname '/' files(f).name]);
-
+                    
+                    %Scan in the data
                     C = textscan(fileID,['%s' '%s' repmat('%f',[1 7]) '%s' '%s' repmat('%f',[1 6]) repmat('%s',[1 4])],'Delimiter',';','HeaderLines',2);
               
                     fclose(fileID);
