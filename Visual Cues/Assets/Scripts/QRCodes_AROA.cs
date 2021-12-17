@@ -12,9 +12,13 @@ namespace QRTracking
     public class QRCodes_AROA : MonoBehaviour
     {
         public GameObject qrCodePrefab;
-        public GameObject obstacle1;
-        public GameObject obstacle2;
+        public GameObject obstLow;
+        public GameObject obstMid;
+        public GameObject obstHigh;
+        public GameObject obstWide;
         public GameObject obstacleCollection;
+        public Experiment_Logger experimentLogger;
+        public string layout = "Default";
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
@@ -58,7 +62,7 @@ namespace QRTracking
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
 
-            if (qrCodePrefab == null || obstacle1 == null || obstacle2 == null || obstacleCollection == null)
+            if (qrCodePrefab == null || obstLow == null || obstMid == null || obstHigh == null || obstWide == null || obstacleCollection == null)
             {
                 throw new System.Exception("Prefab or obstacles not assigned");
             }
@@ -119,21 +123,52 @@ namespace QRTracking
                         Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
                         qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                         qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
-
+                                               
                         if (action.qrCode.Data == "QR Code 1")
                         {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                            layout = "Layout 1";
                         }
 
                         else if (action.qrCode.Data == "QR Code 2")
                         {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                            layout = "Layout 2";
                         }
 
                         else if (action.qrCode.Data == "QR Code 3")
                         {
-                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            layout = "Layout 3";
                         }
+
+                        else if (action.qrCode.Data == "QR Code 4")
+                        {
+                            layout = "Layout 4";
+                        }
+
+                        else if (action.qrCode.Data == "QR Code 5")
+                        {
+                            layout = "Layout 5";
+                        }
+
+                        else if (action.qrCode.Data == "QR Code 6")
+                        {
+                            layout = "Layout 6";
+                        }
+
+                        else if (action.qrCode.Data == "Demo")
+                        {
+                            layout = "Demo Layout";
+                        }
+
+                        experimentLogger.layout = layout;
+                        qrCodeObject.GetComponent<QRCode>().layout = layout;
+                        qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                        qrCodeObject.GetComponent<QRCode>().experimentLogger = experimentLogger;
+
+                        //Assign obstacles to QR Code object
+                        qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                        qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                        qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                        qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
 
 
                     }
@@ -153,20 +188,48 @@ namespace QRTracking
 
                             if (action.qrCode.Data == "QR Code 1")
                             {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle1;
+                                layout = "Layout 1";
                             }
 
                             else if (action.qrCode.Data == "QR Code 2")
                             {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacle2;
+                                layout = "Layout 2";                            
                             }
 
                             else if (action.qrCode.Data == "QR Code 3")
                             {
-                                qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                                layout = "Layout 3";
                             }
 
+                            else if (action.qrCode.Data == "QR Code 4")
+                            {
+                                layout = "Layout 4";             
+                            }
 
+                            else if (action.qrCode.Data == "QR Code 5")
+                            {
+                                layout = "Layout 5";
+                            }
+
+                            else if (action.qrCode.Data == "QR Code 6")
+                            {
+                                layout = "Layout 6";
+                            }
+
+                            else if (action.qrCode.Data == "Demo")
+                            {
+                                layout = "Demo Layout";
+                            }
+
+                            qrCodeObject.GetComponent<QRCode>().layout = layout;
+                            qrCodeObject.GetComponent<QRCode>().trackedObject = obstacleCollection;
+                            qrCodeObject.GetComponent<QRCode>().experimentLogger = experimentLogger;
+
+                            //Assign obstacles to QR Code object
+                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
+                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
+                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
 
                         }
                     }

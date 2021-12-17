@@ -8,7 +8,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Audio;
 
-public class ObstacleManager : MonoBehaviour
+public class ObstacleManagerArchive : MonoBehaviour
 {
     //<summary>A script to manage obstacles and visual cues.</summary>
 
@@ -38,9 +38,7 @@ public class ObstacleManager : MonoBehaviour
     public GameObject interfaceObject;
     public GameObject cuesParent;
     public GameObject calibrationCue;
-    public GameObject debugCanvas;
-    public Experiment_Logger experimentLogger;
-    
+    public GameObject debugText;
 
     public GameObject HUDManager;
     //private HUDIndicator HUDIndicator;
@@ -52,23 +50,15 @@ public class ObstacleManager : MonoBehaviour
     public GameObject numShownTextObject;
     //public GameObject cuePrefab; //Necessary for AddCue, not ShowCue
 
-    /*
     [Tooltip("Number of cues to show at start.")]
     public int startingCues = 3; //
     private int numShown; //Indicates how many cues are currently shown
-    */
 
     [Tooltip("Default user height in meters.")]
     public float defaultHeight = 1.6256f; //5'4" should be roughly average eye height
 
     [Tooltip("Maximum distance to show obstacles.")]
     public float maxDisplayDistance = 5f;
-
-    private LayerMask defaultMask = ~0;
-    private LayerMask obstacleMask;
-    [HideInInspector]
-    public bool distanceCap = true;
-
 
     // Start is called before the first frame update
     void Start()
@@ -77,7 +67,6 @@ public class ObstacleManager : MonoBehaviour
         //HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
         HUD_Revised = HUDManager.GetComponent<HUD_Revised>();
 
-        /*
         numShown = visualCues.Count;
 
         //Hide cues until the number shown matches startingCues.
@@ -85,35 +74,51 @@ public class ObstacleManager : MonoBehaviour
         {
             HideCue();
         }
-        */
 
-        obstacleMask = LayerMask.GetMask("Obstacles");
-        obstacleMask = ~obstacleMask;
-
-        Camera.main.farClipPlane = maxDisplayDistance;
-
-        //Start with cues on, calibration on, gestures and interface off
-        //CollocatedCuesToggle();
-        //HUDCuesToggle();
+        //Start with cues and interface off
+        CollocatedCuesToggle();
+        HUDCuesToggle();
         ToggleInterface();
         ToggleGestures();
-        textToSpeech.StartSpeaking("Ready");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (debugCanvas.activeSelf)
-        {
-            Debug.Log("Debug text object: " + debugCanvas.ToString());
-            debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>().text =
-                "Mode: " + experimentLogger.cueCondition + "\n" +
-                "Distance capped: " + distanceCap + "\n" +
-                "HUD calibration: " + HUD_Revised.HUDCalibration + "\n" + 
-                "Layout: " + experimentLogger.layout;
-        }
+        Camera.main.farClipPlane = maxDisplayDistance;
     }
 
+    /*
+     //No longer necessary since collocated cues are now used as targets for HUD cues
+
+    public void DigitalObstacleToggle ()
+    {
+        Debug.Log("Toggling digital obstacles."); 
+
+        if (obstaclesOn)
+        {
+            Debug.Log("Obstacles off.");
+            foreach (GameObject Obstacle in digitalObstacles)
+            {
+                Obstacle.SetActive(false);
+            }
+
+            obstaclesOn = false;
+        }
+
+        else
+        {
+            Debug.Log("Obstacles on.");
+            foreach (GameObject Obstacle in digitalObstacles)
+            {
+                Obstacle.SetActive(true);
+            }
+
+            obstaclesOn = true;
+        }
+    }
+    */
 
     public void CollocatedCuesToggle()
     {
@@ -124,7 +129,7 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("Collocated cues off.");
             textToSpeech.StartSpeaking("Co-located cues off.");
 
-            Camera.main.cullingMask = obstacleMask;
+            cuesParent.SetActive(false);
 
             collocatedCuesOn = false;
 
@@ -135,7 +140,7 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("Collocated cues on.");
             textToSpeech.StartSpeaking("Co-located cues on.");
 
-            Camera.main.cullingMask = defaultMask;
+            cuesParent.SetActive(true);
 
             collocatedCuesOn = true;
         }
@@ -185,20 +190,46 @@ public class ObstacleManager : MonoBehaviour
     public void DebugToggle()
     {
         Debug.Log("Toggling debug text.");
-        if (debugCanvas.activeSelf)
+        if (debugText.activeSelf)
         {
-            debugCanvas.SetActive(false);
+            debugText.SetActive(false);
             textToSpeech.StartSpeaking("Debug text off.");
         }
         else
         {
-            debugCanvas.SetActive(true);
+            debugText.SetActive(true);
             textToSpeech.StartSpeaking("Debug text on.");
         }
     }
 
-   
     /*
+     * Disabling AddCue in favor of ShowCue due to difficulties in adding a HUD arrow during runtime.
+    public void AddCue()
+    {
+        //Set a position 1 meter in front of the user
+        Vector3 spawnPos = Camera.main.transform.position + (Camera.main.transform.forward); //+ new Vector3(1, 1, 1));
+
+        //Instantiage collocated cue at the selected point
+        GameObject newCue = Instantiate(cuePrefab, spawnPos, Quaternion.identity, cuesParent.transform);
+
+        //Add it to the list of visual cues
+        //Note that "reset positions" will cause new cues to go back to where they were created
+        visualCues = GameObject.FindGameObjectsWithTag("visual_cue");
+        cueStartingLocations.Add(newCue.transform.position);
+        cueStartingRotations.Add(newCue.transform.rotation);
+        cueStartingScales.Add(newCue.transform.localScale);
+
+
+        //Add a HUD cue
+        HUDIndicator hudIndicator = HUDManager.GetComponent<HUDIndicator>();
+        hudIndicator.AddIndicator(newCue.transform, hudIndicator.indicators.Length);
+        //RESUME HERE - how to do this during runtime instead on wake up?
+
+        Debug.Log("Adding cue. Total cues: " + visualCues.Length);
+
+    }
+    */
+
     public void ShowCue()
     {
         //Activate the collocated and HUD cues for the next object.
@@ -233,7 +264,6 @@ public class ObstacleManager : MonoBehaviour
         }
         else Debug.Log("All cues hidden.");
     }
-    */
 
 
     public void SavePositions()
@@ -277,6 +307,16 @@ public class ObstacleManager : MonoBehaviour
         //int obstacleCount = 0;
         int cueCount = 0;
 
+        /*
+        foreach (GameObject Obstacle in digitalObstacles)
+        {
+            Obstacle.transform.position = obstacleStartingLocations[obstacleCount];
+            Obstacle.transform.rotation = obstacleStartingRotations[obstacleCount];
+            Obstacle.transform.localScale = obstacleStartingScales[obstacleCount];
+            obstacleCount++;
+        }
+        */
+
         foreach (GameObject Cue in visualCues)
         {
             Cue.transform.localPosition = cueStartingLocations[cueCount];
@@ -289,7 +329,7 @@ public class ObstacleManager : MonoBehaviour
     public void SetLocation(string posName)
     {
         //Sets location of user to a given position by moving entire Collocated Cues object.
-        if (posName == "front")
+        if (posName == "doorway")
         {
             //Set cues parent to be at user's location and lower by height
             cuesParent.transform.position = Camera.main.transform.position - new Vector3 (0.0f, defaultHeight, 0.0f);
@@ -297,8 +337,8 @@ public class ObstacleManager : MonoBehaviour
             //Then rotate in Y axis to match camera
             cuesParent.transform.eulerAngles = new Vector3(0f, 0f, 0f);
             cuesParent.transform.Rotate(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);
-            Debug.Log("Location reset.");
-            textToSpeech.StartSpeaking("Location reset.");
+            Debug.Log("Location set to doorway.");
+            textToSpeech.StartSpeaking("Location set.");
 
         }
 
@@ -407,25 +447,6 @@ public class ObstacleManager : MonoBehaviour
             gestureLock = false;
             textToSpeech.StartSpeaking("Gestures unlocked.");
 
-        }
-    }
-
-    public void ToggleDistanceCap ()
-    {
-        if (distanceCap)
-        {
-            Camera.main.farClipPlane = 1000;
-            distanceCap = false;
-            Debug.Log("Display distance uncapped.");
-            textToSpeech.StartSpeaking("Display distance uncapped.");
-        }
-
-        else
-        {
-            Camera.main.farClipPlane = maxDisplayDistance;
-            distanceCap = true;
-            Debug.Log("Display distance capped.");
-            textToSpeech.StartSpeaking("Display distance capped.");
         }
     }
 }

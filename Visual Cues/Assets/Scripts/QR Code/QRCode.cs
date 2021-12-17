@@ -31,6 +31,17 @@ namespace QRTracking
         public GameObject trackedObject; //Object that will mimic position of QR Code
         public TextToSpeech textToSpeech;
         public ObstacleManager obstacleManager;
+        public Experiment_Logger experimentLogger;
+        public string layout;
+        public GameObject obstLow;
+        public GameObject obstMid;
+        public GameObject obstHigh;
+        public GameObject obstWide;
+
+        private float lowHeight = 0.05f;
+        private float medHeight = 0.444f;
+        private float highHeight = 1.7f;
+        private float wideHeight = 0.8f;
 
         // Use this for initialization
         void Start()
@@ -97,15 +108,83 @@ namespace QRTracking
                     if (trackedObject.name == "Collocated Cues") //Moving whole room
                     {
                         if (!textToSpeech.IsSpeaking())
-                            textToSpeech.StartSpeaking("Room calibrated.");
-                        obstacleManager.ResetPositions(); //Reset positions of obstacles
+                            textToSpeech.StartSpeaking(layout);
+                        //obstacleManager.ResetPositions(); //Reset positions of obstacles
                         trackedObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
                         trackedObject.transform.Rotate(0f, qrCodeCube.transform.rotation.eulerAngles.y + 90f, 0f);//Rotate to match QR code, then 90 degrees 
-                        trackedObject.transform.position = qrCodeCube.transform.position;  //Adjust position to QR code location
+                        trackedObject.transform.position = qrCodeCube.transform.position; //new Vector3 (0.9f, 0f, 0f);  //Adjust position to QR code location
                         //make local changes to adjust
-                        trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
-                        trackedObject.transform.localPosition -= trackedObject.transform.up * 1.42f;
-                        trackedObject.transform.localPosition += trackedObject.transform.right * 0.36f;
+                        //trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
+                        trackedObject.transform.localPosition -= trackedObject.transform.up * 1.5f; //Assumes height of QR Code is 1.5m (~5ft) off the ground
+                        trackedObject.transform.localPosition += trackedObject.transform.right * 0.9f; //Assumes hallway is 1.8m wide
+
+
+
+                        if (layout == "Layout 1")
+                        {
+                            //Assign obstacles to position 1
+                            obstLow.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
+                            obstMid.transform.localPosition = new Vector3(-0.6f, medHeight, 13.5f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 4.5f);
+                            obstWide.transform.localPosition = new Vector3(0.45f, wideHeight, 9f);
+                        }
+
+                        else if (layout == "Layout 2")
+                        {
+                            //Assign obstacles to position 2
+                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 3f);
+                            obstMid.transform.localPosition = new Vector3(1000f, medHeight, 1000f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 10.5f);
+                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 7.5f);
+                        }
+
+                        else if (layout == "Layout 3")
+                        {
+                            //Assign obstacles to position 3
+                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 1.5f);
+                            obstMid.transform.localPosition = new Vector3(0f, medHeight, 4.5f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
+                            obstWide.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
+                        }
+
+                        else if (layout == "Layout 4")
+                        {
+                            //Assign obstacles to position 4
+                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 12f);
+                            obstMid.transform.localPosition = new Vector3(0.3f, medHeight, 1.5f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 9f);
+                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 4.5f);
+                        }
+
+                        else if (layout == "Layout 5")
+                        {
+                            //Assign obstacles to position 5
+                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 9f);
+                            obstMid.transform.localPosition = new Vector3(-0.3f, medHeight, 12f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 6f);
+                            obstWide.transform.localPosition = new Vector3(0.45f, wideHeight, 3f);
+                        }
+
+
+                        else if (layout == "Layout 6")
+                        {
+                            //Assign obstacles to position 6
+                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstMid.transform.localPosition = new Vector3(0.6f, medHeight, 6f);
+                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
+                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 3f);
+                        }
+
+                        else if (layout == "Demo Layout")
+                        {
+                            //Assign the medium chair to the middle of the room, and put the rest far away.
+                            obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstMid.transform.localPosition = new Vector3(2f, medHeight, 2f); //2 meters forward and 2m + hallway width right of QR code
+                            obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                        }
+
+                        experimentLogger.layout = layout;
                         Debug.Log("Room position adjusted via QR code.");
 
 

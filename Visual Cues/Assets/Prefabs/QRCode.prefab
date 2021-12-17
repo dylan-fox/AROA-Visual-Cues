@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4885984949139416}
   - component: {fileID: 33983231656648870}
   - component: {fileID: 23113272590954796}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4009893640922284}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AxisPointerX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 4280482029142784}
   - component: {fileID: 23002842387381930}
   - component: {fileID: 102808500487765184}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 4863193367989092}
   - component: {fileID: 33710971018166064}
   - component: {fileID: 23345649048370902}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 4436408278160384}
   - component: {fileID: 114949354355283862}
   - component: {fileID: 114124506670308152}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRCode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,6 +330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackedObject: {fileID: 0}
+  textToSpeech: {fileID: 0}
+  obstacleManager: {fileID: 0}
 --- !u!114 &114124506670308152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,7 +355,7 @@ GameObject:
   - component: {fileID: 4607064099107696}
   - component: {fileID: 33004598753180464}
   - component: {fileID: 23378335112009736}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4417245962682008}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AxisPointerZ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +466,7 @@ GameObject:
   - component: {fileID: 4751313784804270}
   - component: {fileID: 23368669512477022}
   - component: {fileID: 102105145486525452}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRTimeStamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +560,7 @@ GameObject:
   - component: {fileID: 33824224339612352}
   - component: {fileID: 23040319359764676}
   - component: {fileID: 135230694079176944}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -650,7 +652,7 @@ GameObject:
   - component: {fileID: 4224326275041224}
   - component: {fileID: 23114448231241562}
   - component: {fileID: 102400479169621622}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRSize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -741,7 +743,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4276006801298234}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AxisPointerY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -775,7 +777,7 @@ GameObject:
   - component: {fileID: 4266160003620630}
   - component: {fileID: 23062414158357756}
   - component: {fileID: 102766893078868052}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRID
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -868,7 +870,7 @@ GameObject:
   - component: {fileID: 4505576663205422}
   - component: {fileID: 23256394996582936}
   - component: {fileID: 102229376746683514}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRVersion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4762226887713186}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1000,7 +1002,7 @@ GameObject:
   - component: {fileID: 33784410715805834}
   - component: {fileID: 23991205242329552}
   - component: {fileID: 136241894509283450}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1094,7 +1096,7 @@ GameObject:
   - component: {fileID: 33022713143968614}
   - component: {fileID: 23442579809649480}
   - component: {fileID: 136044494355426178}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1190,7 @@ GameObject:
   - component: {fileID: 33019226417364928}
   - component: {fileID: 23133459014371778}
   - component: {fileID: 136173684116018554}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1279,7 +1281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4950284341837924}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Axis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1315,7 +1317,7 @@ GameObject:
   - component: {fileID: 2916927668586983707}
   - component: {fileID: 4942277975198580475}
   - component: {fileID: 7272125057529645274}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRPositionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1409,13 +1411,13 @@ GameObject:
   - component: {fileID: 1060372925661631338}
   - component: {fileID: 5921419298644586434}
   - component: {fileID: 1316761608618281237}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6870467204080756355
 Transform:
   m_ObjectHideFlags: 0
@@ -1502,7 +1504,7 @@ GameObject:
   - component: {fileID: 9001460231258679292}
   - component: {fileID: 2707175136708060019}
   - component: {fileID: 3488176020669851946}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: QRNodeID
   m_TagString: Untagged
   m_Icon: {fileID: 0}

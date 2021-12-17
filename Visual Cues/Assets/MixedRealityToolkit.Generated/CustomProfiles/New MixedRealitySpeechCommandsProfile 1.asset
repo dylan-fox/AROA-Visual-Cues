@@ -31,20 +31,6 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Show Cue
-    keyCode: 51
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Hide Cue
-    keyCode: 52
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
     keyword: Save Position
     keyCode: 53
     action:
@@ -66,21 +52,21 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Set Location Doorway
+    keyword: Obstacles Front
     keyCode: 56
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Move Up
+    keyword: Toggle Debug
     keyCode: 57
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Move Down
+    keyword: Toggle Distance Cap
     keyCode: 48
     action:
       id: 0
@@ -88,14 +74,14 @@ MonoBehaviour:
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Left
-    keyCode: 44
+    keyCode: 276
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
     keyword: Rotate Right
-    keyCode: 46
+    keyCode: 275
     action:
       id: 0
       description: None
@@ -103,34 +89,6 @@ MonoBehaviour:
   - localizationKey: 
     keyword: Toggle Calibration
     keyCode: 99
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Move Forward
-    keyCode: 273
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Move Back
-    keyCode: 274
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Move Right
-    keyCode: 275
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Move Left
-    keyCode: 276
     action:
       id: 0
       description: None
@@ -157,15 +115,71 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Increase HUD Radius
+    keyword: Increase HUD Size
     keyCode: 105
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Decrease HUD Radius
+    keyword: Decrease HUD Size
     keyCode: 107
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Begin Logging
+    keyCode: 51
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: End Logging
+    keyCode: 52
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Increase Min Angle
+    keyCode: 91
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Decrease Min Angle
+    keyCode: 93
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Increase Sphere Radius
+    keyCode: 59
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Decrease Sphere Radius
+    keyCode: 39
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Increase Angle Interval
+    keyCode: 44
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Decrease Angle Interval
+    keyCode: 46
     action:
       id: 0
       description: None
