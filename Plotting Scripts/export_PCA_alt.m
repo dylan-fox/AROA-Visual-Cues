@@ -20,24 +20,25 @@ for s = 1:length(listing); %goes through all folders
         files = dir([datapath dirname]);
         
         if isempty(strfind(dirname,'exclude'))
-            
+            %d = 'etnered'
             for f = 1:length(files)
-               
+               % d = 'etnered2'
                 if strfind(files(f).name,'txt')
                    d = files(f).name;
                    
                     task = 'posTracking';
-                    trial = 'sample';
+
+                    %assigns subjectID value as the first 3 digits of the filename
+                    %sbj = files(f).name(1:4); 
     
                     
-                    %Sets filename
+                    %TODO - change sbj naming
                     sbjFileName = strcat(dirname, files(f).name(23:end-4));
 
 
                     % read in data from txt
                     fileID = fopen([ datapath dirname '/' files(f).name]);
-                    
-                    %Scan in the data
+
                     C = textscan(fileID,['%s' '%s' repmat('%f',[1 7]) '%s' '%s' repmat('%f',[1 6]) repmat('%s',[1 4])],'Delimiter',';','HeaderLines',2);
               
                     fclose(fileID);
@@ -72,12 +73,26 @@ for s = 1:length(listing); %goes through all folders
                     x = x - x(1);
                     t = t - t(1);
                     
-                    % if z is pointing in the wrong direction rotate 180
-                    % deg
+                    % if z is pointing in the wrong direction rotate 180 deg
                     if sign(z(end)) == -1
                         z = -z;
                         x = -x;
                     end
+
+                    %Also store the HUD bools while converting "False" to 0
+                    %and "True" to 1 and also converting it all into doubles
+                    
+                    upHUD = str2double(strrep(strrep(C{18}, 'False', '0'), 'True', '1'));
+                    rightHUD = str2double(strrep(strrep(C{19}, 'False', '0'), 'True', '1'));
+                    downHUD = str2double(strrep(strrep(C{20}, 'False', '0'), 'True', '1'));
+                    leftHUD = str2double(strrep(strrep(C{21}, 'False', '0'), 'True', '1'));
+                    
+                    %This is what the lines above are doing
+%                     upHUD = C{18};
+%                     upHUD = strrep(upHUD, 'False', '0');
+%                     upHUD = strrep(upHUD, 'True', '1');
+
+
                     
                     %position-tracking datafiles are made
                     
@@ -86,8 +101,10 @@ for s = 1:length(listing); %goes through all folders
                     if ~exist(folderPath, 'dir')
                         mkdir(folderPath)
                     end
-                    csvname = strcat(folderPath, sbjFileName, '_',num2str(task),'_', num2str(trial), '.csv');
-                    csvwrite(csvname, [z,x,t]);
+                    csvname = strcat(folderPath, sbjFileName, '_',num2str(task),'_', '.csv');
+                    %1:end-1 because that's what's done to z, x, and t to
+                    %remove the "NaN' at the end
+                    csvwrite(csvname, [z,x,t, upHUD(1:end-1), rightHUD(1:end-1), downHUD(1:end-1), leftHUD(1:end-1)]);
 
                    counter = counter +1;
 

@@ -5,7 +5,7 @@ close all;
 datapath = '../PosRawData/';%'./Data/raw data/';
 
 % subject directory list
-listing = dir(datapath);
+listing = dir(datapath)
 listing = listing(3:end); 
 
 %Counter for debugging purposes
@@ -48,9 +48,6 @@ for s = 1:length(listing); %goes through all folders
                     y = C{5};
                     z = C{6};
                     t = C{3};
-
-                    %Also store the HUD bools
-                    HUD
                     
                     %remove the last value from each array because it's a
                     %NaN from the "Logging ended at xyz" line at the end
