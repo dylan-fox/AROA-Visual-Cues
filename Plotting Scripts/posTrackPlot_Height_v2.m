@@ -1,6 +1,6 @@
-
+function posTrackPlot_Height_v2
 % Analogous to the first 2 R scripts in Dr. Cooper's folder
-clear all;
+%clear all;
 close all;
 
 %Set datapath to the PCA folder
@@ -141,6 +141,8 @@ for s = 1:length(listing); %goes through all folders
 
 
                     %typeID = typeID + 1;
+                else
+                    errorMsg = msgbox("Sorry, couldn't find the file you're referring to! Please double-check that you've run export_PCA_alt_withY.m and have set up the folders correctly (check the ReadMe)", '404filenotfound');
                 end
             end
         end
@@ -223,4 +225,4 @@ for s = 1:length(listing); %goes through all folders
     saveas(fig, strcat(filePath,'.png'));
 end
 
-
+end

@@ -1,10 +1,9 @@
-
+function posTrackPlot_singlePath_Condition(plotThicknessBool)
 %{NOTES: Currently having the script run through everything - may be 
 % advantageous to have an option to choose by subj and/or condition. 
 % Also, should rename all "trialType" to "trialCondition" 
 %}
-
-clear all;
+plotThicknessBool
 close all;
 
 %Set datapath to the PCA folder
@@ -41,7 +40,7 @@ for s = 1:length(listing); %goes through all folders
 
     if listing(s).isdir
         
-        dirname = listing(s).name;
+        dirname = listing(s).name
 
         typeID = 1;
 
@@ -113,6 +112,9 @@ for s = 1:length(listing); %goes through all folders
                     
                     %Distance
                     dists = sqrt(xDiffs.^2 + zDiffs.^2);
+                
+                    %Total distance of the path
+                    totalDist = sum(dists);
 
                     %The cumuSum and speed calcs were in the R script so I've kept 
                     %them but they don't seem to be useful in trajectory plotting 
@@ -151,8 +153,13 @@ for s = 1:length(listing); %goes through all folders
                     %%NOTE - X IS FLIPPED BECAUSE THE SIDE-TO-SIDE
                     %%TRANSLATIONS ACROSS THE WIDTH OF THE HALLWAY IS
                     %%FLIPPED
-                    plot(z, -x, 'LineWidth',1.25, 'Color', colours(typeID, :));
-        
+                   
+                    if (plotThicknessBool == true)
+                        fig = plotVariedLineThickness(z, x, t, dists, sampRate, fig, colours(typeID, :));
+                    else
+                        plot(z, -x, 'LineWidth',2.5, 'Color', colours(typeID, :));
+                    end
+                    
                     xlim([minX-0 maxX+0]);
                     ylim([-0.9 0.9]);
                     ax = gca;
@@ -212,7 +219,13 @@ for s = 1:length(listing); %goes through all folders
                     t2 = text(0.25, -borderY2(1)-0.5, nameText);
                     t2.FontName = 'Gill Sans MT';
                     t2.FontSize = 12;
-                
+                    
+                    %Plotting total distance text (rounded to 2 dps)
+                    nameText = strcat('Total Distance:  ', num2str(round(totalDist*100)/100), 'm');
+                    t3 = text(13.65, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+                    t3.FontName = 'Gill Sans MT';
+                    t3.FontSize = 8;
+
                     %Legend
                     lgd = legend(string(dataSetName), 'Location', [0.85 0.1 0.02 0.1]);
                     lgd.FontSize = 12;
@@ -228,14 +241,17 @@ for s = 1:length(listing); %goes through all folders
                     %Saves the figure as a .png 
                     filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum));
                     saveas(fig, strcat(filePath,'.fig'));
-                    exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
-                    %saveas(fig, strcat(filePath,'.png'));
+                    %exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
+                    saveas(fig, strcat(filePath,'.png'));
 
-                    counter = counter + 1;
+                    counter = counter + 1
+                else
+                    errorMsg = msgbox("Sorry, couldn't find the file you're referring to! Please double-check that you've run export_PCA_alt.m and have set up the folders correctly (check the ReadMe)", '404filenotfound');
                 end
             end
         end
     end
 
 
+end
 end
