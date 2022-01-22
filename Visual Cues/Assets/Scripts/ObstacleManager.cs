@@ -44,8 +44,8 @@ public class ObstacleManager : MonoBehaviour
 
     public GameObject HUDManager;
     //private HUDIndicator HUDIndicator;
-    private HUD_Revised HUD_Revised;
-
+    //private HUD_Revised HUD_Revised;
+    private HUD_Revised_v2 HUD_Revised;
 
     public TextToSpeech textToSpeech;
 
@@ -75,7 +75,7 @@ public class ObstacleManager : MonoBehaviour
     {
         SavePositions();
         //HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
-        HUD_Revised = HUDManager.GetComponent<HUD_Revised>();
+        HUD_Revised = HUDManager.GetComponent<HUD_Revised_v2>();
 
         /*
         numShown = visualCues.Count;

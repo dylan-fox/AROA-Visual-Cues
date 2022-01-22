@@ -115,8 +115,8 @@ public class HUD_Revised : MonoBehaviour
 
         if (angleInterval >= 5)
         {
-            //Cast at intervals from -90 degrees to positive 90 degrees X and Y
-            for (float xAngle = -80; xAngle <= 80; xAngle += angleInterval)
+            //Cast at intervals from -90 degrees to positive 60 degrees X and Y
+            for (float xAngle = -60; xAngle <= 60; xAngle += angleInterval)
             {
                 if (Mathf.Cos(Mathf.Deg2Rad * xAngle) > 0)
                 {
