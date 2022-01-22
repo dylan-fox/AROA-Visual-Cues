@@ -33,36 +33,30 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
 
     %Labels for the legend
     %All of them are 12 characters long so that a string array can be used
-    legendNames = strings([4,1])%['Up Cue On   '; 'Down Cue On '; 'Right Cue On'; 'Left Cue On '];
-
-    LNindex = 0;
+    legendNames = ['Up Cue On   '; 'Down Cue On '; 'Right Cue On'; 'Left Cue On '];
 
     %Takes out the labels if that directional cue was never activated in the run
     if ~isempty(upHUDIndOn)
         %Finds and NaNs the corresponding legened label
-        u = 'upname is not empty'
-        %LNindex = length(legendNames)+1;
-        LNindex = LNindex+1;
-        legendNames(LNindex, :) = 'Up Cue On   '
+        LNindex = length(legendNames)+1;
+        legendNames(LNindex) = 'Up Cue On   ';
     end
     
     if ~isempty(downHUDIndOn)
-        d = 'downname is not empty'
-        LNindex = LNindex+1;%LNindex = length(legendNames)+1;
-        
-        legendNames(LNindex, :) = 'Down Cue On '
+        LNindex = length(legendNames)+1;
+        legendNames(LNindex) = 'Up Cue On   ';
     end
 
     if ~isempty(rightHUDIndOn)
-        r = 'rightname is not empty'
-        LNindex = LNindex+1;%LNindex = length(legendNames)+1;
-        legendNames(LNindex, :) = 'Right Cue On'
+        r = 'rightname is empty'
+        strrep(legendNames, 'Right Cue On', NaN)
+        legendNames = legendNames(~isnan(legendNames))
     end
 
     if ~isempty(leftHUDIndOn)
-        l = 'leftname is not empty'
-        LNindex = LNindex+1;%LNindex = length(legendNames)+1;
-        legendNames(LNindex, :) = 'Left Cue On '
+        l = 'leftname is empty'
+        strrep(legendNames, 'Left Cue On', NaN)
+        legendNames = legendNames(~isnan(legendNames))
         
     end
 
