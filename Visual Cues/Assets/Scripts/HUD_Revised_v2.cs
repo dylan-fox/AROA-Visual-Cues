@@ -25,6 +25,10 @@ public class HUD_Revised_v2 : MonoBehaviour
 
     [HideInInspector]
     public List<GameObject> HUDCues; //All HUD cue objects
+    private GameObject HUD_East;
+    private GameObject HUD_North;
+    private GameObject HUD_South;
+    private GameObject HUD_West;
 
     //List of obstacles and their relevant information for HUD cues
     private List<ObstInfo> ObstInfos = new List<ObstInfo>();
@@ -78,6 +82,17 @@ public class HUD_Revised_v2 : MonoBehaviour
         foreach (Transform Cue in HUDFrame.transform)
         {
             HUDCues.Add(Cue.gameObject);
+
+            if (Cue.name == "HUD Cue East")
+                HUD_East = Cue.gameObject;
+            else if (Cue.name == "HUD Cue South")
+                HUD_South = Cue.gameObject;
+            else if (Cue.name == "HUD Cue North")
+                HUD_North = Cue.gameObject;
+            else if (Cue.name == "HUD Cue West")
+                HUD_West = Cue.gameObject;
+
+
         }
 
         obstacleMask = LayerMask.GetMask("Obstacles");
@@ -88,7 +103,7 @@ public class HUD_Revised_v2 : MonoBehaviour
             {
                 //Add each obstacle in the list to ObstInfos
                 //ObstInfos.Add(new ObstInfo(Obst.gameObject.ToString(), Obst.gameObject, 0, 0, 0));
-                ObstInfos.Add(new ObstInfo(Obst.gameObject.ToString(), Obst.gameObject));
+                ObstInfos.Add(new ObstInfo(Obst.gameObject.name, Obst.gameObject));
             }
         }
 
@@ -115,7 +130,7 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         //Capture camera's location and orientation
         var headPosition = Camera.main.transform.position;
-        var headPositionCorrected = headPosition - new Vector3(0f, 0.5f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
+        //var headPositionCorrected = headPosition - new Vector3(0f, 0.5f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
         var gazeDirection = Camera.main.transform.forward;
 
         //Debug.Log("Gaze direction: " + gazeDirection);
@@ -124,37 +139,90 @@ public class HUD_Revised_v2 : MonoBehaviour
         //Update information in ObstInfos
         foreach (ObstInfo obst in ObstInfos)
         {
+            //Clear recorded  angle, X and Y values
+            obst.ObstXValues.Clear();
+            obst.ObstYValues.Clear();
+            obst.ObstAngles.Clear();
+            obst.ObstXmin = 1;
+            obst.ObstXmax = -1;
+            obst.ObstYmin = 1;
+            obst.ObstYmax = -1;
+            obst.ObstAngleMin = 180;
+            obst.ObstAngleMax = 0;
 
-            //Calculate angle from gaze direction to obstacle
-            Vector3 camToObstacle = obst.ObstObject.transform.position - headPositionCorrected;
-            float obstAngle = Vector3.Angle(gazeDirection, camToObstacle);
 
-            //float obstAngle = Vector3.SignedAngle(gazeDirection, info.ObstObject.transform.position, Camera.main.transform.right);
-            //Debug.DrawRay(headPositionCorrected, gazeDirection, Color.blue);
-            //Debug.DrawRay(headPositionCorrected, camToObstacle, Color.green);
-            //Debug.Log("Distance to " + obst.ObstName + " = " + obst.ObstMinDist);
-            //Debug.Log("Angle of " + obst.ObstName + " = " + obstAngle.ToString());
-            //Debug.Log("Position of " + info.ObstName + " = " + info.ObstObject.transform.position);
+            //Calculate distance to obstacle center
+            Vector3 camToObstacle = obst.ObstObject.transform.position - headPosition;
+            obst.ObstMinDist = camToObstacle.magnitude; //Distance from head to center of object
+            //obst.ObstMinAngle = obstAngle;
 
-            float xAngle = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
-            float yAngle = Vector3.SignedAngle(Camera.main.transform.up, camToObstacle, Camera.main.transform.right);
 
-            //Assign values to the ObstInfo object
-            obst.ObstMinDist = (headPositionCorrected - obst.ObstObject.transform.position).magnitude; //Distance from head to center of object
-            obst.ObstMinAngle = obstAngle;
-            obst.obstX = Mathf.Cos(xAngle * Mathf.Deg2Rad);
-            obst.obstY = Mathf.Cos(yAngle * Mathf.Deg2Rad);
 
-            if (obstAngle <= frontAngle)
-                obst.isFront = true;
+            //Calculate angles to obstacle center, min and max bounds
+            float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
+            float yAngleCenter = Vector3.SignedAngle(Camera.main.transform.up, camToObstacle, Camera.main.transform.right);
+            float obstAngleCenter = Vector3.Angle(gazeDirection, camToObstacle);
+
+            obst.ObstXValues.Add(Mathf.Cos(xAngleCenter * Mathf.Deg2Rad));
+            obst.ObstYValues.Add(Mathf.Cos(yAngleCenter * Mathf.Deg2Rad));
+            obst.ObstAngles.Add(obstAngleCenter);
+
+            Vector3 camToObstacleMin = obst.ObstBounds.min - headPosition;
+            float xAngleMin = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMin, Camera.main.transform.up);
+            float yAngleMin = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMin, Camera.main.transform.right);
+            float obstAngleUpperBounds = Vector3.Angle(gazeDirection, camToObstacleMin);
+
+            obst.ObstXValues.Add(Mathf.Cos(xAngleMin * Mathf.Deg2Rad));
+            obst.ObstYValues.Add(Mathf.Cos(yAngleMin * Mathf.Deg2Rad));
+            obst.ObstAngles.Add(obstAngleUpperBounds);
+
+            Vector3 camToObstacleMax = obst.ObstBounds.max - headPosition;
+            float xAngleMax = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMax, Camera.main.transform.up);
+            float yAngleMax = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMax, Camera.main.transform.right);
+            float obstAngleLowerBounds = Vector3.Angle(gazeDirection, camToObstacleMax);
+
+            obst.ObstXValues.Add(Mathf.Cos(xAngleMax * Mathf.Deg2Rad));
+            obst.ObstYValues.Add(Mathf.Cos(yAngleMax * Mathf.Deg2Rad));
+            obst.ObstAngles.Add(obstAngleLowerBounds);
+
+
+
+
+
+
+            //Set minimum and maximum angles, X values, and Y values for each obstacle.
+            foreach (float x in obst.ObstXValues)
+            {
+                if (obst.ObstXmin > x)
+                    obst.ObstXmin = x;
+
+                if (obst.ObstXmax < x)
+                    obst.ObstXmax = x;
+            }
+
+            foreach (float y in obst.ObstYValues)
+            {
+                if (obst.ObstYmin > y)
+                    obst.ObstYmin = y;
+
+                if (obst.ObstYmax < y)
+                    obst.ObstYmax = y;
+            }
+
+            foreach (float angle in obst.ObstAngles)
+            {
+                if (obst.ObstAngleMin > angle)
+                    obst.ObstAngleMin = angle;
+
+                if (obst.ObstAngleMax < angle)
+                    obst.ObstAngleMax = angle;
+            }
+
+            //Check if obstacle is in front
+            if (obst.ObstAngleMin <= frontAngle)
+                obst.IsFront = true;
             else
-                obst.isFront = false;
-
-            //Debug.Log("X Angle of " + info.ObstName + " = " + xAngle + "; cosine " + info.obstX + "; acos " +  Mathf.Acos(info.obstX) * Mathf.Rad2Deg);
-            //Debug.Log("Y Angle of " + info.ObstName + " = " + yAngle + "; cosine " + Mathf.Cos(yAngle * Mathf.Deg2Rad));
-
-
-
+                obst.IsFront = false;
 
         }
 
@@ -264,7 +332,7 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         foreach (ObstInfo obst in ObstInfos)
         {
-            if (obst.isFront)
+            if (obst.IsFront)
             {
                 if (obst.ObstMinDist < closestDist && obst.ObstMinDist <= maxDist)
                 {
@@ -286,18 +354,18 @@ public class HUD_Revised_v2 : MonoBehaviour
             if (debugText.activeSelf)
             {
                 debugText.GetComponent<TextMeshProUGUI>().text +=
-                    "\nTarget obstacle: " + targetObst.ObstName +
-                    "\nDistance: " + Mathf.Round(100*targetObst.ObstMinDist)/100 +
-                    "\nAngle: " + Mathf.Round(targetObst.ObstMinAngle) +
-                    "\nX factor: " + Mathf.Round(100*targetObst.obstX)/100 +
-                    "\nY factor: " + Mathf.Round(100*targetObst.obstY)/100;
+                    "\nTarget obstacle: " + targetObst.ObstName.ToString() +
+                    "\nDistance: " + Mathf.Round(100 * targetObst.ObstMinDist) / 100 +
+                    "\nMin and max angle: " + Mathf.Round(targetObst.ObstAngleMin) + ", " + Mathf.Round(targetObst.ObstAngleMax) +
+                    "\nMin and max X factor: " + Mathf.Round(100 * targetObst.ObstXmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstXmax) / 100 +
+                    "\nMin and max Y factor: " + Mathf.Round(100 * targetObst.ObstYmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstYmax) / 100;
             }
 
 
 
-            if (targetObst.obstX >= HUDThreshold) //Turn on right HUD
+            if (targetObst.ObstXmin >= HUDThreshold) //Turn on right HUD
             {
-                GameObject Cue = HUDCues.Find(obj => obj.name == "HUD Cue East");
+                GameObject Cue = HUD_East;
                 Cue.SetActive(true);
                 eastMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
                 Cue.transform.localScale = new Vector3(Vector3.one.x * eastMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
@@ -307,9 +375,9 @@ public class HUD_Revised_v2 : MonoBehaviour
                     debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + Mathf.Round(eastMultiplier * 100) / 100;
             }
 
-            else if (targetObst.obstX <= -1 * HUDThreshold) //Turn on left HUD 
+            else if (targetObst.ObstXmax <= -1 * HUDThreshold) //Turn on left HUD 
             {
-                GameObject Cue = HUDCues.Find(obj => obj.name == "HUD Cue West");
+                GameObject Cue = HUD_West;
                 Cue.SetActive(true);
                 westMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
                 Cue.transform.localScale = new Vector3(Vector3.one.x * westMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
@@ -319,9 +387,9 @@ public class HUD_Revised_v2 : MonoBehaviour
                     debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + Mathf.Round(westMultiplier * 100) / 100;
             }
 
-            if (targetObst.obstY >= HUDThreshold) //Turn on top HUD
+            if (targetObst.ObstYmin >= HUDThreshold) //Turn on top HUD
             {
-                GameObject Cue = HUDCues.Find(obj => obj.name == "HUD Cue North");
+                GameObject Cue = HUD_North;
                 Cue.SetActive(true);
                 northMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
                 Cue.transform.localScale = new Vector3(Vector3.one.x * northMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
@@ -331,9 +399,9 @@ public class HUD_Revised_v2 : MonoBehaviour
                     debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + Mathf.Round(northMultiplier * 100) / 100;
             }
 
-            else if (targetObst.obstY <= -1* HUDThreshold) //Turn on bottom HUD
+            else if (targetObst.ObstYmax <= -1* HUDThreshold) //Turn on bottom HUD
             {
-                GameObject Cue = HUDCues.Find(obj => obj.name == "HUD Cue South");
+                GameObject Cue = HUD_South;
                 Cue.SetActive(true);
                 southMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
                 Cue.transform.localScale = new Vector3(Vector3.one.x * southMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
@@ -464,20 +532,25 @@ public class HUD_Revised_v2 : MonoBehaviour
     }
     */
 
-    
+
     public class ObstInfo
     {
         //Redone for HUD_Revised_v2 
         public string ObstName { get; set; }
         public GameObject ObstObject { get; set; }
         public float ObstMinDist { get; set; }
-        //public List<float> ObstXValues { get; set; }
-        //public List<float> ObstYValues { get; set; }
-        public float obstX { get; set; } //for now, use just one value - that of the center
-        public float obstY { get; set; }
-        public float ObstMinAngle { get; set; }
-        public float ObstMaxAngle { get; set; }
-        public bool isFront { get; set; } //true if the obstacle is "in front of" the user
+        public List<float> ObstXValues { get; set; }
+        public List<float> ObstYValues { get; set; }
+        public float ObstXmax { get; set; }
+        public float ObstXmin { get; set; }
+        public float ObstYmax { get; set; }
+        public float ObstYmin { get; set; }
+        public List<float> ObstAngles { get; set; }
+        public float ObstAngleMin { get; set; }
+        public float ObstAngleMax { get; set; }
+        public bool IsFront { get; set; } //true if the obstacle is "in front of" the user
+        public Collider ObstCollider { get; set; }
+        public Bounds ObstBounds { get; set; }
 
 
         public ObstInfo()
@@ -485,7 +558,9 @@ public class HUD_Revised_v2 : MonoBehaviour
             ObstName = "unknown";
             ObstObject = null;
             ObstMinDist = 0;
-
+            ObstXValues = new List<float>();
+            ObstYValues = new List<float>();
+            ObstAngles = new List<float>();
         }
 
         public ObstInfo(string obstName, GameObject obstObject)
@@ -493,12 +568,12 @@ public class HUD_Revised_v2 : MonoBehaviour
         {
             ObstName = obstName;
             ObstObject = obstObject;
-            //ObstMinDist = minDist;
-            //ObstAngles = new List<float>();
-            //ObstAngles.Add(angle);
-            //ObstMinAngle = angle;
-            //ObstMaxAngle = angle;
-            //ObstMinAngleAbsolute = Mathf.Abs(angle);
+            ObstCollider = obstObject.GetComponent<Collider>();
+            ObstBounds = ObstCollider.bounds;
+            ObstXValues = new List<float>();
+            ObstYValues = new List<float>();
+            ObstAngles = new List<float>();
+
         }
     }
     
