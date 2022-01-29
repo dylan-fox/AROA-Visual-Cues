@@ -106,11 +106,20 @@ public class ObstacleManager : MonoBehaviour
         if (debugCanvas.activeSelf)
         {
             Debug.Log("Debug text object: " + debugCanvas.ToString());
-            debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>().text =
+            TextMeshProUGUI debug = debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>();
+            debug.text =
                 "Mode: " + experimentLogger.cueCondition + "\n" +
+                "Layout: " + experimentLogger.layout + "\n" +  
                 "Distance capped: " + distanceCap + "\n" +
-                "HUD calibration: " + HUD_Revised.HUDCalibration + "\n" + 
-                "Layout: " + experimentLogger.layout;
+                "HUD calibration: " + HUD_Revised.HUDCalibration;
+                
+            if (!distanceCap || HUD_Revised.HUDCalibration)
+            {
+                //If distance is uncapped or HUD calibration is on, this will warn experimenter not to run
+                debug.text += "\nDO NOT RUN";
+            }
+            else
+                debug.text += "\nOK TO EXPERIMENT";
         }
     }
 

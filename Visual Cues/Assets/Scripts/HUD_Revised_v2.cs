@@ -40,41 +40,21 @@ public class HUD_Revised_v2 : MonoBehaviour
     public float minDist = 0f;
     public float maxDist = 2.5f;
 
-    [Tooltip("The threshold for HUD cue activation. <=0 = always on; >=1 = never on.")]
+    [Tooltip("The threshold for HUD cue activation. 0 = always on; 1 = never on.")]
     public float HUDThreshold = 0.5f;
 
     [Tooltip("The maximum angle for an obstacle to be considered 'in front of' the user.")]
     public float frontAngle = 75f;
 
-    //Minimum angle. Any object which extends closer to the user's gaze will not trigger cues.
-    public float minAngle = 43f;
 
-    [Tooltip("Number, in angles, to skip between raycasts. Smaller = more precise but higher processing load.")]
-    public float angleInterval = 15f;
-
-    [Tooltip("Size of sphere to spherecast with.")]
-    public float sphereRadius = 0.2f;
 
     public GameObject debugText;
-    public bool DebugRays = false;
     public bool HUDCalibration;
 
     private LayerMask obstacleMask;
 
-    [Tooltip("Time in seconds for a cue to stay on after being triggered.")]
-    public float fadeTime = 0.25f;
-
-    //Time each HUD cue was last triggered
-    private float northTrigger = 0;
-    private float eastTrigger = 0;
-    private float westTrigger = 0;
-    private float southTrigger = 0;
-
-    //Cue width multipliers
-    private float northMultiplier = 1.0f;
-    private float eastMultiplier = 1.0f;
-    private float southMultiplier = 1.0f;
-    private float westMultiplier = 1.0f;
+    //Cue width multiplier
+    private float cueSizeMultiplier = 1.0f;
 
     // Start is called before the first frame update
     void Awake()
@@ -102,7 +82,6 @@ public class HUD_Revised_v2 : MonoBehaviour
             foreach (Transform Obst in collocatedCuesParent.transform)
             {
                 //Add each obstacle in the list to ObstInfos
-                //ObstInfos.Add(new ObstInfo(Obst.gameObject.ToString(), Obst.gameObject, 0, 0, 0));
                 ObstInfos.Add(new ObstInfo(Obst.gameObject.name, Obst.gameObject));
             }
         }
@@ -119,7 +98,6 @@ public class HUD_Revised_v2 : MonoBehaviour
     {
         CalculatePositions();
         ActivateHUD();
-
     }
 
 
@@ -130,10 +108,7 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         //Capture camera's location and orientation
         var headPosition = Camera.main.transform.position;
-        //var headPositionCorrected = headPosition - new Vector3(0f, 0.5f, 0f); //Shoot ray from mid height to treat upper and lower obstacles more equitably
         var gazeDirection = Camera.main.transform.forward;
-
-        //Debug.Log("Gaze direction: " + gazeDirection);
 
 
         //Update information in ObstInfos
@@ -154,9 +129,6 @@ public class HUD_Revised_v2 : MonoBehaviour
             //Calculate distance to obstacle center
             Vector3 camToObstacle = obst.ObstObject.transform.position - headPosition;
             obst.ObstMinDist = camToObstacle.magnitude; //Distance from head to center of object
-            //obst.ObstMinAngle = obstAngle;
-
-
 
             //Calculate angles to obstacle center, min and max bounds
             float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
@@ -232,101 +204,7 @@ public class HUD_Revised_v2 : MonoBehaviour
         //Assesses which cues should be illuminated and their appropriate size
 
 
-        //For each cue, determine if it should be on for time/calibration reasons
-        foreach (GameObject Cue in HUDCues)
-        {
-            //Debug.Log("Cue name: " + Cue.name);
-            bool resetTrigger = false;
-
-            //If cue is on from a previous frame and hasn't passed the fade time threshold yet, keep it on; otherwise, reset it
-            if (Cue.name == "HUD Cue East")
-            {
-                if (Time.time <= eastTrigger + fadeTime)
-                {
-                    //Do nothing
-                }
-
-                else
-                {
-                    Cue.SetActive(false);
-                    eastMultiplier = 1.0f;
-                    Cue.transform.localScale = Vector3.one;
-                    resetTrigger = true;
-                }
-            }
-
-            else if (Cue.name == "HUD Cue South")
-            {
-                if (Time.time <= southTrigger + fadeTime)
-                {
-                    //Do nothing
-                }
-
-                else
-                {
-                    Cue.SetActive(false);
-                    southMultiplier = 1.0f;
-                    Cue.transform.localScale = Vector3.one;
-                    resetTrigger = true;
-                    //Debug.Log("South cue reset.");
-                }
-            }
-
-            else if (Cue.name == "HUD Cue West")
-            {
-                if (Time.time <= westTrigger + fadeTime)
-                {
-                    //Do nothing
-                }
-
-                else
-                {
-                    Cue.SetActive(false);
-                    westMultiplier = 1.0f;
-                    Cue.transform.localScale = Vector3.one;
-                    resetTrigger = true;
-                }
-            }
-
-            else if (Cue.name == "HUD Cue North")
-            {
-                if (Time.time <= northTrigger + fadeTime)
-                {
-                    //Do nothing
-                }
-
-                else
-                {
-                    Cue.SetActive(false);
-                    northMultiplier = 1.0f;
-                    Cue.transform.localScale = Vector3.one;
-                    resetTrigger = true;
-                }
-            }
-
-            else
-            {
-                Debug.Log("Strange item found in Cues list.");
-            }
-
-
-            if (HUDCalibration)
-            {
-                //Keep all cues visible and reset to default positions
-                Cue.SetActive(true);
-                if (Cue.name == "HUD Cue East")
-                    Cue.transform.localPosition = new Vector3(0.5f - 0.05f, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
-                else if (Cue.name == "HUD Cue South")
-                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f, Cue.transform.localPosition.z);
-                else if (Cue.name == "HUD Cue West")
-                    Cue.transform.localPosition = new Vector3(-0.5f + 0.05f, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
-                else if (Cue.name == "HUD Cue North")
-                    Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f, Cue.transform.localPosition.z);
-            }
-        }
-
-
-        //Determine closest obstacle within accesptable distance in front of the user as the target obstacle
+        //Determine closest obstacle within acceptable distance in front of the user as the target obstacle
         float closestDist = 1000f;
         ObstInfo targetObst = null;
 
@@ -342,73 +220,89 @@ public class HUD_Revised_v2 : MonoBehaviour
             }
         }
 
-        //Adjust the HUD cues based on the characteristics of the target obstacle
-        if (targetObst == null)
+
+        //If calirbation mode is on, keep all cues visible and reset to default positions and sizes
+        if (HUDCalibration)
+        {
+            cueSizeMultiplier = 1.0f;
+            foreach (GameObject Cue in HUDCues)
+            {
+                Cue.SetActive(true);
+                Cue.transform.localScale = Vector3.one;
+            }
+            HUD_East.transform.localPosition = new Vector3(0.5f - 0.05f, HUD_East.transform.localPosition.y, HUD_East.transform.localPosition.z);
+            HUD_South.transform.localPosition = new Vector3(HUD_South.transform.localPosition.x, -0.5f + 0.05f, HUD_South.transform.localPosition.z);
+            HUD_West.transform.localPosition = new Vector3(-0.5f + 0.05f, HUD_West.transform.localPosition.y, HUD_West.transform.localPosition.z);
+            HUD_North.transform.localPosition = new Vector3(HUD_North.transform.localPosition.x, 0.5f - 0.05f, HUD_North.transform.localPosition.z);
+        }
+
+        //Reset and turn off all cues
+        else
+        {
+            cueSizeMultiplier = 1.0f;
+            foreach (GameObject Cue in HUDCues)
+            {
+                Cue.SetActive(false);
+                Cue.transform.localScale = Vector3.one;
+            }
+            HUD_East.transform.localPosition = new Vector3(0.5f - 0.05f, HUD_East.transform.localPosition.y, HUD_East.transform.localPosition.z);
+            HUD_South.transform.localPosition = new Vector3(HUD_South.transform.localPosition.x, -0.5f + 0.05f, HUD_South.transform.localPosition.z);
+            HUD_West.transform.localPosition = new Vector3(-0.5f + 0.05f, HUD_West.transform.localPosition.y, HUD_West.transform.localPosition.z);
+            HUD_North.transform.localPosition = new Vector3(HUD_North.transform.localPosition.x, 0.5f - 0.05f, HUD_North.transform.localPosition.z);
+        }
+        
+        //If no target obstacle, do nothing
+        if (targetObst == null)            
         {
             Debug.Log("No valid targets.");
         }
 
-        else
+        else //Turn on and resize cues for current obstacle
         {
-            Debug.Log("Target obstacle: " + targetObst.ObstName);
-            if (debugText.activeSelf)
-            {
-                debugText.GetComponent<TextMeshProUGUI>().text +=
-                    "\nTarget obstacle: " + targetObst.ObstName.ToString() +
-                    "\nDistance: " + Mathf.Round(100 * targetObst.ObstMinDist) / 100 +
-                    "\nMin and max angle: " + Mathf.Round(targetObst.ObstAngleMin) + ", " + Mathf.Round(targetObst.ObstAngleMax) +
-                    "\nMin and max X factor: " + Mathf.Round(100 * targetObst.ObstXmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstXmax) / 100 +
-                    "\nMin and max Y factor: " + Mathf.Round(100 * targetObst.ObstYmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstYmax) / 100;
-            }
-
-
+            cueSizeMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
 
             if (targetObst.ObstXmin >= HUDThreshold) //Turn on right HUD
             {
                 GameObject Cue = HUD_East;
                 Cue.SetActive(true);
-                eastMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
-                Cue.transform.localScale = new Vector3(Vector3.one.x * eastMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                Cue.transform.localPosition = new Vector3(0.5f - 0.05f * eastMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
-
-                if (debugText.activeSelf)
-                    debugText.GetComponent<TextMeshProUGUI>().text += "\nEast Cue width multiplier: " + Mathf.Round(eastMultiplier * 100) / 100;
+                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueSizeMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
             }
 
-            else if (targetObst.ObstXmax <= -1 * HUDThreshold) //Turn on left HUD 
+            if (targetObst.ObstXmax <= -1 * HUDThreshold) //Turn on left HUD 
             {
                 GameObject Cue = HUD_West;
                 Cue.SetActive(true);
-                westMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
-                Cue.transform.localScale = new Vector3(Vector3.one.x * westMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * westMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
-
-                if (debugText.activeSelf)
-                    debugText.GetComponent<TextMeshProUGUI>().text += "\nWest Cue width multiplier: " + Mathf.Round(westMultiplier * 100) / 100;
+                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * cueSizeMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
             }
 
             if (targetObst.ObstYmin >= HUDThreshold) //Turn on top HUD
             {
                 GameObject Cue = HUD_North;
                 Cue.SetActive(true);
-                northMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
-                Cue.transform.localScale = new Vector3(Vector3.one.x * northMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * northMultiplier, Cue.transform.localPosition.z);
-
-                if (debugText.activeSelf)
-                    debugText.GetComponent<TextMeshProUGUI>().text += "\nNorth Cue width multiplier: " + Mathf.Round(northMultiplier * 100) / 100;
+                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, 0.5f - 0.05f * cueSizeMultiplier, Cue.transform.localPosition.z);
             }
 
             else if (targetObst.ObstYmax <= -1* HUDThreshold) //Turn on bottom HUD
             {
                 GameObject Cue = HUD_South;
                 Cue.SetActive(true);
-                southMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
-                Cue.transform.localScale = new Vector3(Vector3.one.x * southMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
-                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * southMultiplier, Cue.transform.localPosition.z);
+                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueSizeMultiplier, Cue.transform.localPosition.z);
+            }
 
-                if (debugText.activeSelf)
-                    debugText.GetComponent<TextMeshProUGUI>().text += "\nSouth Cue width multiplier: " + Mathf.Round(southMultiplier * 100) / 100;
+            Debug.Log("Target obstacle: " + targetObst.ObstName);
+            if (debugText.activeSelf)
+            {
+                debugText.GetComponent<TextMeshProUGUI>().text +=
+                    "\nTarget obstacle: " + targetObst.ObstName.ToString() +
+                    "\nDistance: " + Mathf.Round(100 * targetObst.ObstMinDist) / 100 +
+                    "\nCue Size Multiplier: " + Mathf.Round(100 * cueSizeMultiplier) / 100 +
+                    "\nMin and max angle: " + Mathf.Round(targetObst.ObstAngleMin) + ", " + Mathf.Round(targetObst.ObstAngleMax) +
+                    "\nMin and max X factor: " + Mathf.Round(100 * targetObst.ObstXmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstXmax) / 100 +
+                    "\nMin and max Y factor: " + Mathf.Round(100 * targetObst.ObstYmin) / 100 + ", " + Mathf.Round(100 * targetObst.ObstYmax) / 100;
             }
         }
 
@@ -456,81 +350,30 @@ public class HUD_Revised_v2 : MonoBehaviour
         }
     }
 
-    public void AdjustMinAngle (float x)
+  
+    public void AdjustFrontAngle(float x)
     {
-        minAngle += x;
-        if (minAngle < 0)
-            minAngle = 0;
-        if (minAngle > 90)
-            minAngle = 90;
-        Debug.Log("Min angle now " + minAngle);
-        textToSpeech.StartSpeaking("Min angle now " + minAngle);
+        //Adjust width of cone to consider an obstacle "in front of" the user
+        frontAngle += x;
+        if (frontAngle < 0)
+            frontAngle = 0;
+        else if (frontAngle > 90)
+            frontAngle = 90;
+        Debug.Log("Front angle now " + frontAngle);
+        textToSpeech.StartSpeaking("Front angle now " + frontAngle);
     }
 
-    public void AdjustSphereRadius (float x)
+    public void AdjustHUDThreshold (float x)
     {
-        sphereRadius += x;
-        if (sphereRadius < 0)
-            sphereRadius = 0;
-
-        Debug.Log("Sphere radius now " + sphereRadius);
-        textToSpeech.StartSpeaking("Sphere radius now " + sphereRadius);
+        //Adjust HUD threshold. Higher = more extreme angle required to trigger HUD.
+        HUDThreshold += x;
+        if (HUDThreshold < 0)
+            HUDThreshold = 0;
+        if (HUDThreshold > 1)
+            HUDThreshold = 1;
+        Debug.Log("HUD Threshold now " + HUDThreshold);
+        textToSpeech.StartSpeaking("HUD threshold now " + HUDThreshold);
     }
-
-    public void AdjustAngleInterval (float x)
-    {
-        angleInterval += x;
-        if (angleInterval < 5)
-            angleInterval = 5;
-        Debug.Log("Angle interval now " + angleInterval);
-        textToSpeech.StartSpeaking("Angle interval now " + angleInterval);
-    }
-
-    /*
-    public class ObstInfo
-    {
-        public string ObstName { get; set; }
-        public GameObject ObstObject { get; set; }
-        public float ObstMinDist { get; set; }
-        public List<float> ObstXAngles { get; set; }
-        public List<float> ObstYAngles { get; set; }
-        
-        public float ObstMinX { get; set; }
-        public float ObstMaxX { get; set; }
-        public float ObstMinY { get; set; }
-        public float ObstMaxY { get; set; }
-
-        public float ObstMinAbsX { get; set; }
-        public float ObstMinAbsY { get; set; }
-        
-        public ObstInfo()
-        {
-            ObstName = "unknown";
-            ObstObject = null;
-            ObstMinDist = 0;
-            ObstXAngles = null;
-            ObstYAngles = null;
-        }
-
-        public ObstInfo (string obstName, GameObject obstObject, float minDist,  float angleX, float angleY) 
-
-        {
-            ObstName = obstName;
-            ObstObject = obstObject;
-            ObstMinDist = minDist;
-            ObstXAngles = new List<float>();
-            ObstYAngles = new List<float>();
-            ObstXAngles.Add(angleX);
-            ObstYAngles.Add(angleY);
-            ObstMinX = angleX;
-            ObstMaxX = angleX;
-            ObstMinY = angleY;
-            ObstMaxY = angleY;
-            ObstMinAbsX = Mathf.Abs(angleX);
-            ObstMinAbsY = Mathf.Abs(angleY);
-        }
-    }
-    */
 
 
     public class ObstInfo

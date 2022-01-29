@@ -3589,7 +3589,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 927415520}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.825}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 1813194136}
@@ -4074,7 +4074,6 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194231}
-  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4166,29 +4165,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &963194230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf98dd1206224111a38765365e98e207, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lockCursorWhenFocusLocked: 1
-  setCursorInvisibleWhenFocusLocked: 0
-  maxGazeCollisionDistance: 10
-  raycastLayerMasks:
-  - serializedVersion: 2
-    m_Bits: 4294967291
-  stabilizer:
-    storedStabilitySamples: 60
-  gazeTransform: {fileID: 0}
-  minHeadVelocityThreshold: 0.5
-  maxHeadVelocityThreshold: 2
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5305,96 +5281,6 @@ MonoBehaviour:
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
-  - keyword: Increase Min Angle
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustMinAngle
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 1
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Decrease Min Angle
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustMinAngle
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -1
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Increase Sphere Radius
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustSphereRadius
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0.01
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Decrease Sphere Radius
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustSphereRadius
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -0.01
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Increase Angle Interval
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustAngleInterval
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 1
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Decrease Angle Interval
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1376590893}
-          m_MethodName: AdjustAngleInterval
-          m_Mode: 4
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -1
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
   - keyword: Toggle Distance Cap
     response:
       m_PersistentCalls:
@@ -5437,6 +5323,66 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: -1
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase Front Angle
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590894}
+          m_MethodName: AdjustFrontAngle
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 5
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease Front Angle
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590894}
+          m_MethodName: AdjustFrontAngle
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -5
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Increase HUD Threshold
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590894}
+          m_MethodName: AdjustHUDThreshold
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0.05
+            m_StringArgument: doorway
+            m_BoolArgument: 0
+          m_CallState: 2
+  - keyword: Decrease HUD Threshold
+    response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1376590894}
+          m_MethodName: AdjustHUDThreshold
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: -0.05
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2
@@ -5872,13 +5818,8 @@ MonoBehaviour:
   maxDist: 2.5
   HUDThreshold: 0.25
   frontAngle: 75
-  minAngle: 5
-  angleInterval: 10
-  sphereRadius: 0.15
   debugText: {fileID: 2105630243}
-  DebugRays: 0
   HUDCalibration: 1
-  fadeTime: 0.25
 --- !u!1 &1377672507
 GameObject:
   m_ObjectHideFlags: 0

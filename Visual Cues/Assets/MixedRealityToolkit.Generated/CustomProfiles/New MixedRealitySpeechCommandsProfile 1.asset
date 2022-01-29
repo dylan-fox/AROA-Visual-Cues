@@ -143,43 +143,29 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Increase Min Angle
+    keyword: Increase Front Angle
     keyCode: 91
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Decrease Min Angle
+    keyword: Decrease Front Angle
     keyCode: 93
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Increase Sphere Radius
+    keyword: Increase HUD Threshold
     keyCode: 59
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Decrease Sphere Radius
+    keyword: Decrease HUD Threshold
     keyCode: 39
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Increase Angle Interval
-    keyCode: 44
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
-    keyword: Decrease Angle Interval
-    keyCode: 46
     action:
       id: 0
       description: None
