@@ -69,6 +69,9 @@ public class ObstacleManager : MonoBehaviour
     [HideInInspector]
     public bool distanceCap = true;
 
+    [Tooltip("Height of high obstacles in meters.")]
+    public float highObstHeight = 1.524f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -109,7 +112,8 @@ public class ObstacleManager : MonoBehaviour
             TextMeshProUGUI debug = debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>();
             debug.text =
                 "Mode: " + experimentLogger.cueCondition + "\n" +
-                "Layout: " + experimentLogger.layout + "\n" +  
+                "Layout: " + experimentLogger.layout + "\n" +
+                "High obstacle height: " + Mathf.Round(highObstHeight * 39.37f) + " inches" + "\n" + 
                 "Distance capped: " + distanceCap + "\n" +
                 "HUD calibration: " + HUD_Revised.HUDCalibration;
                 
@@ -340,19 +344,7 @@ public class ObstacleManager : MonoBehaviour
         cuesParent.transform.Rotate(0f, degrees, 0f);
     }
 
-    /* Replaced with methods in HUD_Revised
-     * public void shiftHUD(float dist)
-    {
-        HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX += dist;
-        Debug.Log("HUD cues adjusted " + dist + " meters to the right. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().arrowShiftX);
-    }
 
-    public void increaseHUDradius (float dist)
-    {
-        HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius += dist;
-        Debug.Log("HUD cue radius increased by " + dist + " meters. New value = " + HUDManager.GetComponent<HUDIndicator>().GetComponent<HUDIndicatorManagerVR>().radius);
-    }
-    */
 
     public void ToggleInterface()
     {
@@ -426,7 +418,7 @@ public class ObstacleManager : MonoBehaviour
             Camera.main.farClipPlane = 1000;
             distanceCap = false;
             Debug.Log("Display distance uncapped.");
-            textToSpeech.StartSpeaking("Display distance uncapped.");
+            //textToSpeech.StartSpeaking("Display distance uncapped.");
         }
 
         else
@@ -434,7 +426,23 @@ public class ObstacleManager : MonoBehaviour
             Camera.main.farClipPlane = maxDisplayDistance;
             distanceCap = true;
             Debug.Log("Display distance capped.");
-            textToSpeech.StartSpeaking("Display distance capped.");
+            //textToSpeech.StartSpeaking("Display distance capped.");
         }
+    }
+
+    public void AdjustHighObstHeight (float heightAdjust)
+    {
+        //This needs to both adjust current cue height, as well as tell the QR codes script to adjust height when moving cues.
+        //The latter is done in QRCodes_AROA - it checks highObstHeight on Obstacle Manager.
+        highObstHeight += heightAdjust;
+        foreach (Transform Cue in cuesParent.transform)
+        {
+            if (Cue.name.Contains("High")) {
+                Cue.position = new Vector3(Cue.position.x, Cue.position.y + heightAdjust, Cue.position.z);
+            }
+        }
+        
+        Debug.Log("High obstacle height is now " + Mathf.Round(highObstHeight * 39.37f) + " inches.");
+
     }
 }

@@ -12,13 +12,16 @@ namespace QRTracking
     public class QRCodes_AROA : MonoBehaviour
     {
         public GameObject qrCodePrefab;
-        public GameObject obstLow;
-        public GameObject obstMid;
-        public GameObject obstHigh;
-        public GameObject obstWide;
+        public GameObject obstLow1;
+        public GameObject obstLow2;
+        public GameObject obstHigh1;
+        public GameObject obstHigh2;
+        public GameObject obstWide1;
+        public GameObject obstWide2;
         public GameObject obstacleCollection;
         public Experiment_Logger experimentLogger;
         public string layout = "Default";
+        public float highObstHeight;
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
@@ -62,7 +65,7 @@ namespace QRTracking
             QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
             QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
 
-            if (qrCodePrefab == null || obstLow == null || obstMid == null || obstHigh == null || obstWide == null || obstacleCollection == null)
+            if (qrCodePrefab == null || obstLow1 == null || obstLow2 == null || obstHigh1 == null || obstHigh2 == null || obstWide1 == null || obstWide2 == null || obstacleCollection == null)
             {
                 throw new System.Exception("Prefab or obstacles not assigned");
             }
@@ -165,10 +168,12 @@ namespace QRTracking
                         qrCodeObject.GetComponent<QRCode>().experimentLogger = experimentLogger;
 
                         //Assign obstacles to QR Code object
-                        qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
-                        qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
-                        qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
-                        qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
+                        qrCodeObject.GetComponent<QRCode>().obstLow1 = obstLow1;
+                        qrCodeObject.GetComponent<QRCode>().obstLow2 = obstLow2;
+                        qrCodeObject.GetComponent<QRCode>().obstHigh1 = obstHigh1;
+                        qrCodeObject.GetComponent<QRCode>().obstHigh2 = obstHigh2;
+                        qrCodeObject.GetComponent<QRCode>().obstWide1 = obstWide1;
+                        qrCodeObject.GetComponent<QRCode>().obstWide2 = obstWide2;
 
 
                     }
@@ -185,6 +190,7 @@ namespace QRTracking
                             Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
                             qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                             qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
+
 
                             if (action.qrCode.Data == "QR Code 1")
                             {
@@ -226,10 +232,12 @@ namespace QRTracking
                             qrCodeObject.GetComponent<QRCode>().experimentLogger = experimentLogger;
 
                             //Assign obstacles to QR Code object
-                            qrCodeObject.GetComponent<QRCode>().obstLow = obstLow;
-                            qrCodeObject.GetComponent<QRCode>().obstMid = obstMid;
-                            qrCodeObject.GetComponent<QRCode>().obstHigh = obstHigh;
-                            qrCodeObject.GetComponent<QRCode>().obstWide = obstWide;
+                            qrCodeObject.GetComponent<QRCode>().obstLow1 = obstLow1;
+                            qrCodeObject.GetComponent<QRCode>().obstLow2 = obstLow2;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh1 = obstHigh1;
+                            qrCodeObject.GetComponent<QRCode>().obstHigh2 = obstHigh2;
+                            qrCodeObject.GetComponent<QRCode>().obstWide1 = obstWide1;
+                            qrCodeObject.GetComponent<QRCode>().obstWide2 = obstWide2;
 
                         }
                     }

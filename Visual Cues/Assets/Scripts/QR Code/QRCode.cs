@@ -33,15 +33,17 @@ namespace QRTracking
         public ObstacleManager obstacleManager;
         public Experiment_Logger experimentLogger;
         public string layout;
-        public GameObject obstLow;
-        public GameObject obstMid;
-        public GameObject obstHigh;
-        public GameObject obstWide;
+        public GameObject obstLow1;
+        public GameObject obstLow2;
+        public GameObject obstHigh1;
+        public GameObject obstHigh2;
+        public GameObject obstWide1;
+        public GameObject obstWide2;
 
-        private float lowHeight = 0.05f;
-        private float medHeight = 0.444f;
-        private float highHeight = 1.7f;
-        private float wideHeight = 0.8f;
+        public float lowHeight = 0.05f;
+        public float medHeight = 0.444f;
+        public float highHeight = 1.7f;
+        public float wideHeight = 0.9f;
 
         // Use this for initialization
         void Start()
@@ -117,71 +119,87 @@ namespace QRTracking
                         //trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
                         trackedObject.transform.localPosition -= trackedObject.transform.up * 1.5f; //Assumes height of QR Code is 1.5m (~5ft) off the ground
                         trackedObject.transform.localPosition += trackedObject.transform.right * 0.9f; //Assumes hallway is 1.8m wide
+                        highHeight = obstacleManager.highObstHeight;
 
 
 
                         if (layout == "Layout 1")
                         {
                             //Assign obstacles to position 1
-                            obstLow.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
-                            obstMid.transform.localPosition = new Vector3(-0.6f, medHeight, 13.5f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 4.5f);
-                            obstWide.transform.localPosition = new Vector3(0.45f, wideHeight, 9f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 1.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 3.0f);
+                            obstLow1.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 13.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 6.0f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 12.0f);
+
                         }
 
                         else if (layout == "Layout 2")
                         {
                             //Assign obstacles to position 2
-                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 3f);
-                            obstMid.transform.localPosition = new Vector3(1000f, medHeight, 1000f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 10.5f);
-                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 7.5f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 1.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 4.5f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 6f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 7.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 12.0f);
                         }
 
                         else if (layout == "Layout 3")
                         {
                             //Assign obstacles to position 3
-                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 1.5f);
-                            obstMid.transform.localPosition = new Vector3(0f, medHeight, 4.5f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
-                            obstWide.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 3.0f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 4.5f);
+                            obstLow1.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 9.0f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 6.0f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
                         }
 
                         else if (layout == "Layout 4")
                         {
                             //Assign obstacles to position 4
-                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 12f);
-                            obstMid.transform.localPosition = new Vector3(0.3f, medHeight, 1.5f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 9f);
-                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 4.5f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 3.0f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 1.5f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 4.5f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 6.0f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
                         }
 
                         else if (layout == "Layout 5")
                         {
                             //Assign obstacles to position 5
-                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 9f);
-                            obstMid.transform.localPosition = new Vector3(-0.3f, medHeight, 12f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 6f);
-                            obstWide.transform.localPosition = new Vector3(0.45f, wideHeight, 3f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 4.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 1.5f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 13.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 12.0f);
                         }
 
 
                         else if (layout == "Layout 6")
                         {
                             //Assign obstacles to position 6
-                            obstLow.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
-                            obstMid.transform.localPosition = new Vector3(0.6f, medHeight, 6f);
-                            obstHigh.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
-                            obstWide.transform.localPosition = new Vector3(-0.45f, wideHeight, 3f);
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 4.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 3.0f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 6f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
+                            obstHigh2.transform.localPosition = new Vector3(1000f, highHeight, 1000f);
                         }
 
                         else if (layout == "Demo Layout")
                         {
                             //Assign the medium chair to the middle of the room, and put the rest far away.
-                            obstLow.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                            obstMid.transform.localPosition = new Vector3(2f, medHeight, 2f); //2 meters forward and 2m + hallway width right of QR code
-                            obstHigh.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
-                            obstWide.transform.localPosition = new Vector3(1000f, 1000f, 1000f);
+                            obstWide1.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
+                            obstWide2.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
+                            obstLow1.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
+                            obstLow2.transform.localPosition = new Vector3(2f, lowHeight, 2f);
+                            obstHigh1.transform.localPosition = new Vector3(1000f, highHeight, 1000f);
+                            obstHigh2.transform.localPosition = new Vector3(1000f, highHeight, 1000f);
                         }
 
                         experimentLogger.layout = layout;

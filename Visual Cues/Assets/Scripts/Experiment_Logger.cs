@@ -127,7 +127,31 @@ public class Experiment_Logger : MonoBehaviour
                     westOn = false;
             }
         }
-        
+
+        if (loggingInProcess)
+        {
+
+            tempPos = Camera.transform.position;
+            tempRot = Camera.transform.rotation.eulerAngles;
+            tempTime = Time.time - startTime;
+            eyeTrackingEnabled = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabled;
+            eyeTrackingDataValid = CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingDataValid;
+            gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection;
+            eyeMovement = Camera.transform.forward - gazeDirection;
+
+
+            using (TextWriter writer = File.AppendText(filePath))
+            {
+                writer.WriteLine("Update; " + cueCondition + "; " + layout + "; " + tempTime + "; " +
+                    tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
+                    tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "; " +
+                    eyeTrackingEnabled + "; " + eyeTrackingDataValid + "; " +
+                    gazeDirection.x + "; " + gazeDirection.y + "; " + gazeDirection.z + "; " +
+                    eyeMovement.x + "; " + eyeMovement.y + "; " + eyeMovement.z + "; " +
+                    northOn + "; " + eastOn + "; " + southOn + "; " + westOn);
+            }
+        }
+
     }
 
     public void BeginLogging()
@@ -163,7 +187,7 @@ public class Experiment_Logger : MonoBehaviour
             using (TextWriter writer = File.AppendText(filePath))
             {
                 writer.WriteLine("Logging begun. Format: \n" +
-                    "Cue Condition; Layout; Time; Position X; Position Y; Position Z; " +
+                    "Log Type; Cue Condition; Layout; Time; Position X; Position Y; Position Z; " +
                     "Rotation X; Rotation Y; Rotation Z; " +
                     "Eye Tracking Enabled (true/false); " + "Eye Tracking Data Valid (true/false); " + 
                     "Gaze Direction X; Gaze Direction Y; Gaze Direction Z; " +
@@ -216,7 +240,7 @@ public class Experiment_Logger : MonoBehaviour
 
             using (TextWriter writer = File.AppendText(filePath))
             {
-                writer.WriteLine(cueCondition + "; " + layout + "; " + tempTime + "; " +
+                writer.WriteLine("Fixed; " + cueCondition + "; " + layout + "; " + tempTime + "; " +
                     tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
                     tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "; " + 
                     eyeTrackingEnabled + "; " + eyeTrackingDataValid + "; " + 
@@ -226,4 +250,6 @@ public class Experiment_Logger : MonoBehaviour
             }
         }
     }
+
+
 }
