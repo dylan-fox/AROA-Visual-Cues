@@ -3560,6 +3560,31 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 699727629}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1135055240 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4310497907485728119, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
+    type: 3}
+  m_PrefabInstance: {fileID: 699727629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135055237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98de877dee5fc341b4eb59dfdab266c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &1135055241
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135055237}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1135964970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4254,7 +4279,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1376590893}
+        - m_Target: {fileID: 0}
           m_MethodName: shiftHUDRight
           m_Mode: 4
           m_Arguments:
@@ -4269,7 +4294,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1376590893}
+        - m_Target: {fileID: 0}
           m_MethodName: shiftHUDRight
           m_Mode: 4
           m_Arguments:
@@ -4284,7 +4309,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1376590893}
+        - m_Target: {fileID: 0}
           m_MethodName: scaleHUD
           m_Mode: 4
           m_Arguments:
@@ -4299,7 +4324,7 @@ MonoBehaviour:
     response:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1376590893}
+        - m_Target: {fileID: 0}
           m_MethodName: scaleHUD
           m_Mode: 4
           m_Arguments:
@@ -4697,7 +4722,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1376590892}
-  - component: {fileID: 1376590893}
   - component: {fileID: 1376590894}
   m_Layer: 2
   m_Name: HUD Revised
@@ -4721,33 +4745,6 @@ Transform:
   m_Father: {fileID: 963194228}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1376590893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376590891}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095117bcd5c6241469a44dad9727622b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HUDFrame: {fileID: 890699801}
-  textToSpeech: {fileID: 816797673}
-  obstacleManager: {fileID: 1264387024}
-  experimentLogger: {fileID: 1264387027}
-  HUDCues: []
-  cueWidthMaxMultiplier: 4
-  minDist: 0
-  maxDist: 2.5
-  minAngle: 5
-  angleInterval: 10
-  sphereRadius: 0.15
-  debugText: {fileID: 2105630243}
-  DebugRays: 0
-  HUDCalibration: 1
-  fadeTime: 0.25
 --- !u!114 &1376590894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5897,6 +5894,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4310497907485728118, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
+        type: 3}
+      propertyPath: constraintsManager
+      value: 
+      objectReference: {fileID: 1135055240}
     - target: {fileID: 4310497907695532249, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_Layer
@@ -5987,6 +5989,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1894535040}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1992278978
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992278974}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &2001516892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,

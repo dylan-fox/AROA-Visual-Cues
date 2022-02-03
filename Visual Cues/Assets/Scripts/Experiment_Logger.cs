@@ -32,7 +32,9 @@ public class Experiment_Logger : MonoBehaviour
     public bool loggingInProcess = false;
 
     private string filePath;
+    private string filePath2;
     private string fileName;
+    private string fileName2;
     private Vector3 tempPos;
     private Vector3 tempRot;
     private float tempTime;
@@ -140,7 +142,7 @@ public class Experiment_Logger : MonoBehaviour
             eyeMovement = Camera.transform.forward - gazeDirection;
 
 
-            using (TextWriter writer = File.AppendText(filePath))
+            using (TextWriter writer = File.AppendText(filePath2))
             {
                 writer.WriteLine("Update; " + cueCondition + "; " + layout + "; " + tempTime + "; " +
                     tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
@@ -171,9 +173,13 @@ public class Experiment_Logger : MonoBehaviour
             //Set timestamp and path name
             string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
             fileName = timeStamp + '_' + cueCondition + '_' + layout + ".txt";
+            fileName2 = timeStamp + '_' + cueCondition + '_' + layout + "_update.txt";
             Debug.Log("Filename: " + fileName);
+            Debug.Log("Filename 2: " + fileName2);
             filePath = Path.Combine(Application.persistentDataPath, fileName);
+            filePath2 = Path.Combine(Application.persistentDataPath, fileName2);
             Debug.Log("File path: " + filePath);
+            Debug.Log("File path: " + filePath2);
 
 
             //define variable values at start
@@ -217,6 +223,11 @@ public class Experiment_Logger : MonoBehaviour
             {
                 writer.WriteLine("Logging ended at " + tempTime);
             }
+
+            using (TextWriter writer = File.AppendText(filePath2))
+            {
+                writer.WriteLine("Logging ended at " + tempTime);
+            }
         }
 
         else
@@ -226,6 +237,58 @@ public class Experiment_Logger : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Set cue condition
+        if (obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
+            cueCondition = "Combined";
+        else if (obstacleManager.collocatedCuesOn && !obstacleManager.hudCuesOn)
+            cueCondition = "Collocated";
+        else if (!obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
+            cueCondition = "HUD";
+        else
+            cueCondition = "No Cues";
+        //Debug.Log("Cue condition: " + cueCondition);
+
+        //Get obstacle layout
+        //layout = qRCodes_AROA.layout; //Now passed directly from QRCodes_AROA when a QR code is scanned
+        //Debug.Log("Layout: " + layout);
+
+
+        //Check if each of the HUD cues is on.
+        foreach (GameObject Cue in HUDCues)
+        {
+            if (Cue.name == "HUD Cue North")
+            {
+                if (Cue.activeSelf)
+                    northOn = true;
+                else
+                    northOn = false;
+            }
+
+            else if (Cue.name == "HUD Cue East")
+            {
+                if (Cue.activeSelf)
+                    eastOn = true;
+                else
+                    eastOn = false;
+            }
+
+            else if (Cue.name == "HUD Cue South")
+            {
+                if (Cue.activeSelf)
+                    southOn = true;
+                else
+                    southOn = false;
+            }
+
+            else if (Cue.name == "HUD Cue West")
+            {
+                if (Cue.activeSelf)
+                    westOn = true;
+                else
+                    westOn = false;
+            }
+        }
+
         if (loggingInProcess)
         {
 
