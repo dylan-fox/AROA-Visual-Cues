@@ -34,14 +34,17 @@ public class HUD_Revised_v2 : MonoBehaviour
     private List<ObstInfo> ObstInfos = new List<ObstInfo>();
 
     //Maximum multiplier for cue width - will scale to it as distance to obstacle shrinks
-    public float cueWidthMaxMultiplier = 2f;
+    public float cueWidthMaxMultiplier = 4f;
 
     //Minimum and maximum Obst distance at which to show cues
     public float minDist = 0f;
     public float maxDist = 2.5f;
 
     [Tooltip("The threshold for HUD cue activation. 0 = always on; 1 = never on.")]
-    public float HUDThreshold = 0.5f;
+    public float HUDThreshold = 0.25f;
+
+    [Tooltip("The amount to multiply the upper cue HUD Threshold by. Smaller = easier activation.")]
+    public float HUDTopMultiplier = 0.5f;
 
     [Tooltip("The maximum angle for an obstacle to be considered 'in front of' the user.")]
     public float frontAngle = 75f;
@@ -114,7 +117,7 @@ public class HUD_Revised_v2 : MonoBehaviour
         //Update information in ObstInfos
         foreach (ObstInfo obst in ObstInfos)
         {
-            //Clear recorded  angle, X and Y values
+            //Clear recorded  angle, X and Y values; reset bounds
             obst.ObstXValues.Clear();
             obst.ObstYValues.Clear();
             obst.ObstAngles.Clear();
@@ -124,11 +127,13 @@ public class HUD_Revised_v2 : MonoBehaviour
             obst.ObstYmax = -1;
             obst.ObstAngleMin = 180;
             obst.ObstAngleMax = 0;
+            obst.ObstBounds = obst.ObstCollider.bounds;
 
 
             //Calculate distance to obstacle center
             Vector3 camToObstacle = obst.ObstObject.transform.position - headPosition;
             obst.ObstMinDist = camToObstacle.magnitude; //Distance from head to center of object
+            //Debug.DrawRay(headPosition, camToObstacle, Color.cyan);
 
             //Calculate angles to obstacle center, min and max bounds
             float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
@@ -139,10 +144,12 @@ public class HUD_Revised_v2 : MonoBehaviour
             obst.ObstYValues.Add(Mathf.Cos(yAngleCenter * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleCenter);
 
+            
             Vector3 camToObstacleMin = obst.ObstBounds.min - headPosition;
             float xAngleMin = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMin, Camera.main.transform.up);
             float yAngleMin = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMin, Camera.main.transform.right);
             float obstAngleUpperBounds = Vector3.Angle(gazeDirection, camToObstacleMin);
+            //Debug.DrawRay(headPosition, camToObstacleMin, Color.red);
 
             obst.ObstXValues.Add(Mathf.Cos(xAngleMin * Mathf.Deg2Rad));
             obst.ObstYValues.Add(Mathf.Cos(yAngleMin * Mathf.Deg2Rad));
@@ -152,11 +159,14 @@ public class HUD_Revised_v2 : MonoBehaviour
             float xAngleMax = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMax, Camera.main.transform.up);
             float yAngleMax = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMax, Camera.main.transform.right);
             float obstAngleLowerBounds = Vector3.Angle(gazeDirection, camToObstacleMax);
+            //Debug.DrawRay(headPosition, camToObstacleMax, Color.yellow);
+
 
             obst.ObstXValues.Add(Mathf.Cos(xAngleMax * Mathf.Deg2Rad));
             obst.ObstYValues.Add(Mathf.Cos(yAngleMax * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleLowerBounds);
 
+            
 
 
 
@@ -277,7 +287,7 @@ public class HUD_Revised_v2 : MonoBehaviour
                 Cue.transform.localPosition = new Vector3(-0.5f + 0.05f * cueSizeMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
             }
 
-            if (targetObst.ObstYmin >= HUDThreshold) //Turn on top HUD
+            if (targetObst.ObstYmin >= HUDThreshold * HUDTopMultiplier) //Turn on top HUD. Modified by HUD Top Multiplier.
             {
                 GameObject Cue = HUD_North;
                 Cue.SetActive(true);
@@ -340,6 +350,9 @@ public class HUD_Revised_v2 : MonoBehaviour
             HUDCalibration = false;
             Debug.Log("HUD calibration off.");
             textToSpeech.StartSpeaking("HUD Calibration off.");
+
+            //Also adjust calibration obstacle
+            obstacleManager.calibrationObstacle.SetActive(false);
         }
 
         else
@@ -347,6 +360,8 @@ public class HUD_Revised_v2 : MonoBehaviour
             HUDCalibration = true;
             Debug.Log("HUD calibration on.");
             textToSpeech.StartSpeaking("HUD Calibration on.");
+            obstacleManager.calibrationObstacle.SetActive(true);
+
         }
     }
 

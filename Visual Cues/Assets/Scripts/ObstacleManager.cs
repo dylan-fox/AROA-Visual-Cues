@@ -37,7 +37,7 @@ public class ObstacleManager : MonoBehaviour
 
     public GameObject interfaceObject;
     public GameObject cuesParent;
-    public GameObject calibrationCue;
+    public GameObject calibrationObstacle; //High obstacle at far back used to determine left/right alignment
     public GameObject debugCanvas;
     public Experiment_Logger experimentLogger;
     
@@ -108,10 +108,9 @@ public class ObstacleManager : MonoBehaviour
     {
         if (debugCanvas.activeSelf)
         {
-            Debug.Log("Debug text object: " + debugCanvas.ToString());
             TextMeshProUGUI debug = debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>();
             debug.text =
-                "Mode: " + experimentLogger.cueCondition + "\n" +
+                "Mode: " + experimentLogger.cueCondition + ", " +
                 "Layout: " + experimentLogger.layout + "\n" +
                 "High obstacle height: " + Mathf.Round(highObstHeight * 39.37f) + " inches" + "\n" + 
                 "Distance capped: " + distanceCap + "\n" +
@@ -180,20 +179,7 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    public void CalibrationToggle()
-    {
-        Debug.Log("Toggling calibration cue.");
-        if (calibrationCue.activeSelf)
-        { 
-            calibrationCue.SetActive(false);
-            textToSpeech.StartSpeaking("Calibration cue off.");
-        }
-        else
-        {
-            calibrationCue.SetActive(true);
-            textToSpeech.StartSpeaking("Calibration cue on.");
-        }
-    }
+
 
     public void DebugToggle()
     {
