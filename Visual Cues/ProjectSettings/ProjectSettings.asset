@@ -632,11 +632,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: AROA
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 8003a689131ed801
+  metroCertificateSubject: Cooper Lab
+  metroCertificateIssuer: Cooper Lab
+  metroCertificateNotAfter: 00a735ca1d3dd901
   metroApplicationDescription: Obstacle Avoidance
   wsaImages:
     65636: Assets/Icons/AROA_Logo_v1_icon_50px.png

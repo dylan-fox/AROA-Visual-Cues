@@ -113,6 +113,11 @@ public class HUD_Revised_v2 : MonoBehaviour
         var headPosition = Camera.main.transform.position;
         var gazeDirection = Camera.main.transform.forward;
 
+        //Negate X rotation (vertical) for determining whether an obstacle is in front or not
+        Vector3 gazeFlat = new Vector3(gazeDirection.x, 0, gazeDirection.z);
+
+        //Debug.Log("Gaze direction: " + gazeDirection.ToString() + "; Flat gaze: " + gazeFlat.ToString());
+
 
         //Update information in ObstInfos
         foreach (ObstInfo obst in ObstInfos)
@@ -133,34 +138,33 @@ public class HUD_Revised_v2 : MonoBehaviour
             //Calculate distance to obstacle center
             Vector3 camToObstacle = obst.ObstObject.transform.position - headPosition;
             obst.ObstMinDist = camToObstacle.magnitude; //Distance from head to center of object
-            //Debug.DrawRay(headPosition, camToObstacle, Color.cyan);
+
 
             //Calculate angles to obstacle center, min and max bounds
+            //Center
             float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
             float yAngleCenter = Vector3.SignedAngle(Camera.main.transform.up, camToObstacle, Camera.main.transform.right);
-            float obstAngleCenter = Vector3.Angle(gazeDirection, camToObstacle);
+            float obstAngleCenter = Vector3.Angle(gazeFlat, camToObstacle);
 
             obst.ObstXValues.Add(Mathf.Cos(xAngleCenter * Mathf.Deg2Rad));
             obst.ObstYValues.Add(Mathf.Cos(yAngleCenter * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleCenter);
 
-            
+            //Minimum bounds
             Vector3 camToObstacleMin = obst.ObstBounds.min - headPosition;
             float xAngleMin = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMin, Camera.main.transform.up);
             float yAngleMin = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMin, Camera.main.transform.right);
-            float obstAngleUpperBounds = Vector3.Angle(gazeDirection, camToObstacleMin);
-            //Debug.DrawRay(headPosition, camToObstacleMin, Color.red);
+            float obstAngleUpperBounds = Vector3.Angle(gazeFlat, camToObstacleMin);
 
             obst.ObstXValues.Add(Mathf.Cos(xAngleMin * Mathf.Deg2Rad));
             obst.ObstYValues.Add(Mathf.Cos(yAngleMin * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleUpperBounds);
 
+            //Maximum bounds
             Vector3 camToObstacleMax = obst.ObstBounds.max - headPosition;
             float xAngleMax = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMax, Camera.main.transform.up);
             float yAngleMax = Vector3.SignedAngle(Camera.main.transform.up, camToObstacleMax, Camera.main.transform.right);
-            float obstAngleLowerBounds = Vector3.Angle(gazeDirection, camToObstacleMax);
-            //Debug.DrawRay(headPosition, camToObstacleMax, Color.yellow);
-
+            float obstAngleLowerBounds = Vector3.Angle(gazeFlat, camToObstacleMax);
 
             obst.ObstXValues.Add(Mathf.Cos(xAngleMax * Mathf.Deg2Rad));
             obst.ObstYValues.Add(Mathf.Cos(yAngleMax * Mathf.Deg2Rad));
@@ -303,7 +307,7 @@ public class HUD_Revised_v2 : MonoBehaviour
                 Cue.transform.localPosition = new Vector3(Cue.transform.localPosition.x, -0.5f + 0.05f * cueSizeMultiplier, Cue.transform.localPosition.z);
             }
 
-            Debug.Log("Target obstacle: " + targetObst.ObstName);
+            //Debug.Log("Target obstacle: " + targetObst.ObstName);
             if (debugText.activeSelf)
             {
                 debugText.GetComponent<TextMeshProUGUI>().text +=

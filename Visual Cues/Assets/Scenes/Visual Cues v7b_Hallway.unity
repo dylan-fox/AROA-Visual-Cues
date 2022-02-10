@@ -4534,9 +4534,9 @@ MonoBehaviour:
   cueWidthMaxMultiplier: 4
   minDist: 0
   maxDist: 2.5
-  HUDThreshold: 0.25
-  HUDTopMultiplier: 0.5
-  frontAngle: 60
+  HUDThreshold: 0.15
+  HUDTopMultiplier: 0.66
+  frontAngle: 75
   debugText: {fileID: 2105630243}
   HUDCalibration: 1
 --- !u!1 &1377672507

@@ -157,9 +157,24 @@ namespace QRTracking
                             layout = "Layout 6";
                         }
 
+                        else if (action.qrCode.Data == "QR Code 7")
+                        {
+                            layout = "Layout 7";
+                        }
+
+                        else if (action.qrCode.Data == "QR Code 8")
+                        {
+                            layout = "Layout 8";
+                        }
+
                         else if (action.qrCode.Data == "Demo")
                         {
                             layout = "Demo Layout";
+                        }
+
+                        else
+                        {
+                            layout = "Unrecognized Layout";
                         }
 
                         experimentLogger.layout = layout;
@@ -187,6 +202,7 @@ namespace QRTracking
                             qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
 
                             //AROA EDIT
+                            //QR codes created using https://www.qr-code-generator.com/
                             Debug.Log("Action.qrCode.Data = " + action.qrCode.Data);
                             qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                             qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
@@ -222,9 +238,24 @@ namespace QRTracking
                                 layout = "Layout 6";
                             }
 
+                            else if (action.qrCode.Data == "QR Code 7")
+                            {
+                                layout = "Layout 7";
+                            }
+
+                            else if (action.qrCode.Data == "QR Code 8")
+                            {
+                                layout = "Layout 8";
+                            }
+
                             else if (action.qrCode.Data == "Demo")
                             {
                                 layout = "Demo Layout";
+                            }
+
+                            else
+                            {
+                                layout = "Unrecognized Layout";
                             }
 
                             qrCodeObject.GetComponent<QRCode>().layout = layout;

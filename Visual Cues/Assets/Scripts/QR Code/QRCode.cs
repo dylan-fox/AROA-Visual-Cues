@@ -191,9 +191,31 @@ namespace QRTracking
                             obstHigh2.transform.localPosition = new Vector3(1000f, highHeight, 1000f);
                         }
 
+                        else if (layout == "Layout 7")
+                        {
+                            //Assign obstacles to position 7
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 4.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 1.5f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 6f);
+                            obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
+                            obstHigh2.transform.localPosition = new Vector3(1000f, highHeight, 13.5f);
+                        }
+
+                        else if (layout == "Layout 8")
+                        {
+                            //Assign obstacles to position 8
+                            obstWide1.transform.localPosition = new Vector3(-0.45f, wideHeight, 1.5f);
+                            obstWide2.transform.localPosition = new Vector3(0.45f, wideHeight, 3.0f);
+                            obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
+                            obstLow2.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
+                            obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 9f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
+                        }
+
                         else if (layout == "Demo Layout")
                         {
-                            //Assign the medium chair to the middle of the room, and put the rest far away.
+                            //Assign a low obstacle to the middle of the room, and put the rest far away.
                             obstWide1.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
                             obstWide2.transform.localPosition = new Vector3(1000f, wideHeight, 1000f);
                             obstLow1.transform.localPosition = new Vector3(1000f, lowHeight, 1000f);
