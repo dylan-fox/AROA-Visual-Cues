@@ -3893,7 +3893,7 @@ MonoBehaviour:
   numShownTextObject: {fileID: 1696318003}
   defaultHeight: 1.6256
   maxDisplayDistance: 5
-  distanceCap: 1
+  distanceCap: 0
   highObstHeight: 1.524
 --- !u!4 &1264387025
 Transform:
@@ -4145,21 +4145,6 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0.95238
-            m_StringArgument: doorway
-            m_BoolArgument: 0
-          m_CallState: 2
-  - keyword: Toggle Distance Cap
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1264387024}
-          m_MethodName: ToggleDistanceCap
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: -1
             m_StringArgument: doorway
             m_BoolArgument: 0
           m_CallState: 2

@@ -349,6 +349,8 @@ public class HUD_Revised_v2 : MonoBehaviour
 
     public void HUDCalibrationToggle ()
     {
+        //Toggles HUD cue calibration (all 4 on), calibration obstacle, distance cap 
+
         if (HUDCalibration)
         {
             HUDCalibration = false;
@@ -367,6 +369,8 @@ public class HUD_Revised_v2 : MonoBehaviour
             obstacleManager.calibrationObstacle.SetActive(true);
 
         }
+
+        obstacleManager.ToggleDistanceCap();
     }
 
   

@@ -66,8 +66,7 @@ public class ObstacleManager : MonoBehaviour
 
     private LayerMask defaultMask = ~0;
     private LayerMask obstacleMask;
-    [HideInInspector]
-    public bool distanceCap = true;
+    public bool distanceCap = false;
 
     [Tooltip("Height of high obstacles in meters.")]
     public float highObstHeight = 1.524f;
@@ -112,14 +111,13 @@ public class ObstacleManager : MonoBehaviour
             debug.text =
                 "Mode: " + experimentLogger.cueCondition + ", " +
                 "Layout: " + experimentLogger.layout + "\n" +
-                "High obstacle height: " + Mathf.Round(highObstHeight * 39.37f) + " inches" + "\n" + 
-                "Distance capped: " + distanceCap + "\n" +
-                "HUD calibration: " + HUD_Revised.HUDCalibration;
+                "High obstacle height: " + Mathf.Round(highObstHeight * 39.37f) + " inches" + "\n" +
+                "Front angle and HUD Threshold: " + HUD_Revised.frontAngle + ", " + HUD_Revised.HUDThreshold;
                 
             if (!distanceCap || HUD_Revised.HUDCalibration)
             {
                 //If distance is uncapped or HUD calibration is on, this will warn experimenter not to run
-                debug.text += "\nDO NOT RUN";
+                debug.text += "\nDEACTIVATE CALIBRATION";
             }
             else
                 debug.text += "\nOK TO EXPERIMENT";

@@ -199,7 +199,7 @@ namespace QRTracking
                             obstLow1.transform.localPosition = new Vector3(0f, lowHeight, 6f);
                             obstLow2.transform.localPosition = new Vector3(0f, lowHeight, 10.5f);
                             obstHigh1.transform.localPosition = new Vector3(0f, highHeight, 7.5f);
-                            obstHigh2.transform.localPosition = new Vector3(1000f, highHeight, 13.5f);
+                            obstHigh2.transform.localPosition = new Vector3(0f, highHeight, 13.5f);
                         }
 
                         else if (layout == "Layout 8")

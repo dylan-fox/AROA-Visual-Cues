@@ -66,13 +66,6 @@ MonoBehaviour:
       description: None
       axisConstraint: 0
   - localizationKey: 
-    keyword: Toggle Distance Cap
-    keyCode: 48
-    action:
-      id: 0
-      description: None
-      axisConstraint: 0
-  - localizationKey: 
     keyword: Rotate Left
     keyCode: 276
     action:
