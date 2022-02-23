@@ -84,8 +84,14 @@ public class HUD_Revised_v2 : MonoBehaviour
         {
             foreach (Transform Obst in collocatedCuesParent.transform)
             {
-                //Add each obstacle in the list to ObstInfos
-                ObstInfos.Add(new ObstInfo(Obst.gameObject.name, Obst.gameObject));
+
+                //Ignoring the calibration obstacle...
+                if (Obst.gameObject.name != "Calibration Obstacle")
+                {
+                    //Add each obstacle in the list to ObstInfos
+                    ObstInfos.Add(new ObstInfo(Obst.gameObject.name, Obst.gameObject));
+                }
+
             }
         }
 
@@ -235,7 +241,7 @@ public class HUD_Revised_v2 : MonoBehaviour
         }
 
 
-        //If calirbation mode is on, keep all cues visible and reset to default positions and sizes
+        //If calibration mode is on, keep all cues visible and reset to default positions and sizes
         if (HUDCalibration)
         {
             cueSizeMultiplier = 1.0f;
@@ -353,24 +359,31 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         if (HUDCalibration)
         {
+            //Turn off calibration
             HUDCalibration = false;
             Debug.Log("HUD calibration off.");
             textToSpeech.StartSpeaking("HUD Calibration off.");
 
-            //Also adjust calibration obstacle
+            //Also disable calibration obstacle and enable distance cap
             obstacleManager.calibrationObstacle.SetActive(false);
+            obstacleManager.ToggleDistanceCap(true);
+
         }
 
         else
         {
+            //Turn on calibration
             HUDCalibration = true;
             Debug.Log("HUD calibration on.");
             textToSpeech.StartSpeaking("HUD Calibration on.");
+
+            //Also enable calibration obstacle and  disable distance cap
             obstacleManager.calibrationObstacle.SetActive(true);
+            obstacleManager.ToggleDistanceCap(false);
+
 
         }
 
-        obstacleManager.ToggleDistanceCap();
     }
 
   

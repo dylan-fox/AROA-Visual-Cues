@@ -89,10 +89,13 @@ public class ObstacleManager : MonoBehaviour
         }
         */
 
+        //Create an obstacle mask that will allow the camera to ignore obstacles
+        //By hiding them from the camera while leaving the obstacles there, we can have HUD cues on without collocated cues
         obstacleMask = LayerMask.GetMask("Obstacles");
         obstacleMask = ~obstacleMask;
 
-        Camera.main.farClipPlane = maxDisplayDistance;
+        //Start with distance cap off
+        Camera.main.farClipPlane = 1000;
 
         //Start with cues on, calibration on, gestures and interface off
         //CollocatedCuesToggle();
@@ -108,9 +111,15 @@ public class ObstacleManager : MonoBehaviour
         if (debugCanvas.activeSelf)
         {
             TextMeshProUGUI debug = debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>();
+
+            string forwardOrBackward;
+            if (experimentLogger.forward)
+                forwardOrBackward = "forward";
+            else
+                forwardOrBackward = "backward";
+
             debug.text =
-                "Mode: " + experimentLogger.cueCondition + ", " +
-                "Layout: " + experimentLogger.layout + "\n" +
+                "Mode, layout, direction: " + experimentLogger.cueCondition + ", " + experimentLogger.layout + ", " + forwardOrBackward + "\n" + 
                 "High obstacle height: " + Mathf.Round(highObstHeight * 39.37f) + " inches" + "\n" +
                 "Front angle and HUD Threshold: " + HUD_Revised.frontAngle + ", " + HUD_Revised.HUDThreshold;
                 
@@ -395,9 +404,9 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    public void ToggleDistanceCap ()
+    public void ToggleDistanceCap (bool turnOn)
     {
-        if (distanceCap)
+        if (!turnOn)
         {
             Camera.main.farClipPlane = 1000;
             distanceCap = false;

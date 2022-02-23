@@ -35,6 +35,7 @@ public class Experiment_Logger : MonoBehaviour
     private string filePath2;
     private string fileName;
     private string fileName2;
+    public bool forward = true; //Forward if true, backward if false
     private Vector3 tempPos;
     private Vector3 tempRot;
     private float tempTime;
@@ -172,8 +173,18 @@ public class Experiment_Logger : MonoBehaviour
 
             //Set timestamp and path name
             string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
-            fileName = timeStamp + '_' + cueCondition + '_' + layout + ".txt";
-            fileName2 = timeStamp + '_' + cueCondition + '_' + layout + "_update.txt";
+            if (forward)
+            {
+                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_fixed.txt";
+                fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_update.txt";
+            }
+
+            else
+            {
+                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_fixed.txt";
+                fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_update.txt";
+            }
+
             Debug.Log("Filename: " + fileName);
             Debug.Log("Filename 2: " + fileName2);
             filePath = Path.Combine(Application.persistentDataPath, fileName);
@@ -228,6 +239,9 @@ public class Experiment_Logger : MonoBehaviour
             {
                 writer.WriteLine("Logging ended at " + tempTime);
             }
+            
+            //change from forward to backward or vice versa
+            forward = !forward;
         }
 
         else
