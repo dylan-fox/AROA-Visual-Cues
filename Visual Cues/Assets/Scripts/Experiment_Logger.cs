@@ -32,9 +32,9 @@ public class Experiment_Logger : MonoBehaviour
     public bool loggingInProcess = false;
 
     private string filePath;
-    private string filePath2;
+    //private string filePath2;
     private string fileName;
-    private string fileName2;
+    //private string fileName2;
     public bool forward = true; //Forward if true, backward if false
     private Vector3 tempPos;
     private Vector3 tempRot;
@@ -67,17 +67,8 @@ public class Experiment_Logger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Adjusting back to only log in fixed update
         /*
-        Debug.Log("Is eye tracking enabled: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabled);
-        Debug.Log("Is eye calibration valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid);
-        Debug.Log("Is eye tracking enabled and valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
-        Debug.Log("Is eye tracking data valid: " + CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingDataValid);
-        Debug.Log("Gaze origin: " + CoreServices.InputSystem.EyeGazeProvider.GazeOrigin.ToString());
-        Debug.Log("Camera forward vector: " + Camera.transform.forward.ToString());
-        Debug.Log("Camera euler angles: " + Camera.transform.rotation.eulerAngles.ToString());
-        Debug.Log("Gaze direction: " + CoreServices.InputSystem.EyeGazeProvider.GazeDirection.ToString());
-        Debug.Log("Eye movement: " + (Camera.transform.forward - CoreServices.InputSystem.EyeGazeProvider.GazeDirection).ToString());
-        */
 
         //Set cue condition
         if (obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
@@ -154,6 +145,7 @@ public class Experiment_Logger : MonoBehaviour
                     northOn + "; " + eastOn + "; " + southOn + "; " + westOn);
             }
         }
+        */
 
     }
 
@@ -175,22 +167,22 @@ public class Experiment_Logger : MonoBehaviour
             string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
             if (forward)
             {
-                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_fixed.txt";
-                fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_update.txt";
+                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward.txt";
+                //fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_update.txt";
             }
 
             else
             {
-                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_fixed.txt";
-                fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_update.txt";
+                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward.txt";
+                //fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_update.txt";
             }
 
             Debug.Log("Filename: " + fileName);
-            Debug.Log("Filename 2: " + fileName2);
+            //Debug.Log("Filename 2: " + fileName2);
             filePath = Path.Combine(Application.persistentDataPath, fileName);
-            filePath2 = Path.Combine(Application.persistentDataPath, fileName2);
+            //filePath2 = Path.Combine(Application.persistentDataPath, fileName2);
             Debug.Log("File path: " + filePath);
-            Debug.Log("File path: " + filePath2);
+            //Debug.Log("File path: " + filePath2);
 
 
             //define variable values at start
@@ -235,11 +227,13 @@ public class Experiment_Logger : MonoBehaviour
                 writer.WriteLine("Logging ended at " + tempTime);
             }
 
+            /*
             using (TextWriter writer = File.AppendText(filePath2))
             {
                 writer.WriteLine("Logging ended at " + tempTime);
             }
-            
+            */
+
             //change from forward to backward or vice versa
             forward = !forward;
         }
