@@ -39,6 +39,8 @@ namespace QRTracking
         public GameObject obstHigh2;
         public GameObject obstWide1;
         public GameObject obstWide2;
+        public float startingHeight = 1.5f; //Height in meters of QR code above the ground
+        public float startingDist = 0.9f; //Horizontal distance, in meters, from starting line to QR code (half width of hallway)
 
         public float lowHeight = 0.05f;
         public float medHeight = 0.444f;
@@ -117,8 +119,8 @@ namespace QRTracking
                         trackedObject.transform.position = qrCodeCube.transform.position; //new Vector3 (0.9f, 0f, 0f);  //Adjust position to QR code location
                         //make local changes to adjust
                         //trackedObject.transform.localPosition -= trackedObject.transform.forward * 0.86f;
-                        trackedObject.transform.localPosition -= trackedObject.transform.up * 1.5f; //Assumes height of QR Code is 1.5m (~5ft) off the ground
-                        trackedObject.transform.localPosition += trackedObject.transform.right * 0.9f; //Assumes hallway is 1.8m wide
+                        trackedObject.transform.localPosition -= trackedObject.transform.up * startingHeight; //Assumes height of QR Code is 1.5m (~5ft) off the ground
+                        trackedObject.transform.localPosition += trackedObject.transform.right * startingDist; //Assumes hallway is 1.8m wide
                         highHeight = obstacleManager.highObstHeight;
 
 

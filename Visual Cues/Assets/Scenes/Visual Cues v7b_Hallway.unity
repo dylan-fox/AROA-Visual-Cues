@@ -1353,7 +1353,7 @@ PrefabInstance:
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4310497907485728116, guid: 34a41a0faa22a0e44bc8cb679b6fe188,
         type: 3}
@@ -4291,6 +4291,7 @@ MonoBehaviour:
   cueCondition: Default Condition
   layout: Default Layout
   loggingInProcess: 0
+  forward: 1
 --- !u!1001 &1368031973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5713,7 +5714,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948430007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.6256, z: 0}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1523452016}

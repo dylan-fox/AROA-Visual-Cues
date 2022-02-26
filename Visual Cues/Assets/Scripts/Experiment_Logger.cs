@@ -18,8 +18,8 @@ public class Experiment_Logger : MonoBehaviour
     public QRCodes_AROA qRCodes_AROA;
     public TextToSpeech textToSpeech;
     public GameObject HUDFrame; //Frame containing HUD cues
-    [HideInInspector]
-    public List<GameObject> HUDCues; //All HUD cue objects
+    //[HideInInspector]
+    //public List<GameObject> HUDCues; //All HUD cue objects
 
     [HideInInspector]
     public string cueCondition = "Default Condition";
@@ -44,6 +44,12 @@ public class Experiment_Logger : MonoBehaviour
     private bool eyeTrackingDataValid;
     private Vector3 gazeDirection;
     private Vector3 eyeMovement;
+    private string directionString;
+
+    private GameObject northCue;
+    private GameObject southCue;
+    private GameObject eastCue;
+    private GameObject westCue;
 
     private bool northOn;
     private bool eastOn;
@@ -58,10 +64,28 @@ public class Experiment_Logger : MonoBehaviour
     {
         foreach (Transform Cue in HUDFrame.transform)
         {
-            HUDCues.Add(Cue.gameObject);
+            //HUDCues.Add(Cue.gameObject);
+
+            if (Cue.gameObject.name == "HUD Cue North")
+                northCue = Cue.gameObject;
+
+            else if (Cue.gameObject.name == "HUD Cue East")
+                eastCue = Cue.gameObject;
+
+            else if (Cue.gameObject.name == "HUD Cue South")
+                southCue = Cue.gameObject;
+
+            else if (Cue.gameObject.name == "HUD Cue West")
+                westCue = Cue.gameObject;
+
+            else
+                Debug.Log("Unidentified HUD cue.");
         }
 
-        Debug.Log("HUD Cues length: " + HUDCues.Count);
+
+        //Debug.Log("HUD Cues length: " + HUDCues.Count);
+
+
     }
 
     // Update is called once per frame
@@ -167,15 +191,20 @@ public class Experiment_Logger : MonoBehaviour
             string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
             if (forward)
             {
-                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward.txt";
+                directionString = "Forward";
+                //fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward.txt";
                 //fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "forward" + "_update.txt";
             }
 
             else
             {
-                fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward.txt";
+                directionString = "Backward";
+                //fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward.txt";
                 //fileName2 = timeStamp + '_' + cueCondition + '_' + layout + '_' + "backward" + "_update.txt";
             }
+
+            fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + directionString + ".txt";
+
 
             Debug.Log("Filename: " + fileName);
             //Debug.Log("Filename 2: " + fileName2);
@@ -195,8 +224,8 @@ public class Experiment_Logger : MonoBehaviour
 
             using (TextWriter writer = File.AppendText(filePath))
             {
-                writer.WriteLine("Logging begun. Format: \n" +
-                    "Log Type; Cue Condition; Layout; Time; Position X; Position Y; Position Z; " +
+                writer.WriteLine(
+                    "Log Type; Cue Condition; Layout; Direction; Time; Position X; Position Y; Position Z; " +
                     "Rotation X; Rotation Y; Rotation Z; " +
                     "Eye Tracking Enabled (true/false); " + "Eye Tracking Data Valid (true/false); " + 
                     "Gaze Direction X; Gaze Direction Y; Gaze Direction Z; " +
@@ -262,6 +291,28 @@ public class Experiment_Logger : MonoBehaviour
 
 
         //Check if each of the HUD cues is on.
+        if (northCue.activeSelf)
+            northOn = true;
+        else
+            northOn = false;
+
+        if (eastCue.activeSelf)
+            eastOn = true;
+        else
+            eastOn = false;
+
+        if (southCue.activeSelf)
+            southOn = true;
+        else
+            southOn = false;
+
+        if (westCue.activeSelf)
+            westOn = true;
+        else
+            westOn = false;
+
+        /*
+         * Above is more efficient as long as there are only 4 HUD cues
         foreach (GameObject Cue in HUDCues)
         {
             if (Cue.name == "HUD Cue North")
@@ -296,6 +347,7 @@ public class Experiment_Logger : MonoBehaviour
                     westOn = false;
             }
         }
+         */
 
         if (loggingInProcess)
         {
@@ -311,7 +363,7 @@ public class Experiment_Logger : MonoBehaviour
 
             using (TextWriter writer = File.AppendText(filePath))
             {
-                writer.WriteLine("Fixed; " + cueCondition + "; " + layout + "; " + tempTime + "; " +
+                writer.WriteLine("Fixed; " + cueCondition + "; " + layout + "; " + directionString + "; "  + tempTime + "; " +
                     tempPos.x + "; " + tempPos.y + "; " + tempPos.z + "; " +
                     tempRot.x + "; " + tempRot.y + "; " + tempRot.z + "; " + 
                     eyeTrackingEnabled + "; " + eyeTrackingDataValid + "; " + 
