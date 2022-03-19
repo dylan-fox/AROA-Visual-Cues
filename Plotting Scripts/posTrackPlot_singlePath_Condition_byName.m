@@ -10,15 +10,22 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     close all;
     %If this bool is true, then it plots the path with line thickness
     %varying with speed. If false, then it's a constant line
-    
+
+%||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    fileName = 'OA0422-03-09_Combined_Layout 8_Backward_posTracking_.csv';
+    plotThicknessBool = true;
+%||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
     %Datapath
     datapath = '../PosPCAData/';
-    %fileName = 'AR03_12-01-21_Combined_Layout 4_posTracking_.csv';
     sbjFileName = fileName(1:13);
     %No cue, collocated, combined, etc. from the filename
-    trialType = fileName(15:end-26);
+    trialType = fileName(15:end-35)
     %Layout Number
-    layoutNum = str2double(fileName(end-17));
+    layoutNum = str2double(fileName(end-26));
+    %Backward/Forward
+    directionality = "Backward";
+    direcBool = 1; %1 = backward, 0 = forward
 
     sampRate = 50; %Sampling Rate
     
@@ -49,7 +56,7 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         %Sets the size of the graph in pixels
         set(gcf,'Position',[0, 0, 6400, 300]);%maxX*400,maxY*400]);
         %Resizes the axes within the figure (as a proportion of the total figure size
-        set(gca,'OuterPosition',[0.03, 0, 0.97, 0.97])
+        set(gca,'OuterPosition',[0.02, 0, 0.97, 0.97])
 
         % read in data from csv, convert from table to array
         C = table2array(readtable([datapath sbjFileName '/' fileName]));
@@ -58,6 +65,12 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         z = C(:,1);
         x = C(:,2);
         t = C(:,3);
+
+        if direcBool == 1
+            yee =  "etner"
+            x =  - x;
+            z = max(z) - z;
+        end
 
         %Get HUD cue binaries 
         %0 = false, 1 = true
@@ -133,7 +146,21 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         if (plotThicknessBool)
             fig = plotVariedLineThickness(z, x, t, dists, sampRate, fig, colours(typeID, :));
         else
-            plot(z, -x, 'LineWidth', 1.25, 'Color', colours(typeID, :));
+            plot(z, -x, 'LineWidth', 1.25, 'Color', [0.5 0.5 0.5]);%colours(typeID, :));
+        end
+
+        %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 1);
+
+        drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0 );
+
+        if direcBool ==1
+            for n = 1:75:length(x)-1
+                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            end
+        else
+            for n = 1:75:length(x)-1
+                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            end
         end
 
         xlim([minX-0 maxX+0]);
@@ -191,7 +218,7 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     
         %Plotting name text
         sbjFileName(5) = ' ';
-        nameText = strcat(sbjFileName, ' - Layout',' ', num2str(layoutNum));
+        nameText = strcat(sbjFileName, ' - Layout ',' ', num2str(layoutNum), ", " ,directionality);
         t2 = text(0.25, -borderY2(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t2.FontName = 'Gill Sans MT';
         t2.FontSize = 12;
@@ -213,7 +240,7 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         end
  
         %Saves the figure as a .png 
-        filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum));
+        filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
         saveas(fig, strcat(filePath,'.fig'));
         exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
         %saveas(fig, strcat(filePath,'.png'));

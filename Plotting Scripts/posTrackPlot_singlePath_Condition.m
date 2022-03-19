@@ -157,7 +157,7 @@ for s = 1:length(listing); %goes through all folders
                     if (plotThicknessBool == true)
                         fig = plotVariedLineThickness(z, x, t, dists, sampRate, fig, colours(typeID, :));
                     else
-                        plot(z, -x, 'LineWidth',2.5, 'Color', colours(typeID, :));
+                        plot(z, -x, 'LineWidth',1.25, 'Color', colours(typeID, :));
                     end
                     
                     xlim([minX-0 maxX+0]);

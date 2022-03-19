@@ -1,36 +1,17 @@
-function outFig = plotVariedLineThickness(z, x, t, sampRate, inFig, colour)
-            
-        %Get the differences between adjacent elements of the vector
-        zDiffs = diff(z);
-        length(zDiffs)
-        xDiffs = diff(x);
-        %tDiffs = diff(t);
-        
-        %Distance
-        dists = sqrt(xDiffs.^2 + zDiffs.^2);
+function outFig = plotVariedLineThickness(z, x, t, dists, sampRate, inFig, colour)
+        %keyboard
         distsNonZero = dists;
         for n = 2:length(distsNonZero)
             if distsNonZero(n)== 0
                 distsNonZero(n) = distsNonZero(n-1);
             end
         end
-
-        %Total distance of the path
-        totalDist = sum(dists);
         
-        %Calculate cumulative differences for each vector
-        zCumuSum = cumsum(abs(z));
-        xCumuSum = cumsum(abs(x));
-        tCumuSum = cumsum(abs(t));
+        distsNonZeroSpeeds = distsNonZero.*sampRate;
         
-        %Speed calculations (m/s) for each between-frame segment
-        distSpeeds = dists.*sampRate;
-        xSpeeds = x.*sampRate;
-        zSpeeds = z.*sampRate;
-
-        maxSpeed = max(distSpeeds);
-        minSpeed = min(distSpeeds);
-        speedRange = max(distSpeeds) - min(distSpeeds);
+        maxSpeed = max(distsNonZeroSpeeds);
+        minSpeed = min(distsNonZeroSpeeds);
+        speedRange = max(distsNonZeroSpeeds) - min(distsNonZeroSpeeds);
 
         figure(inFig);
 
@@ -43,7 +24,7 @@ function outFig = plotVariedLineThickness(z, x, t, sampRate, inFig, colour)
 %             n
 %How much faster the speed at the current frame is than the minimum speed as a decimal 
 % (current speed minus the minSpeed divided by the range of speeds)
-            lineThickness = abs(log10((distSpeeds(n)-minSpeed)/speedRange)/log(20)) %log base 20
+            lineThickness = 0.5+2*abs(log10((distsNonZeroSpeeds(n)-minSpeed)/speedRange)); %log base 20
             if lineThickness > 2
                 lineThickness = 2;
             end

@@ -24,6 +24,8 @@ switch singleOrMulti
 %                 
 %         end
 
+
+
         popUpWindow = figure(1);
 
         bg = uibuttongroup('Visible','off',...

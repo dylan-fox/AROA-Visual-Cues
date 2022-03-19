@@ -1,12 +1,11 @@
 function outFig = plotVariedLineThickness(z, x, t, dists, sampRate, inFig, colour)
-        
+        %keyboard
         distsNonZero = dists;
         for n = 2:length(distsNonZero)
             if distsNonZero(n)== 0
                 distsNonZero(n) = distsNonZero(n-1);
             end
         end
-        
         distsNonZeroSpeeds = distsNonZero.*sampRate;
         
         maxSpeed = max(distsNonZeroSpeeds);
@@ -24,7 +23,7 @@ function outFig = plotVariedLineThickness(z, x, t, dists, sampRate, inFig, colou
 %             n
 %How much faster the speed at the current frame is than the minimum speed as a decimal 
 % (current speed minus the minSpeed divided by the range of speeds)
-            lineThickness = 0.5+2*abs(log10((distsNonZeroSpeeds(n)-minSpeed)/speedRange)); %log base 20
+            lineThickness = 0.5+2*abs(log10((distsNonZeroSpeeds(n)-minSpeed)/(speedRange*log10(50)))); %log base 50
             if lineThickness > 2
                 lineThickness = 2;
             end

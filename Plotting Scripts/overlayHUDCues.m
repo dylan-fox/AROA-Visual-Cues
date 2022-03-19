@@ -5,8 +5,8 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     %1 = up, 2 = down, 3 = right, 4 = left
     upHUDIndOn = find(upHUD);
     downHUDIndOn = find(downHUD);
-    rightHUDIndOn = find(rightHUD)
-    leftHUDIndOn = find(leftHUD)
+    rightHUDIndOn = find(rightHUD);
+    leftHUDIndOn = find(leftHUD);
 
     figure(inFig);
 
@@ -25,44 +25,45 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     %Left and Up cues go above the position line, right and down cues go below
     %second = false;
     offSet = 0.04; %+offset = below the graphline, -offset = above the graphline
+    displacement = 0;%.02;
 
-    up = plot(upZ(upHUDIndOn), -(upX(upHUDIndOn)-2*offSet), 'LineWidth',1.05, 'Color', upColour);
-    down = plot(downZ(downHUDIndOn), -(downX(downHUDIndOn)+2*offSet), 'LineWidth',1.05, 'Color', downColour);
-    right = plot(rightZ(rightHUDIndOn), -(rightX(rightHUDIndOn)+offSet), 'LineWidth',1.05, 'Color', rightColour);
-    left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-offSet), 'LineWidth',1.05, 'Color', leftColour);
+    up = plot(upZ(upHUDIndOn), -(upX(upHUDIndOn)-(2*offSet+displacement)), 'LineWidth',1.05, 'Color', upColour);
+    down = plot(downZ(downHUDIndOn), -(downX(downHUDIndOn)+(2*offSet+displacement)), 'LineWidth',1.05, 'Color', downColour);
+    right = plot(rightZ(rightHUDIndOn), -(rightX(rightHUDIndOn)+(offSet+displacement)), 'LineWidth',1.05, 'Color', rightColour);
+    left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-(offSet+displacement)), 'LineWidth',1.05, 'Color', leftColour);
 
     %Labels for the legend
     %All of them are 12 characters long so that a string array can be used
-    legendNames = strings([4,1])%['Up Cue On   '; 'Down Cue On '; 'Right Cue On'; 'Left Cue On '];
+    legendNames = strings([4,1]);%['Up Cue On   '; 'Down Cue On '; 'Right Cue On'; 'Left Cue On '];
 
     LNindex = 0;
 
     %Takes out the labels if that directional cue was never activated in the run
     if ~isempty(upHUDIndOn)
         %Finds and NaNs the corresponding legened label
-        u = 'upname is not empty'
+        u = 'upname is not empty';
         %LNindex = length(legendNames)+1;
         LNindex = LNindex+1;
-        legendNames(LNindex, :) = 'Up Cue On   '
+        legendNames(LNindex, :) = 'Up Cue On   ';
     end
     
     if ~isempty(downHUDIndOn)
-        d = 'downname is not empty'
+        d = 'downname is not empty';
         LNindex = LNindex+1;%LNindex = length(legendNames)+1;
         
-        legendNames(LNindex, :) = 'Down Cue On '
+        legendNames(LNindex, :) = 'Down Cue On ';
     end
 
     if ~isempty(rightHUDIndOn)
-        r = 'rightname is not empty'
+        r = 'rightname is not empty';
         LNindex = LNindex+1;%LNindex = length(legendNames)+1;
-        legendNames(LNindex, :) = 'Right Cue On'
+        legendNames(LNindex, :) = 'Right Cue On';
     end
 
     if ~isempty(leftHUDIndOn)
-        l = 'leftname is not empty'
+        l = 'leftname is not empty';
         LNindex = LNindex+1;%LNindex = length(legendNames)+1;
-        legendNames(LNindex, :) = 'Left Cue On '
+        legendNames(LNindex, :) = 'Left Cue On ';
         
     end
 
