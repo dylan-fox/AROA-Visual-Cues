@@ -55,8 +55,15 @@ for s = 1:length(listing); %goes through all folders
                         downHUD = str2double(strrep(strrep(C{22}, 'False', '0'), 'True', '1'));
                         leftHUD = str2double(strrep(strrep(C{23}, 'False', '0'), 'True', '1'));
 
+                        %Gaze Information - 14-16 is Gaze Direction, 17-19
+                        %is Eye Movement
+                        gazePosX = C{17};
+                        gazePosY = C{18};
+                        gazePosZ = C{19};
+
                         %Trial Information
-                        %trialType = string(C{2});
+                        trialType = C{2};
+                        trialDirection = C{4};
 
                         %Layout number as double
                         layoutNum = cell2mat(C{3});
@@ -145,8 +152,15 @@ for s = 1:length(listing); %goes through all folders
                     csvname = strcat(folderPath, sbjFileName, '_',num2str(task),'_', '.csv');
                     %1:end-1 because that's what's done to z, x, and t to
                     %remove the "NaN' at the end
-                    csvwrite(csvname, [z,x,t, upHUD(1:end-1), rightHUD(1:end-1), downHUD(1:end-1), leftHUD(1:end-1), layoutNum, directionality]);
+                    %csvwrite(csvname, [z,x,t, upHUD(1:end-1), rightHUD(1:end-1), downHUD(1:end-1), leftHUD(1:end-1), layoutNum, directionality]);
+                    
+                    %The num2cell() is needed because the previous format
+                    %won't support writing both numbers and strings to the
+                    %csv file at the same time
+                    writetable(cell2table([num2cell(z), num2cell(x),num2cell(t), num2cell(upHUD(1:end-1)), num2cell(rightHUD(1:end-1)), num2cell(downHUD(1:end-1)), num2cell(leftHUD(1:end-1)), trialType(1:end-1), num2cell(layoutNum), num2cell(directionality), num2cell(gazePosX(1:end-1)), num2cell(gazePosY(1:end-1)), num2cell(gazePosZ(1:end-1)), trialDirection(1:end-1)]),csvname,'writevariablenames',0)
 
+
+              
                    counter = counter +1;
 
                 end

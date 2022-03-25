@@ -1,31 +1,27 @@
-%This is a temporary script - Matlab doesn't allow overloading functions
-%This will be converged with the main posTrackPlot_singlePath_Condition
-%once I figure out how best to do it
-
 %This is different from original version in that it selects one csv file by
 %name to make a graph of it
 
-function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
+function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
     close all;
     %If this bool is true, then it plots the path with line thickness
     %varying with speed. If false, then it's a constant line
 
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    fileName = 'OA04_22-03-09_Combined_Layout 8_Backward_posTracking_.csv';
-    plotThicknessBool = true;
+    fileName = 'OA04_22-03-09_Combined_Layout 8_Forward_posTracking_.csv';
+    plotThicknessBool = false;
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     %Datapath
     datapath = '../PosPCAData/';
     sbjFileName = fileName(1:13);
     %No cue, collocated, combined, etc. from the filename
-    trialType = fileName(15:end-35);
+    %trialType;
     %Layout Number
-    layoutNum = str2double(fileName(end-26));
+    %layoutNum;
     %Backward/Forward
-    directionality = "Backward";
-    direcBool = 1; %1 = backward, 0 = forward
+    %directionality;
+    %direcBool = 1; %1 = backward, 0 = forward
 
     sampRate = 50; %Sampling Rate
     
@@ -60,13 +56,26 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
         % read in data from csv, convert from table to array
         C = readtable([datapath sbjFileName '/' fileName]);
-        C = table2array(C(:,[1:7 , 9, 10]));
-        trialType = string(C(1, 8));
+        trialType = string(table2array(C(1, 8)));
+        directionality = string(table2array(C(1,14)));
+        if strcmp(directionality, "Forward")
+            direcBool = 0;
+        elseif strcmp(directionality, "Backward")
+            direcBool = 1;
+        end
+        C = table2array(C(:,[1:7 , 9:13]));
+        layoutNum = C(1,8);
 
-        %Get z, x, t
+        %Get position z, x, t
         z = C(:,1);
         x = C(:,2);
         t = C(:,3);
+
+        %Get gaze x, y, z
+        gazePosX = C(:, 10);
+        gazePosY = C(:, 11);
+        gazePosZ = C(:, 12);
+
 
         %If the direction is backward, flip the array
         if direcBool == 1
@@ -149,22 +158,38 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         if (plotThicknessBool)
             fig = plotVariedLineThickness(z, x, t, dists, sampRate, fig, colours(typeID, :));
         else
-            plot(z, -x, 'LineWidth', 1.25, 'Color', [0.5 0.5 0.5]);%colours(typeID, :));
+            plot(z, -x, 'LineWidth', 1.25, 'Color', colours(typeID, :));
         end
 
-        %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 1);
+        %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 0, 0.1);
 
-        drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0 );
-
+        %Draws arrows per 75 frames
         if direcBool ==1
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
+            quiver(z(1), -x(1), z(2)-z(1), -x(2)+x(1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            quiver(z(end-1), -x(end-1), z(end)-z(end-1), -x(end)+x(end-1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
         else
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
+            quiver(z(1), -x(1), z(2)-z(1), -x(2)+x(1), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            quiver(z(end-1), -x(end-1), z(end)-z(end-1), -x(end)+x(end-1), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
         end
+
+        gazeVectorLengths = gazePosX.^2+gazePosZ.^2;
+        maxVecLength = max(gazeVectorLengths)
+        %For every x number of frames
+        n = 0;
+        for n= 1:20:length(gazePosX)
+            if gazeVectorLengths(n) == maxVecLength
+                gazeVectorLengths(n) = 0.001;
+            end
+            quiver(z(n), -x(n), gazePosZ(n), -gazePosX(n), 2.5+gazeVectorLengths(n)/maxVecLength, 'r');%(z(n)+gazePosZ(n)), -(x(n)+gazePosX(n)) );%, sqrt(gazePosX(n)^2+gazePosZ(n)^2));
+        end
+
 
         xlim([minX-0 maxX+0]);
         ylim([-0.9 0.9]);
@@ -221,14 +246,20 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     
         %Plotting name text
         sbjFileName(5) = ' ';
-        nameText = strcat(sbjFileName, ' - Layout ',' ', num2str(layoutNum), ", " ,directionality);
+        nameText = strcat(sbjFileName, ' - Layout '," ", num2str(layoutNum), ", " ,directionality);
         t2 = text(0.25, -borderY2(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t2.FontName = 'Gill Sans MT';
         t2.FontSize = 12;
 
         %Plotting total distance text (rounded to 2 dps)
         nameText = strcat('Total Distance:  ', num2str(round(totalDist*100)/100), 'm');
-        t3 = text(13.65, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3 = text(13.75, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3.FontName = 'Gill Sans MT';
+        t3.FontSize = 8;
+
+        %Plotting total time elapsed (rounded to 2 dps)
+        nameText = strcat('Total Time:', " ", num2str(round(t(end)*100)/100), 's');
+        t3 = text(13.95, -borderY2(1)+0.30, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t3.FontName = 'Gill Sans MT';
         t3.FontSize = 8;
     
@@ -246,7 +277,7 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
         saveas(fig, strcat(filePath,'.fig'));
         exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
-        %saveas(fig, strcat(filePath,'.png'));
+        %saveas(fig, strcat(filePath,'.png')); %lower resolution pngs, but fast
     else
         errorMsg = msgbox("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename", '404filenotfound');
         error("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename");

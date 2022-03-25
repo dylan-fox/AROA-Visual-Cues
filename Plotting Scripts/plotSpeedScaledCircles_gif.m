@@ -1,4 +1,4 @@
-function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour, byTimeOrDist, intervalSecOrM)
+function outFig = plotSpeedScaledCircles_gif(z, x, t, dists, sampRate, inFig, colour, byTimeOrDist, intervalSecOrM, maxSpeed, minSpeed)
         %For a smooth graph, do every frame
         %byTimeOrDist: 0 = time, 1 = dist
         %intervalSecOrM: every however many second or m each circle should be plotted
@@ -46,10 +46,10 @@ function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour
 
         %Speeds
         distsNonZeroSpeeds = distsNonZero.*sampRate;
-        
-        maxSpeed = max(distsNonZeroSpeeds);
-        minSpeed = min(distsNonZeroSpeeds);
-        speedRange = max(distsNonZeroSpeeds) - min(distsNonZeroSpeeds);
+      
+        %maxSpeed = max(distsNonZeroSpeeds);
+        %minSpeed = min(distsNonZeroSpeeds);
+        speedRange = maxSpeed - minSpeed;
 
         figure(inFig);
 
@@ -70,7 +70,7 @@ function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour
 %|||||||||||||||||||||||||||||||||||SIZE ONLY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         %Vary 10 to 40 for diameter
         speed2Diameter = 10+30*abs(log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange)); %log base 20
-        speed2Opacity = 1+0*abs(1-log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange));
+        speed2Opacity = 0.8+0.2*abs(1-log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange));
 %         indices
 % 
 %         lengthZ = length(z)

@@ -1,11 +1,7 @@
-%This is a temporary script - Matlab doesn't allow overloading functions
-%This will be converged with the main posTrackPlot_singlePath_Condition
-%once I figure out how best to do it
-
 %This is different from original version in that it selects one csv file by
 %name to make a graph of it
 
-function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
+function posTrackPlot_singlePath_Condition_byName_Vertical(fileName, plotThicknessBool)
 
     close all;
     %If this bool is true, then it plots the path with line thickness
@@ -13,7 +9,7 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     fileName = 'OA04_22-03-09_Combined_Layout 8_Backward_posTracking_.csv';
-    plotThicknessBool = true;
+    plotThicknessBool = false;
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     %Datapath
@@ -60,8 +56,8 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
         % read in data from csv, convert from table to array
         C = readtable([datapath sbjFileName '/' fileName]);
+        trialType = string(table2array(C(1, 8)));
         C = table2array(C(:,[1:7 , 9, 10]));
-        trialType = string(C(1, 8));
 
         %Get z, x, t
         z = C(:,1);
@@ -152,19 +148,18 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
             plot(z, -x, 'LineWidth', 1.25, 'Color', [0.5 0.5 0.5]);%colours(typeID, :));
         end
 
-        %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 1);
+        fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 0, 0.1);
 
-        drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0 );
-
-        if direcBool ==1
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
-        else
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
-        end
+        %Draws arrows per 75 frames
+%         if direcBool ==1
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
+%         else
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
+%         end
 
         xlim([minX-0 maxX+0]);
         ylim([-0.9 0.9]);
@@ -221,14 +216,20 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     
         %Plotting name text
         sbjFileName(5) = ' ';
-        nameText = strcat(sbjFileName, ' - Layout ',' ', num2str(layoutNum), ", " ,directionality);
+        nameText = strcat(sbjFileName, ' - Layout '," ", num2str(layoutNum), ", " ,directionality);
         t2 = text(0.25, -borderY2(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t2.FontName = 'Gill Sans MT';
         t2.FontSize = 12;
 
         %Plotting total distance text (rounded to 2 dps)
         nameText = strcat('Total Distance:  ', num2str(round(totalDist*100)/100), 'm');
-        t3 = text(13.65, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3 = text(13.75, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3.FontName = 'Gill Sans MT';
+        t3.FontSize = 8;
+
+        %Plotting total time elapsed (rounded to 2 dps)
+        nameText = strcat('Total Time:', " ", num2str(round(t(end)*100)/100), 's');
+        t3 = text(13.95, -borderY2(1)+0.30, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t3.FontName = 'Gill Sans MT';
         t3.FontSize = 8;
     
@@ -245,8 +246,8 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         %Saves the figure as a .png 
         filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
         saveas(fig, strcat(filePath,'.fig'));
-        exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
-        %saveas(fig, strcat(filePath,'.png'));
+        %exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
+        saveas(fig, strcat(filePath,'.png')); %lower resolution pngs, but fast
     else
         errorMsg = msgbox("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename", '404filenotfound');
         error("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename");

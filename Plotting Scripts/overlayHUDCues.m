@@ -22,15 +22,42 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     rightColour = [5, 0, 120]./256; %Navy
     leftColour = [81, 75, 227]./256; %Soft dark blue
 
+
     %Left and Up cues go above the position line, right and down cues go below
     %second = false;
     offSet = 0.04; %+offset = below the graphline, -offset = above the graphline
-    displacement = 0;%.02;
+    displacement = 0.04;
 
-    up = plot(upZ(upHUDIndOn), -(upX(upHUDIndOn)-(2*offSet+displacement)), 'LineWidth',1.05, 'Color', upColour);
-    down = plot(downZ(downHUDIndOn), -(downX(downHUDIndOn)+(2*offSet+displacement)), 'LineWidth',1.05, 'Color', downColour);
-    right = plot(rightZ(rightHUDIndOn), -(rightX(rightHUDIndOn)+(offSet+displacement)), 'LineWidth',1.05, 'Color', rightColour);
-    left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-(offSet+displacement)), 'LineWidth',1.05, 'Color', leftColour);
+    
+    %Checks if any of the these are empty, and if they are, assigns one
+    %datapoint to them so the elgend would still be correct
+    if isempty(upHUDIndOn)
+        upHUDIndOn = [0, 1];
+        up = plot(0, 0.9, 'Color', upColour);
+    else
+        up = plot(upZ(upHUDIndOn), -(upX(upHUDIndOn)-(2*offSet+displacement)), 'LineWidth',1.05, 'Color', upColour);
+    end
+
+    if isempty(downHUDIndOn)
+        downHUDIndOn = [0, 1];
+        down = plot(0, 0.9, 'Color', downColour);
+    else
+        down = plot(downZ(downHUDIndOn), -(downX(downHUDIndOn)+(2*offSet+displacement)), 'LineWidth',1.05, 'Color', downColour);
+    end
+
+    if isempty(rightHUDIndOn)
+        rightHUDIndOn = [0, 1];
+        right = plot(0, 0.9, 'Color', rightColour);
+    else
+        right = plot(rightZ(rightHUDIndOn), -(rightX(rightHUDIndOn)+(offSet+displacement)), 'LineWidth',1.05, 'Color', rightColour);
+    end
+
+    if isempty(leftHUDIndOn)
+        leftHUDIndOn = [0, 1];
+        left = plot(0, 0.9, 'Color', leftColour);
+    else
+        left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-(offSet+displacement)), 'LineWidth',1.05, 'Color', leftColour);
+    end
 
     %Labels for the legend
     %All of them are 12 characters long so that a string array can be used
