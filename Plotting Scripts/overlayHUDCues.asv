@@ -1,4 +1,4 @@
-function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1)
+function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1, HorV)
     
     %Finds the indices for each of the arrays where that HUD cue was on
     %(indices for all non-zero values)
@@ -26,33 +26,38 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     %Left and Up cues go above the position line, right and down cues go below
     %second = false;
     offSet = 0.04; %+offset = below the graphline, -offset = above the graphline
-    displacement = 0;%.02;
+    displacement = 0.04;
 
     
     %Checks if any of the these are empty, and if they are, assigns one
     %datapoint to them so the elgend would still be correct
     if isempty(upHUDIndOn)
-        up = plot(0, 0.9);
+        upHUDIndOn = [0, 1];
+        up = plot(0, 0.9, 'Color', upColour);
     else
         up = plot(upZ(upHUDIndOn), -(upX(upHUDIndOn)-(2*offSet+displacement)), 'LineWidth',1.05, 'Color', upColour);
     end
 
     if isempty(downHUDIndOn)
-        down = plot(0, 0.9);
+        downHUDIndOn = [0, 1];
+        down = plot(0, 0.9, 'Color', downColour);
     else
         down = plot(downZ(downHUDIndOn), -(downX(downHUDIndOn)+(2*offSet+displacement)), 'LineWidth',1.05, 'Color', downColour);
     end
 
     if isempty(rightHUDIndOn)
-        right = plot(0, 0.9);
+        rightHUDIndOn = [0, 1];
+        right = plot(0, 0.9, 'Color', rightColour);
     else
         right = plot(rightZ(rightHUDIndOn), -(rightX(rightHUDIndOn)+(offSet+displacement)), 'LineWidth',1.05, 'Color', rightColour);
     end
 
     if isempty(leftHUDIndOn)
-        le = plot(0, 0.9);
+        leftHUDIndOn = [0, 1];
+        left = plot(0, 0.9, 'Color', leftColour);
     else
-    left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-(offSet+displacement)), 'LineWidth',1.05, 'Color', leftColour);
+        left = plot(leftZ(leftHUDIndOn), -(leftX(leftHUDIndOn)-(offSet+displacement)), 'LineWidth',1.05, 'Color', leftColour);
+    end
 
     %Labels for the legend
     %All of them are 12 characters long so that a string array can be used
@@ -92,10 +97,16 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     %Gets rid of all NaN entries
     %legendNames = rmmissing(legendNames);
 
+    legLoc = [0.55 0.08 0.02 0.1];
+
+    if HorV == 2 %Vertical Plots
+        legLoc = [0.55 0.0001 0.02 0.1];
+    end
+
     %Copies the axis of the original/main  graph to make a second set of
     %axes so that the second legend can be made
-    ax2 = copyobj( ax1, gcf);
-    legend(ax2, [up down right left], legendNames, 'Location', [0.55 0.08 0.02 0.1], 'NumColumns', 2);
+    ax2 = copyobj(ax1, gcf);
+    legend(ax2, [up down right left], legendNames, 'Location', legLoc, 'NumColumns', 2);
     
     outFig = inFig;
     

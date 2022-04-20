@@ -12,20 +12,20 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     %varying with speed. If false, then it's a constant line
 
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    fileName = 'OA04_22-03-09_Combined_Layout 8_Backward_posTracking_.csv';
-    plotThicknessBool = true;
+    fileName = 'OA07_22-03-30_HUD_Layout 5_Forward_posTracking_.csv';
+    plotThicknessBool = false;
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     %Datapath
     datapath = '../PosPCAData/';
     sbjFileName = fileName(1:13);
     %No cue, collocated, combined, etc. from the filename
-    trialType = fileName(15:end-35);
+    %trialType;
     %Layout Number
-    layoutNum = str2double(fileName(end-26));
+    %layoutNum;
     %Backward/Forward
-    directionality = "Backward";
-    direcBool = 1; %1 = backward, 0 = forward
+    %directionality;
+    %direcBool = 1; %1 = backward, 0 = forward
 
     sampRate = 50; %Sampling Rate
     
@@ -60,13 +60,22 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
         % read in data from csv, convert from table to array
         C = readtable([datapath sbjFileName '/' fileName]);
-        C = table2array(C(:,[1:7 , 9, 10]));
-        trialType = string(C(1, 8));
-
+        trialType = string(table2array(C(1, 8)));
+        directionality = string(table2array(C(1,14)));
+        if strcmp(directionality, "Forward")
+            direcBool = 0;
+        elseif strcmp(directionality, "Backward")
+            direcBool = 1;
+        end
+        C = table2array(C(:,[1:7 , 9:13]));
+        layoutNum = C(1,8);
+       
         %Get z, x, t
         z = C(:,1);
         x = C(:,2);
         t = C(:,3);
+
+        %Remove the 
 
         %If the direction is backward, flip the array
         if direcBool == 1
@@ -152,19 +161,20 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
             plot(z, -x, 'LineWidth', 1.25, 'Color', [0.5 0.5 0.5]);%colours(typeID, :));
         end
 
-        %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 1);
+        %For time: standard has been 0, 0.25
+        %For space: 1, 0.1
+        fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 0, 0.25);
 
-        drawArrow = @(x,y) quiver( x(1),y(1),x(2)-x(1),y(2)-y(1),0 );
-
-        if direcBool ==1
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
-        else
-            for n = 1:75:length(x)-1
-                quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            end
-        end
+        %Draws arrows per 75 frames
+%         if direcBool ==1
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
+%         else
+%             for n = 1:75:length(x)-1
+%                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '>', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+%             end
+%         end
 
         xlim([minX-0 maxX+0]);
         ylim([-0.9 0.9]);
@@ -188,11 +198,11 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
         %Maps on HUD Cues on HUD condition trials
         if(strcmp(trialType, 'HUD')||strcmp(trialType, 'Combined'))
-            fig = overlayHUDCues(fig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1);
+            fig = overlayHUDCues(fig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1, 1);
         end
 
         %Maps on Obstacles
-        fig = overlayObstacles(fig, layoutNum);
+        fig = overlayObstacles(fig, layoutNum, 1, 0); %0 for participant height because it's a horizontal graph
     
         %Surrounding Bars for Indicating where the Hallway is
         borderX = 0:0.1:15; %ceil(maxX);
@@ -221,14 +231,26 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     
         %Plotting name text
         sbjFileName(5) = ' ';
-        nameText = strcat(sbjFileName, ' - Layout ',' ', num2str(layoutNum), ", " ,directionality);
+        nameText = strcat(sbjFileName, ' - Layout '," ", num2str(layoutNum), ", " ,directionality);
         t2 = text(0.25, -borderY2(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t2.FontName = 'Gill Sans MT';
         t2.FontSize = 12;
 
         %Plotting total distance text (rounded to 2 dps)
         nameText = strcat('Total Distance:  ', num2str(round(totalDist*100)/100), 'm');
-        t3 = text(13.65, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3 = text(13.75, -borderY2(1)+0.45, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3.FontName = 'Gill Sans MT';
+        t3.FontSize = 8;
+
+        %Plotting total time elapsed (rounded to 2 dps)
+        nameText = strcat('Total Time:', " ", num2str(round(t(end)*100)/100), 's');
+        t3 = text(13.95, -borderY2(1)+0.30, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3.FontName = 'Gill Sans MT';
+        t3.FontSize = 8;
+
+        %Plotting average velocity elapsed (rounded to 2 dps)
+        nameText = strcat('Average Velocity:', " ", num2str(round(totalDist/t(end)*100)/100), 'm/s');
+        t3 = text(13.57, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t3.FontName = 'Gill Sans MT';
         t3.FontSize = 8;
     
@@ -244,9 +266,9 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
  
         %Saves the figure as a .png 
         filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
-        saveas(fig, strcat(filePath,'.fig'));
+        %saveas(fig, strcat(filePath,'.fig'));
         exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
-        %saveas(fig, strcat(filePath,'.png'));
+        saveas(fig, strcat(filePath,'.png')); %lower resolution pngs, but fast
     else
         errorMsg = msgbox("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename", '404filenotfound');
         error("Sorry, couldn't find the file you're referring to! Please double-check the participantID and filename");

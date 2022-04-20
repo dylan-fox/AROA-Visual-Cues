@@ -38,18 +38,18 @@ function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour
         end
 
         distsNonZero = dists;
-        for n = 2:length(distsNonZero)
-            if distsNonZero(n)== 0
-                distsNonZero(n) = distsNonZero(n-1);
-            end
-        end
+%         for n = 2:length(distsNonZero)
+%             if distsNonZero(n)== 0
+%                 distsNonZero(n) = distsNonZero(n-1);
+%             end
+%         end
 
         %Speeds
         distsNonZeroSpeeds = distsNonZero.*sampRate;
         
-        maxSpeed = max(distsNonZeroSpeeds);
-        minSpeed = min(distsNonZeroSpeeds);
-        speedRange = max(distsNonZeroSpeeds) - min(distsNonZeroSpeeds);
+        maxSpeed = max(distsNonZeroSpeeds)
+        minSpeed = min(distsNonZeroSpeeds)
+        speedRange = max(distsNonZeroSpeeds) - min(distsNonZeroSpeeds)
 
         figure(inFig);
 
@@ -63,25 +63,26 @@ function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour
 %             colourBySpeed(n,:) = [1-speed2Colour(n), 0, speed2Colour(n)]; %Colour more blue when fast, more red when slow
 %         end
 % 
-%         scatter(z(2:end), -x(2:end), 12, colourBySpeed, 'filled');
+%         scatter(z(indices), -x(indices), 12, colourBySpeed, 'filled');
 %|||||||||||||||||||||||||||||||||||COLOUR ONLY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 %_________________________________________________________________________________________________________________________________
 
-%|||||||||||||||||||||||||||||||||||SIZE ONLY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        %Vary 10 to 40 for diameter
-        speed2Diameter = 10+30*abs(log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange)); %log base 20
+%|||||||||||||||||||||||||||||||||||SIZE + TRANSPARENCY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        %Vary 10 to 50 for diameter
+        speed2Diameter = 10+50*abs(log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange)); %log base 20
+        %speed2Diameter = (max(speed2Diameter)+1)-speed2Diameter
         speed2Opacity = 0.8+0.2*abs(1-log10((distsNonZeroSpeeds(indices)-minSpeed)/speedRange));
 %         indices
 % 
 %         lengthZ = length(z)
 %         lengthDia = length(speed2Diameter)
-        scatter(z(indices), -x(indices), speed2Diameter, [217/255 140/255 179/255], 'filled', 'MarkerFaceAlpha',  'flat', 'AlphaData', speed2Opacity);
+        scatter(z(indices), -x(indices), speed2Diameter, [217/255 140/255 179/255], 'filled');%, 'MarkerFaceAlpha',  'flat', 'AlphaData', speed2Opacity);
 %|||||||||||||||||||||||||||||||||||SIZE ONLY|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 %_________________________________________________________________________________________________________________________________
 
 %|||||||||||||||||||||||||||||||||||SIZE AND COLOUR|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-% 
+
 %         speed2Diameter = 10+30*abs(log10((distsNonZeroSpeeds-minSpeed)/speedRange));
 %         speed2Colour = abs(log10((distsNonZeroSpeeds-minSpeed)/speedRange)); %log base 20
 %         colourBySpeed = zeros(length(speed2Colour), 3);
@@ -90,9 +91,9 @@ function outFig = plotSpeedScaledCircles(z, x, t, dists, sampRate, inFig, colour
 %             colourBySpeed(n,:) = [1-speed2Colour(n), 0, speed2Colour(n)]; %Colour more blue when fast, more red when slow
 %         end
 % 
-%         scatter(z(2:end), -x(2:end), speed2Diameter, colourBySpeed, 'filled');
-%|||||||||||||||||||||||||||||||||||SIZE AND COLOUR|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-%_________________________________________________________________________________________________________________________________
+%         scatter(z(indices), -x(indices), speed2Diameter, colourBySpeed(indices,:), 'filled');
+% %|||||||||||||||||||||||||||||||||||SIZE AND COLOUR|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+% %_________________________________________________________________________________________________________________________________
         outFig = inFig;
 
         return;

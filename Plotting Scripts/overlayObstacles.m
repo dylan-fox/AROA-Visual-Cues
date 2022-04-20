@@ -1,9 +1,22 @@
-function outFig = overlayObstacles(inFig, layoutNum)
+function outFig = overlayObstacles(inFig, layoutNum, HorV, subjHeightMeters)
 
 %inFig is the graph from the main script that's been passed onto this
 %helper function
 %outFig is the same graph returned with the obstacles graphed on
-    
+    midWidth = 0.4;
+    highLowWideWidth = 0.3;
+    highLowHeight = 1.8;
+    wideHeight = highLowHeight/2;
+
+    locationSetX = 0:1.5:15; %11 locations down the hall
+    locationSetY =  [-0.9, 0];%-0.9:0.3:0.9;%7 locations across the hall
+
+    labelHeight = 1;
+
+   layoutSpecs = layoutStorageH(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight);
+   
+
+if HorV == 1 %Horizontal z,x plots
 %IMPORTANT THING TO NOTE IS THAT WHILE THE YTICK LABELS ON THE ACTUAL GRAPH
 %ARE FLIPPED NEGATIVE/POSITIVE TO REFLECT THAT RIGHT = POSITIVE VALUES, ON
 %THE GRAPHING HERE IT'S STILL THE ACTUAL VALUES, SO MOVING AN OBSTACLE
@@ -12,15 +25,26 @@ function outFig = overlayObstacles(inFig, layoutNum)
     locationSetX = 0:1.5:15; %11 locations down the hall
     locationSetY =  [-0.9, 0];%-0.9:0.3:0.9;%7 locations across the hall
 
-    midWidth = 0.4;
-    highLowWideWidth = 0.3;
-    highLowHeight = 1.8;
-    wideHeight = highLowHeight/2;
+
+    layoutSpecs = layoutStorageH(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight);
+   
+
+elseif HorV == 2 %Vertical
+    locationSetX = 0:1.5:15; %11 locations down the hall
+    locationSetY =  [-0, subjHeightMeters+0.15-0.5*highLowWideWidth];%2.5-highLowWideWidth];%-0.9:0.3:0.9;%7 locations across the hall
+
+    highLowHeight = highLowWideWidth;
+    wideHeight = 2;
+    labelHeight = 2.6;
+
+    wideWidth = 0.05;
+
+    layoutSpecs = layoutStorageV(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight, wideWidth);
+end
+
 
     figure(inFig);
-
     %layoutNum = 6;
-    layoutSpecs = layoutStorage(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight);
 
     for n = 1:6
         if ~isnan(layoutSpecs(n,:)) %Checks if the specific obstacle appeared in the given layout
@@ -33,7 +57,7 @@ function outFig = overlayObstacles(inFig, layoutNum)
                 r.LineWidth = 1.25;
                 
                 %Text label
-                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, 1,'Low');
+                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, labelHeight,'Low');
                 txt.Rotation = 60;
                 txt.FontSize = 8;
 %             
@@ -50,13 +74,13 @@ function outFig = overlayObstacles(inFig, layoutNum)
                 r.LineWidth = 1.25;
 
                 %Text label
-                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, 1,'High');
+                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, labelHeight,'High');
                 txt.Rotation = 60;
                 txt.FontSize = 8;
       
             elseif n == 1 || n == 2 %Wide
                 %Text label
-                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, 1,'Wide');
+                txt = text(layoutSpecs(n,1)+highLowWideWidth/2, labelHeight,'Wide');
                 txt.Rotation = 60;
                 txt.FontSize = 8;
             end
@@ -68,7 +92,7 @@ function outFig = overlayObstacles(inFig, layoutNum)
     return;
 end
 
-function layout = layoutStorage(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight)
+function layout = layoutStorageH(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight)
 
 %wide is always either 0.9 or 0
     switch layoutNum
@@ -149,6 +173,95 @@ function layout = layoutStorage(layoutNum, locationSetX, locationSetY, midWidth,
             low2 = [10.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
             high1 = [9-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight];
             high2 = [13.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+
+        otherwise
+            error("OopS!!! that layout dOESN'T exist! Please enter a layoutNum 1-8!");
+    end
+end
+  
+function layout = layoutStorageV(layoutNum, locationSetX, locationSetY, midWidth, highLowWideWidth, highLowHeight, wideHeight, wideWidth)
+
+%wide is always either 0.9 or 0
+    switch layoutNum
+        case 1
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [3-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [13.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [NaN, NaN, NaN, NaN]; %NaNs mean that that obstacle wasn't present in the layout
+            high1 = [6-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [12-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+        
+        case 2
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [4.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [6-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [7.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            high1 = [12-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [13.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+       
+        case 3
+            wide1 = [3-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [4.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [9-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [NaN, NaN, NaN, NaN]; 
+            high1 = [6-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [13.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+        
+        case 4
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [3-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [4.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [10.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            high1 = [6-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [7.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+        
+        case 5
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [4.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [10.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [13.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            high1 = [7-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [12-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+       
+        case 6
+            wide1 = [3-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [4.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [6-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [10.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight]; 
+            high1 = [7.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [NaN, NaN, NaN, NaN];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+
+        case 7
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [4.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [6-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            low2 = [10.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            high1 = [7.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [13.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+
+            layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
+                
+        case 8
+            wide1 = [1.5-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            wide2 = [3-wideWidth/2, locationSetY(1), wideWidth, wideHeight];
+            low1 = [NaN, NaN, NaN, NaN]; 
+            low2 = [10.5-highLowWideWidth/2, locationSetY(1), highLowWideWidth, highLowHeight]; 
+            high1 = [9-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
+            high2 = [13.5-highLowWideWidth/2, locationSetY(2), highLowWideWidth, highLowHeight];
 
             layout = [wide1; wide2; low1; low2; high1; high2]; %6x4 array
 

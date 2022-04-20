@@ -154,17 +154,18 @@ function posTrackPlot_singlePath_Condition_byName_gif(fileName, plotThicknessBoo
         end
     
         %Saves the figure as a .png 
-        filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
+        filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality,"HD");
         %saveas(fig, strcat(filePath,'.fig'));
         %exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
         %saveas(fig, strcat(filePath,'.png')); %lower resolution pngs, but fast
 
         %Gif Parameters
         gifCounter = 1;
-        gifNumFrames = 30;
-        endBuffer = 10; %Number of frames the completed graph will hold for at the end
+        gifNumFrames = 300;
+        endBuffer = 25; %Number of frames the completed graph will hold for at the end
+        delayTimeS = 0.02; %Number of seconds of delay between frames
         gifIncrement = floor(length(x)/gifNumFrames); %One gif frame per this many datapoints
-        filename = strcat(filePath,'.gif');
+        filename = strcat(filePath,'.gif')
         addpath('./export_fig/');
 %             gif('tester.gif', 'Resolution', 200);
 
@@ -224,11 +225,11 @@ function posTrackPlot_singlePath_Condition_byName_gif(fileName, plotThicknessBoo
 
             %Maps on HUD Cues on HUD condition trials
             if(strcmp(trialType, 'HUD')||strcmp(trialType, 'Combined'))
-                fig = overlayHUDCues(fig, z(indices), x(indices), upHUD(indices), downHUD(indices), rightHUD(indices), leftHUD(indices), ax1);
+                fig = overlayHUDCues(fig, z(indices), x(indices), upHUD(indices), downHUD(indices), rightHUD(indices), leftHUD(indices), ax1, 1);
             end
             
             %Maps on Obstacles
-            fig = overlayObstacles(fig, layoutNum);
+            fig = overlayObstacles(fig, layoutNum,1, 0);
     
              %Surrounding Bars for Indicating where the Hallway is
             borderX = 0:0.1:15; %ceil(maxX);
@@ -289,7 +290,7 @@ function posTrackPlot_singlePath_Condition_byName_gif(fileName, plotThicknessBoo
             if gifCounter == 1
                 imwrite(imind,cm,filename,'gif', 'Loopcount',inf); 
             else
-                imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime', 0.25); 
+                imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime', delayTimeS); 
             end
 
             clf(fig);

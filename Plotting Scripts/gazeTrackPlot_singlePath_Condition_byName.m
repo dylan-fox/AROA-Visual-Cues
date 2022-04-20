@@ -71,6 +71,8 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         x = C(:,2);
         t = C(:,3);
 
+        %Combs through to check for exact same x
+        
         %Get gaze x, y, z
         gazePosX = C(:, 10);
         gazePosY = C(:, 11);
@@ -179,15 +181,27 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 %             end
         end
 
+
+        %This is for gaze vectors
         gazeVectorLengths = gazePosX.^2+gazePosZ.^2;
         maxVecLength = max(gazeVectorLengths)
         %For every x number of frames
+%         n = 0;
+%         for n= 1:20:length(gazePosX)
+%             if gazeVectorLengths(n) == maxVecLength
+%                 gazeVectorLengths(n) = 0.001;
+%             end
+%             quiver(z(n), -x(n), gazePosZ(n), -gazePosX(n), 2.5+gazeVectorLengths(n)/maxVecLength, 'r');%(z(n)+gazePosZ(n)), -(x(n)+gazePosX(n)) );%, sqrt(gazePosX(n)^2+gazePosZ(n)^2));
+%         end
+
+        
+%For every x number of frames
+
+        arrowLength = 0.5;
         n = 0;
         for n= 1:20:length(gazePosX)
-            if gazeVectorLengths(n) == maxVecLength
-                gazeVectorLengths(n) = 0.001;
-            end
-            quiver(z(n), -x(n), gazePosZ(n), -gazePosX(n), 2.5+gazeVectorLengths(n)/maxVecLength, 'r');%(z(n)+gazePosZ(n)), -(x(n)+gazePosX(n)) );%, sqrt(gazePosX(n)^2+gazePosZ(n)^2));
+            %quiver(z(n), -x(n), z(n) + arrowLength*cos(gazePosZ(n)), -(x(n) + arrowLength*sin(gazePosX(n))), 'r');
+            quiver(z(n), -x(n), arrowLength*cos(gazePosZ(n)), -(arrowLength*sin(gazePosX(n))), 'r');
         end
 
 
@@ -213,11 +227,11 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
 
         %Maps on HUD Cues on HUD condition trials
         if(strcmp(trialType, 'HUD')||strcmp(trialType, 'Combined'))
-            fig = overlayHUDCues(fig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1);
+            fig = overlayHUDCues(fig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1, 1);
         end
 
         %Maps on Obstacles
-        fig = overlayObstacles(fig, layoutNum);
+        fig = overlayObstacles(fig, layoutNum, 1, 0);
     
         %Surrounding Bars for Indicating where the Hallway is
         borderX = 0:0.1:15; %ceil(maxX);

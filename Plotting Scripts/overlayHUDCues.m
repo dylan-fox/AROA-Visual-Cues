@@ -1,4 +1,4 @@
-function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1)
+function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1, HorV)
     
     %Finds the indices for each of the arrays where that HUD cue was on
     %(indices for all non-zero values)
@@ -97,10 +97,16 @@ function outFig = overlayHUDCues(inFig, z, x, upHUD, downHUD, rightHUD, leftHUD,
     %Gets rid of all NaN entries
     %legendNames = rmmissing(legendNames);
 
+    legLoc = [0.55 0.08 0.02 0.1];
+
+    if HorV == 2 %Vertical Plots
+        legLoc = [0.55 0.0001 0.02 0.1];
+    end
+
     %Copies the axis of the original/main  graph to make a second set of
     %axes so that the second legend can be made
-    ax2 = copyobj( ax1, gcf);
-    legend(ax2, [up down right left], legendNames, 'Location', [0.55 0.08 0.02 0.1], 'NumColumns', 2);
+    ax2 = copyobj(ax1, gcf);
+    legend(ax2, [up down right left], legendNames, 'Location', legLoc, 'NumColumns', 2);
     
     outFig = inFig;
     

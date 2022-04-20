@@ -55,11 +55,15 @@ for s = 1:length(listing); %goes through all folders
                         downHUD = str2double(strrep(strrep(C{22}, 'False', '0'), 'True', '1'));
                         leftHUD = str2double(strrep(strrep(C{23}, 'False', '0'), 'True', '1'));
 
-                        %Gaze Information - 14-16 is Gaze Direction, 17-19
-                        %is Eye Movement
-                        gazePosX = C{17};
-                        gazePosY = C{18};
-                        gazePosZ = C{19};
+                        %Gaze Information - 
+                        % 14-16 is Gaze Direction, 
+                        % 17-19 is Eye Movement
+                        % 9-11 is Head Rotation Angles
+                        gazePosX = C{9};
+                        gazePosY = C{10};
+                        gazePosZ = C{11};
+
+          
 
                         %Trial Information
                         trialType = C{2};
@@ -157,7 +161,7 @@ for s = 1:length(listing); %goes through all folders
                     %The num2cell() is needed because the previous format
                     %won't support writing both numbers and strings to the
                     %csv file at the same time
-                    writetable(cell2table([num2cell(z), num2cell(x),num2cell(t), num2cell(upHUD(1:end-1)), num2cell(rightHUD(1:end-1)), num2cell(downHUD(1:end-1)), num2cell(leftHUD(1:end-1)), trialType(1:end-1), num2cell(layoutNum), num2cell(directionality), num2cell(gazePosX(1:end-1)), num2cell(gazePosY(1:end-1)), num2cell(gazePosZ(1:end-1)), trialDirection(1:end-1)]),csvname,'writevariablenames',0)
+                    writetable(cell2table([num2cell(z), num2cell(x),num2cell(t), num2cell(upHUD(1:end-1)), num2cell(rightHUD(1:end-1)), num2cell(downHUD(1:end-1)), num2cell(leftHUD(1:end-1)), trialType(1:end-1), num2cell(layoutNum), num2cell(directionality), num2cell(gazePosX(1:end-1)), num2cell(gazePosY(1:end-1)), num2cell(gazePosZ(1:end-1)), trialDirection(1:end-1), num2cell(y)]),csvname,'writevariablenames',0)
 
 
               
