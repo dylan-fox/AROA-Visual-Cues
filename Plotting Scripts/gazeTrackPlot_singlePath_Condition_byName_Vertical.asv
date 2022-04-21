@@ -1,7 +1,7 @@
 %This is different from original version in that it selects one csv file by
 %name to make a graph of it
 
-function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
+function gazeTrackPlot_singlePath_Condition_byName_Vertical(fileName, plotThicknessBool)
 
     close all;
     %If this bool is true, then it plots the path with line thickness
@@ -11,7 +11,7 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
     %Up-and-down: Rotation around x axis, positive = down, negative = up
 
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    fileName = 'OA04_22-03-09_Combined_Layout 8_Forward_posTracking_.csv'; %OA06_22-03-21_Combined_Layout 2_Forward_posTracking_.csv
+    fileName = 'OA04_22-03-09_Combined_Layout 8_Forward_posTracking_.csv';
     plotThicknessBool = false;
 %||||||||||||||||||||||||||CHANGE AFTER DEBUGGING||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -165,15 +165,15 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         if (plotThicknessBool)
             fig = plotVariedLineThickness(z, x, t, dists, sampRate, fig, colours(typeID, :));
         else
-            plot(z, -x, 'LineWidth', 1.25, 'Color', colours(typeID, :));
+            plot(z, y, 'LineWidth', 1.25, 'Color', [0.5 0.5 0.5]);%colours(typeID, :));
         end
 
         %fig = plotSpeedScaledCircles(z, x, t, dists, sampRate, fig, colours(typeID, :), 0, 0.1);
 
         %Draws arrows per 75 frames
         if direcBool ==1
-            quiver(z(1), -x(1), z(2)-z(1), -x(2)+x(1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
-            quiver(z(end-1), -x(end-1), z(end)-z(end-1), -x(end)+x(end-1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            quiver(z(1), y(1), z(2)-z(1), y(2)yx(1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
+            quiver(z(end-1), y(end-1), z(end)-z(end-1), y(end)+x(end-1), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
 %             for n = 1:75:length(x)-1
 %                 quiver( z(n), -x(n), z(n+1)-z(n), -x(n+1)+x(n), 0 , 'Marker', '<', 'Color', colours(typeID, :), 'LineWidth', 1.5);
 %             end
@@ -202,47 +202,45 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         
 %For every x number of frames
 
-        arrowLength = 0.25;
+        arrowLength = 0.5;
         n = 0;
-        for n= 1:10:length(gazePosX)
+        for n= 1:20:length(gazePosX)
             %quiver(z(n), -x(n), z(n) + arrowLength*cos(gazePosZ(n)), -(x(n) + arrowLength*sin(gazePosX(n))), 'r');
-            quiver(z(n), -x(n), arrowLength*cos(gazePosY(n)), (arrowLength*sin(gazePosY(n))), 'b');
-            gazePosY(n)
+            quiver(z(n), y(n), arrowLength*cos(gazePosZ(n)), -(arrowLength*sin(gazePosX(n))), 'r');
         end
 
-
         xlim([minX-0 maxX+0]);
-        ylim([-0.9 0.9]);
+        ylim([0 2.5]);
         ax = gca;
         ax.Clipping = 'off';
         ax.FontName = 'Gill Sans MT';
         ax.FontSize = 10;
         
         %X- and Y-Tick Marks
-        set(gca,'XTick', [0:1.5:15], 'YTick', [-0.9:0.3:0.9]);
+        set(gca,'XTick', [0:1.5:15], 'YTick', [0:0.5:2.5]);
+
+        %YTick Labels
+        %yticklabels(sprintfc('%.2f', [0.85:0.3:2.65])); %Centred around participant's height
+        
 
         %Flip Y-axis direction
         %ax.YDir = 'reverse';
 
         %Flips Y-Tick labels so that right = positive and left = negative
-        yt = get(gca, 'YTick');
-        set(gca, 'YTickLabel',flip(yt));
+%         yt = get(gca, 'YTick');
+%         set(gca, 'YTickLabel',flip(yt));
         
         %Tight border around the graph
         set(gca,'LooseInset',get(gca,'TightInset'));
 
-        %Maps on HUD Cues on HUD condition trials
-        if(strcmp(trialType, 'HUD')||strcmp(trialType, 'Combined'))
-            fig = overlayHUDCues(fig, z, x, upHUD, downHUD, rightHUD, leftHUD, ax1, 1);
-        end
 
         %Maps on Obstacles
-        fig = overlayObstacles(fig, layoutNum, 1, 0);
+        fig = overlayObstacles(fig, layoutNum, 2, subjHeightMeters);
     
         %Surrounding Bars for Indicating where the Hallway is
         borderX = 0:0.1:15; %ceil(maxX);
-        borderY1 = -0.9*ones(length(borderX), 1);
-        borderY2 = 0.9*ones(length(borderX), 1); 
+        borderY1 = -0*ones(length(borderX), 1);
+        borderY2 = 2.5*ones(length(borderX), 1); 
         plot(borderX, borderY1, 'k', 'Linewidth', 3, 'Color', '#737373');
         plot(borderX, borderY2, 'k', 'Linewidth', 3, 'Color', '#737373');
         
@@ -259,7 +257,7 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         
         %Plotting the START text
         txt = {'START'};
-        t1 = text(-0.6, -0.3, txt);%text(0.25,borderY2(1)+0.25,txt);
+        t1 = text(-0.5, 1, txt);%text(0.25,borderY2(1)+0.25,txt);
         t1.FontName = 'Gill Sans MT';
         t1.FontSize = 12;
         t1.Rotation = 90;
@@ -267,24 +265,37 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         %Plotting name text
         sbjFileName(5) = ' ';
         nameText = strcat(sbjFileName, ' - Layout '," ", num2str(layoutNum), ", " ,directionality);
-        t2 = text(0.25, -borderY2(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t2 = text(0.25, -borderY1(1)-0.5, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t2.FontName = 'Gill Sans MT';
         t2.FontSize = 12;
 
         %Plotting total distance text (rounded to 2 dps)
         nameText = strcat('Total Distance:  ', num2str(round(totalDist*100)/100), 'm');
-        t3 = text(13.75, -borderY2(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3 = text(13.75, -borderY1(1)+0.45, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t3.FontName = 'Gill Sans MT';
         t3.FontSize = 8;
 
         %Plotting total time elapsed (rounded to 2 dps)
         nameText = strcat('Total Time:', " ", num2str(round(t(end)*100)/100), 's');
-        t3 = text(13.95, -borderY2(1)+0.30, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3 = text(13.95, -borderY1(1)+0.30, nameText); %text(0.25, -borderY2(1)+2, nameText);
+        t3.FontName = 'Gill Sans MT';
+        t3.FontSize = 8;
+
+        %Plotting average velocity elapsed (rounded to 2 dps)
+        nameText = strcat('Average Velocity:', " ", num2str(round(totalDist/t(end)*100)/100), 'm/s');
+        t3 = text(13.57, -borderY1(1)+0.15, nameText); %text(0.25, -borderY2(1)+2, nameText);
         t3.FontName = 'Gill Sans MT';
         t3.FontSize = 8;
     
+        %Maps on HUD Cues on HUD condition trials
+        %It has to be here for the vertical because the overlayHUDCues
+        %function copies the axes from the original graph
+        if(strcmp(trialType, 'HUD')||strcmp(trialType, 'Combined'))
+            fig = overlayHUDCues(fig, z, -y, upHUD, downHUD, rightHUD, leftHUD, ax1, 2);
+        end
+
         %Legend
-        lgd = legend(string(dataSetName), 'Location', [0.85 0.1 0.02 0.1]);
+        lgd = legend(string(dataSetName), 'Location', [0.85 0.001 0.02 0.1]);
         lgd.FontSize = 12;
 
         %Defines folderpath to save the figures to
@@ -294,7 +305,7 @@ function gazeTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         end
  
         %Saves the figure as a .png 
-        filePath = strcat('../PosFigures/singlePath_Condition/', "GazePlot", sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
+        filePath = strcat('../PosFigures/singlePath_Condition/', sbjFileName, "_", trialType, "_Layout", num2str(layoutNum), directionality);
         saveas(fig, strcat(filePath,'.fig'));
         exportgraphics(fig,strcat(filePath,'.png'),'Resolution',900); %%For really high resolution pngs
         %saveas(fig, strcat(filePath,'.png')); %lower resolution pngs, but fast

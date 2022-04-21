@@ -75,18 +75,6 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         x = C(:,2);
         t = C(:,3);
 
-        %Remove the consecutive values
-        updatingEnd = length(x)-1;
-        n = 1;
-        while n < updatingEnd
-            if(x(n)==x(n+1) && z(n) == z(n+1))
-                x(n) = [];
-                z(n) = [];
-                t(n) = [];
-                updatingEnd = updatingEnd-1;
-            end
-            n = n+1;
-        end
 
         %If the direction is backward, flip the array
         if direcBool == 1
@@ -101,6 +89,26 @@ function posTrackPlot_singlePath_Condition_byName(fileName, plotThicknessBool)
         rightHUD = C(:, 5);
         downHUD = C(:, 6);
         leftHUD = C(:, 7);
+
+
+        %Remove the consecutive values
+        updatingEnd = length(x)-1;
+        n = 1;
+        while n < updatingEnd
+            if(x(n)==x(n+1) && z(n) == z(n+1))
+                x(n) = [];
+                z(n) = [];
+                t(n) = [];
+
+                upHUD(n) = [];
+                rightHUD(n) = [];
+                downHUD(n) = [];
+                leftHUD(n) = [];
+
+                updatingEnd = updatingEnd-1;
+            end
+            n = n+1;
+        end
     
         %Get the differences between adjacent elements of the vector
         zDiffs = diff(z);
