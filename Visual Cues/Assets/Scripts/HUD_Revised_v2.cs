@@ -40,11 +40,11 @@ public class HUD_Revised_v2 : MonoBehaviour
     public float minDist = 0f;
     public float maxDist = 2.5f;
 
-    [Tooltip("The threshold for HUD cue activation. 0 = always on; 1 = never on.")]
-    public float HUDThreshold = 0.25f;
+    [Tooltip("The threshold for HUD cue activation. 0 = always on; 1 = never on. The higher the number, the more the user will have to look away from the obstacle to activate.")]
+    public float HUDThreshold = 0.15f;
 
     [Tooltip("The amount to multiply the upper cue HUD Threshold by. Smaller = easier activation.")]
-    public float HUDTopMultiplier = 0.5f;
+    public float HUDTopMultiplier = 0.66f;
 
     [Tooltip("The maximum angle for an obstacle to be considered 'in front of' the user.")]
     public float frontAngle = 75f;
