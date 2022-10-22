@@ -41,7 +41,7 @@ public class HUD_Revised_v2 : MonoBehaviour
     public float maxDist = 2.5f;
 
     [Tooltip("The threshold for HUD cue activation. 0 = always on; 1 = never on. The higher the number, the more the user will have to look away from the obstacle to activate.")]
-    public float HUDThreshold = 0.15f;
+    public float HUDThreshold = 0.15f;  //If the cosine of the maximum/minimum angle is greater than the HUD threshold, the threshold won't trigger. 
 
     [Tooltip("The amount to multiply the upper cue HUD Threshold by. Smaller = easier activation.")]
     public float HUDTopMultiplier = 0.66f;
@@ -147,6 +147,13 @@ public class HUD_Revised_v2 : MonoBehaviour
 
 
             //Calculate angles to obstacle center, min and max bounds
+            //Note that this uses SignedAngle, so it's measuring from A to B around C.
+            //For X angles, that means looking directly at something results in an angle of -90 degrees, and looking to the left results in higher angles approaching 0 (when right from the camera points at the obstacle).
+            //For Y angles, looking directly at something results in an angle of 90 degrees, and looking down results in lower angles approaching 0 (when up from the camera points directly at the obstacle.
+            
+            //Also note that ObstXValues and ObstYValues hold the COSINES of the largest and smallest X and Y angles. (ObstAngles does the same but for the "flattened" gaze angle.) 
+            //Thus, when looking directly at, for example, the right side of an obstacle, xAngleMax = -90 and ObstXValues adds 0; were you to look ten degrees to the right, xAngleMax = -100 and ObstXValues adds (cos(-100)) = -0.176.
+            
             //Center
             float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
             float yAngleCenter = Vector3.SignedAngle(Camera.main.transform.up, camToObstacle, Camera.main.transform.right);
@@ -166,6 +173,9 @@ public class HUD_Revised_v2 : MonoBehaviour
             obst.ObstYValues.Add(Mathf.Cos(yAngleMin * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleUpperBounds);
 
+            //Debug.Log("For obstacle " + obst.ObstName + " xAngleMin = " + xAngleMin + "; yAngleMin = " + yAngleMin + "; ObstXValues adding " + Mathf.Cos(xAngleMin * Mathf.Deg2Rad) + "; ObstYValues adding " + (Mathf.Cos(yAngleMin * Mathf.Deg2Rad)));
+
+
             //Maximum bounds
             Vector3 camToObstacleMax = obst.ObstBounds.max - headPosition;
             float xAngleMax = Vector3.SignedAngle(Camera.main.transform.right, camToObstacleMax, Camera.main.transform.up);
@@ -176,7 +186,8 @@ public class HUD_Revised_v2 : MonoBehaviour
             obst.ObstYValues.Add(Mathf.Cos(yAngleMax * Mathf.Deg2Rad));
             obst.ObstAngles.Add(obstAngleLowerBounds);
 
-            
+            //Debug.Log("For obstacle " + obst.ObstName + " xAngleMax = " + xAngleMax + "; yAngleMax = " + yAngleMax + "; ObstXValues adding " + Mathf.Cos(xAngleMax * Mathf.Deg2Rad) + "; ObstYValues adding " + (Mathf.Cos(yAngleMax * Mathf.Deg2Rad)));
+
 
 
 
@@ -215,6 +226,9 @@ public class HUD_Revised_v2 : MonoBehaviour
                 obst.IsFront = true;
             else
                 obst.IsFront = false;
+
+            //Debug.Log("For obstacle " + obst.ObstName + " ObstXmin = " + obst.ObstXmin + "; ObstYmin = " + obst.ObstYmin);
+            //Debug.Log("For obstacle " + obst.ObstName + " ObstXmax = " + obst.ObstXmax + "; ObstYmax = " + obst.ObstYmax);
 
         }
 
@@ -256,7 +270,7 @@ public class HUD_Revised_v2 : MonoBehaviour
             HUD_North.transform.localPosition = new Vector3(HUD_North.transform.localPosition.x, 0.5f - 0.05f, HUD_North.transform.localPosition.z);
         }
 
-        //Reset and turn off all cues
+        //If not, reset and turn off all cues
         else
         {
             cueSizeMultiplier = 1.0f;
@@ -281,7 +295,13 @@ public class HUD_Revised_v2 : MonoBehaviour
         {
             cueSizeMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
 
-            if (targetObst.ObstXmin >= HUDThreshold) //Turn on right HUD
+            if (targetObst.ObstXmin >= HUDThreshold) //Turn on right HUD.
+                                                     //Note that this triggers if the cosine of the smallest X angle is greater than the HUD threshold.
+                                                     //Also note the angle measurement notes in SignedAngle above.
+                                                     //i.e. if an obstacle's left edge is directly in the camera, its min angle is -90 and its ObstXMin is 0. 0 < 0.15 so the cue won't trigger.
+                                                     //If you look directly to the left 10 degrees, so that the obstacle is right of the camera, then the obstacle's max angle is -800 and its ObstXMin is 0.17.
+                                                     //0.17 > 0.15 so the cue will trigger.  
+
             {
                 GameObject Cue = HUD_East;
                 Cue.SetActive(true);
