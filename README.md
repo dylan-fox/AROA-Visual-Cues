@@ -45,6 +45,8 @@ These can be found in the latest scene (currently Visual Cues v7b_Hallway).
 
    * HUD Revised - This holds the **HUD_Revised_v2** script, which controls the heads-up cues.
    
+      * Text To Speech Object - This holds the **Text To Speech** script and an audio source, used to announce updates to user.
+   
       * HUD Frame - This holds the HUD Cue North/East/South/West objects, which are what enable or disable to show heads-up cues.
       
       * Debug Canvas - This shows the debug text while enabled.
