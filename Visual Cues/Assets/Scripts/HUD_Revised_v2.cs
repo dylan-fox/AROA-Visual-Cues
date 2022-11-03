@@ -8,19 +8,19 @@ using Microsoft.MixedReality.Toolkit.Audio;
 
 
 /// <summary>
-/// Displays HUD indicators leading towards desired Obsts.
+/// Displays HUD indicators leading towards desired Obstacles.
 /// Revised design features a limited number of bars along the side of the viewing area 
-/// that grow or shrink in response to distance and direction to Obst.
+/// that grow or shrink in response to distance and direction to obstacle.
 /// Revised v2 replaces raycast system with calculations based on rectangular digital obstacles.
 /// </summary>
 
 public class HUD_Revised_v2 : MonoBehaviour
 {
-    public GameObject HUDFrame; //Frame containing HUD cues
-    public TextToSpeech textToSpeech;
-    public ObstacleManager obstacleManager;
-    public Experiment_Logger experimentLogger;
-    public GameObject collocatedCuesParent;
+    public GameObject HUDFrame; //Frame containing HUD cues. Attach ""HUD Frame" object.
+    public TextToSpeech textToSpeech; //Attach "Text to Speech object"
+    public ObstacleManager obstacleManager;  //Attach "Obstacle Manager" object
+    public Experiment_Logger experimentLogger;  //Attach "Obstacle Manager" object
+    public GameObject collocatedCuesParent;  //Attach "Collocated Cues" object
  
 
     [HideInInspector]
@@ -51,10 +51,10 @@ public class HUD_Revised_v2 : MonoBehaviour
 
 
 
-    public GameObject debugText;
-    public bool HUDCalibration;
+    public GameObject debugText;  //Attach the "Debug Text" object under Debug Canvas
+    public bool HUDCalibration; //True if HUD Calibration is on.
 
-    private LayerMask obstacleMask;
+    //private LayerMask obstacleMask;  //Layer mask used to hide collocated cues
 
     //Cue width multiplier
     private float cueSizeMultiplier = 1.0f;
@@ -78,9 +78,10 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         }
 
-        obstacleMask = LayerMask.GetMask("Obstacles");
+        //obstacleMask = LayerMask.GetMask("Obstacles");
 
         if (collocatedCuesParent.transform.childCount >0)
+        //If there are cues in the collocated cues, add them to ObstInfos
         {
             foreach (Transform Obst in collocatedCuesParent.transform)
             {
@@ -147,12 +148,18 @@ public class HUD_Revised_v2 : MonoBehaviour
 
 
             //Calculate angles to obstacle center, min and max bounds
+
             //Note that this uses SignedAngle, so it's measuring from A to B around C.
-            //For X angles, that means looking directly at something results in an angle of -90 degrees, and looking to the left results in higher angles approaching 0 (when right from the camera points at the obstacle).
-            //For Y angles, looking directly at something results in an angle of 90 degrees, and looking down results in lower angles approaching 0 (when up from the camera points directly at the obstacle.
+            //For X angles, that means looking directly at something results in an angle of -90 degrees, and looking to the left
+            //results in higher angles approaching 0 (when right from the camera points at the obstacle).
+
+            //For Y angles, looking directly at something results in an angle of 90 degrees, and looking down results in lower
+            //angles approaching 0 (when up from the camera points directly at the obstacle.
             
-            //Also note that ObstXValues and ObstYValues hold the COSINES of the largest and smallest X and Y angles. (ObstAngles does the same but for the "flattened" gaze angle.) 
-            //Thus, when looking directly at, for example, the right side of an obstacle, xAngleMax = -90 and ObstXValues adds 0; were you to look ten degrees to the right, xAngleMax = -100 and ObstXValues adds (cos(-100)) = -0.176.
+            //Also note that ObstXValues and ObstYValues hold the COSINES of the largest and smallest X and Y angles.
+            //(ObstAngles does the same but for the "flattened" gaze angle.) 
+            //Thus, when looking directly at, for example, the right side of an obstacle, xAngleMax = -90 and ObstXValues adds 0;
+            //were you to look ten degrees to the right, xAngleMax = -100 and ObstXValues adds (cos(-100)) = -0.176.
             
             //Center
             float xAngleCenter = Vector3.SignedAngle(Camera.main.transform.right, camToObstacle, Camera.main.transform.up);
@@ -293,19 +300,20 @@ public class HUD_Revised_v2 : MonoBehaviour
 
         else //Turn on and resize cues for current obstacle
         {
-            cueSizeMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist);
+            cueSizeMultiplier = CalculateCueMultiplier(cueWidthMaxMultiplier, minDist, maxDist, targetObst.ObstMinDist); //Adjust size of cue based on distance
 
             if (targetObst.ObstXmin >= HUDThreshold) //Turn on right HUD.
                                                      //Note that this triggers if the cosine of the smallest X angle is greater than the HUD threshold.
                                                      //Also note the angle measurement notes in SignedAngle above.
                                                      //i.e. if an obstacle's left edge is directly in the camera, its min angle is -90 and its ObstXMin is 0. 0 < 0.15 so the cue won't trigger.
-                                                     //If you look directly to the left 10 degrees, so that the obstacle is right of the camera, then the obstacle's max angle is -800 and its ObstXMin is 0.17.
+                                                     //If you look directly to the left 10 degrees, so that the obstacle is right of the camera,
+                                                     //then the obstacle's max angle is -800 and its ObstXMin is 0.17.
                                                      //0.17 > 0.15 so the cue will trigger.  
 
             {
                 GameObject Cue = HUD_East;
                 Cue.SetActive(true);
-                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);
+                Cue.transform.localScale = new Vector3(Vector3.one.x * cueSizeMultiplier, Cue.transform.localScale.y, Cue.transform.localScale.z);  
                 Cue.transform.localPosition = new Vector3(0.5f - 0.05f * cueSizeMultiplier, Cue.transform.localPosition.y, Cue.transform.localPosition.z);
             }
 
@@ -335,6 +343,7 @@ public class HUD_Revised_v2 : MonoBehaviour
 
             //Debug.Log("Target obstacle: " + targetObst.ObstName);
             if (debugText.activeSelf)
+            //If the debug text is active, add information about the HUD cue.
             {
                 debugText.GetComponent<TextMeshProUGUI>().text +=
                     "\nTarget obstacle: " + targetObst.ObstName.ToString() +
@@ -350,24 +359,29 @@ public class HUD_Revised_v2 : MonoBehaviour
     }
 
     public float CalculateCueMultiplier (float MaxMultiplier, float minDist, float maxDist, float distance)
+     // Calculate cue size multiplier based on distance to obstacle
     {
         float cueMultiplier = 1 + (MaxMultiplier - 1) * (1 - (distance - minDist) / (maxDist - minDist));
         return cueMultiplier;
     }
 
     public void shiftHUDRight (float xShift)
+    //Shift HUD interface right or left by moving the HUD Frame
     {
         var curPos = HUDFrame.transform.localPosition;
         HUDFrame.transform.localPosition = new Vector3(curPos.x + xShift, curPos.y, curPos.z);
     }
 
     public void shiftHUDUp (float yShift)
+    //Shift HUD interface up or down by moving the HUD Frame
+    //Not currently in use
     {
         var curPos = HUDFrame.transform.localPosition;
         HUDFrame.transform.localPosition = new Vector3(curPos.x, curPos.y + yShift, curPos.z);
     }
 
     public void scaleHUD (float multiplier)
+    //Expand or contract HUD horizontally
     {
         var currentScale = HUDFrame.transform.localScale;
         HUDFrame.transform.localScale = new Vector3(currentScale.x * multiplier, currentScale.y, currentScale.z);
@@ -376,6 +390,7 @@ public class HUD_Revised_v2 : MonoBehaviour
     public void HUDCalibrationToggle ()
     {
         //Toggles HUD cue calibration (all 4 on), calibration obstacle, distance cap 
+        //This is done here instead of the Obstacle Manager because we decided to combine distance cap and HUD toggle under this function
 
         if (HUDCalibration)
         {
@@ -410,6 +425,8 @@ public class HUD_Revised_v2 : MonoBehaviour
     public void AdjustFrontAngle(float x)
     {
         //Adjust width of cone to consider an obstacle "in front of" the user
+        //e.g. if front angle is 90 degrees, then anything more than 90 degrees left or right of user is considered not "in front"
+        //Defaults to 75 degrees
         frontAngle += x;
         if (frontAngle < 0)
             frontAngle = 0;
@@ -422,6 +439,7 @@ public class HUD_Revised_v2 : MonoBehaviour
     public void AdjustHUDThreshold (float x)
     {
         //Adjust HUD threshold. Higher = more extreme angle required to trigger HUD.
+        //See comments in ActivateHUD for more information
         HUDThreshold += x;
         if (HUDThreshold < 0)
             HUDThreshold = 0;
@@ -433,6 +451,7 @@ public class HUD_Revised_v2 : MonoBehaviour
 
 
     public class ObstInfo
+    //Class to hold necessary information for HUD activation
     {
         //Redone for HUD_Revised_v2 
         public string ObstName { get; set; }

@@ -10,47 +10,52 @@ using Microsoft.MixedReality.Toolkit.Audio;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 
+/// <summary>
+/// Logs data for trial run to a text file.
+/// </summary>
 public class Experiment_Logger : MonoBehaviour
 {
 
-    public GameObject Camera;
-    public ObstacleManager obstacleManager;
-    public QRCodes_AROA qRCodes_AROA;
-    public TextToSpeech textToSpeech;
+    public GameObject Camera;  //Attach camera
+    public ObstacleManager obstacleManager; //Attach obstacle manager
+    public QRCodes_AROA qRCodes_AROA;  //Attach QR Codes Manager
+    public TextToSpeech textToSpeech;  //Attach Text to Speech object
     public GameObject HUDFrame; //Frame containing HUD cues
     //[HideInInspector]
     //public List<GameObject> HUDCues; //All HUD cue objects
 
     [HideInInspector]
-    public string cueCondition = "Default Condition";
+    public string cueCondition = "Default Condition";  //Current cue mode (e.g. "collocated", "combined")
 
     [HideInInspector]
-    public string layout = "Default Layout";
+    public string layout = "Default Layout"; //Current layout
     private float startTime;
     private float endTime;
 
-    public bool loggingInProcess = false;
+    public bool loggingInProcess = false;  //True while logging in process
 
-    private string filePath;
+    private string filePath;  //File path to save data
     //private string filePath2;
-    private string fileName;
+    private string fileName;  //File name to save data
     //private string fileName2;
     public bool forward = true; //Forward if true, backward if false
-    private Vector3 tempPos;
-    private Vector3 tempRot;
-    private float tempTime;
-    private float timeStamp;
-    private bool eyeTrackingEnabled;
-    private bool eyeTrackingDataValid;
-    private Vector3 gazeDirection;
-    private Vector3 eyeMovement;
-    private string directionString;
+    private Vector3 tempPos;  //Temporary position
+    private Vector3 tempRot;  //Temporary rotation
+    private float tempTime;  //Temporary time
+    //private float timeStamp;  
+    private bool eyeTrackingEnabled;  //True if eye tracking enabled
+    private bool eyeTrackingDataValid;  //True if eye tracking data is valid
+    private Vector3 gazeDirection;  //Gaze direction (i.e. where the camera is pointed)
+    private Vector3 eyeMovement;  //Eye movement
+    private string directionString;  //String indicating direction (forward or backward)
 
+    //HUD cue game objects
     private GameObject northCue;
     private GameObject southCue;
     private GameObject eastCue;
     private GameObject westCue;
 
+    //HUD cue booleans
     private bool northOn;
     private bool eastOn;
     private bool southOn;
@@ -63,6 +68,7 @@ public class Experiment_Logger : MonoBehaviour
     void Start()
     {
         foreach (Transform Cue in HUDFrame.transform)
+        //Get the HUD cue objects from the HUD Frame
         {
             //HUDCues.Add(Cue.gameObject);
 
@@ -174,8 +180,9 @@ public class Experiment_Logger : MonoBehaviour
     }
 
     public void BeginLogging()
+    //Start logging information
     {
-        if (!loggingInProcess)
+        if (!loggingInProcess)  //If logging has already started, ignore this
         {
             loggingInProcess = true;
 
@@ -187,7 +194,7 @@ public class Experiment_Logger : MonoBehaviour
             //Track start time
             startTime = Time.time;
 
-            //Set timestamp and path name
+            //Set timestamp, file name, and path name
             string timeStamp = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}", DateTime.Now);
             if (forward)
             {
@@ -205,7 +212,6 @@ public class Experiment_Logger : MonoBehaviour
 
             fileName = timeStamp + '_' + cueCondition + '_' + layout + '_' + directionString + ".txt";
 
-
             Debug.Log("Filename: " + fileName);
             //Debug.Log("Filename 2: " + fileName2);
             filePath = Path.Combine(Application.persistentDataPath, fileName);
@@ -219,7 +225,7 @@ public class Experiment_Logger : MonoBehaviour
             tempRot = Camera.transform.rotation.eulerAngles.normalized;
             gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized;
 
-            // create output file and write header
+            //Create output file and write header
             //System.IO.File.WriteAllText(filePath, fileName);
 
             using (TextWriter writer = File.AppendText(filePath))
@@ -243,14 +249,16 @@ public class Experiment_Logger : MonoBehaviour
     }
 
     public void EndLogging()
+     //End logging
     {
-        if (loggingInProcess)
+        if (loggingInProcess) //Activate only if logging is currently running
         {
             loggingInProcess = false;
 
             Debug.Log("Ending logging.");
             textToSpeech.StartSpeaking("Ending logging.");
 
+            //Append final line with end time
             using (TextWriter writer = File.AppendText(filePath))
             {
                 writer.WriteLine("Logging ended at " + tempTime);
@@ -263,7 +271,7 @@ public class Experiment_Logger : MonoBehaviour
             }
             */
 
-            //change from forward to backward or vice versa
+            //Change from forward to backward or vice versa
             forward = !forward;
         }
 
@@ -273,6 +281,7 @@ public class Experiment_Logger : MonoBehaviour
     }
 
     void FixedUpdate()
+    //Should activate every 0.02 seconds
     {
         //Set cue condition
         if (obstacleManager.collocatedCuesOn && obstacleManager.hudCuesOn)
@@ -351,7 +360,7 @@ public class Experiment_Logger : MonoBehaviour
 
         if (loggingInProcess)
         {
-
+            //Assign current state to variables
             tempPos = Camera.transform.position;
             tempRot = Camera.transform.rotation.eulerAngles;
             tempTime = Time.time - startTime;
@@ -360,7 +369,7 @@ public class Experiment_Logger : MonoBehaviour
             gazeDirection = CoreServices.InputSystem.EyeGazeProvider.GazeDirection;
             eyeMovement = Camera.transform.forward - gazeDirection;
 
-
+            //Write variables to log
             using (TextWriter writer = File.AppendText(filePath))
             {
                 writer.WriteLine("Fixed; " + cueCondition + "; " + layout + "; " + directionString + "; "  + tempTime + "; " +

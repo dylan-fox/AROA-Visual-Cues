@@ -18,38 +18,38 @@ public class ObstacleManager : MonoBehaviour
     //public List<Quaternion> obstacleStartingRotations;
     //public List<Vector3> obstacleStartingScales;
 
-    public bool collocatedCuesOn = true;
-    public bool hudCuesOn = true;
-    public bool gestureLock = false;
+    public bool collocatedCuesOn = true; //Sets whether collocated cues are on.
+    public bool hudCuesOn = true;  //Sets whether HUD cues are on.
+    public bool gestureLock = false;  //Sets whiether gestures (manual control of obstacles) is on.
 
     [HideInInspector]
-    public List<GameObject> visualCues;
+    public List<GameObject> visualCues; //Hidden list of visual cues.
     //public GameObject[] visualCues;
 
     [HideInInspector]
-    public List<Vector3> cueStartingLocations;
+    public List<Vector3> cueStartingLocations;  //Hidden list of cue starting locations.
 
     [HideInInspector]
-    public List<Quaternion> cueStartingRotations;
+    public List<Quaternion> cueStartingRotations;  //Hidden list of cue starting rotations.
 
     [HideInInspector]
-    public List<Vector3> cueStartingScales;
+    public List<Vector3> cueStartingScales;  //Hidden list of cue starting scales.
 
-    public GameObject interfaceObject;
-    public GameObject cuesParent;
-    public GameObject calibrationObstacle; //High obstacle at far back used to determine left/right alignment
-    public GameObject debugCanvas;
-    public Experiment_Logger experimentLogger;
+    public GameObject interfaceObject; //Attach the Interface.
+    public GameObject cuesParent; //Attach the Collocated Cues object.
+    public GameObject calibrationObstacle; //High obstacle at far back used to determine left/right alignment, under Collocated Cues.
+    public GameObject debugCanvas; //Used to display debug text. Attach "Debug Canvas" object under Main Camera.
+    public Experiment_Logger experimentLogger;  //Attach Experiment Logger script.
     
 
-    public GameObject HUDManager;
+    public GameObject HUDManager;  //Object with HUD scripts attached. Attach "HUD Revised" under main caerma.
     //private HUDIndicator HUDIndicator;
     //private HUD_Revised HUD_Revised;
-    private HUD_Revised_v2 HUD_Revised;
+    private HUD_Revised_v2 HUD_Revised; //HUD management script.
 
-    public TextToSpeech textToSpeech;
+    public TextToSpeech textToSpeech; //Attach Text To Speech object under Main Camera.
 
-    public GameObject numShownTextObject;
+    public GameObject numShownTextObject;  //Attach the "TextMeshPro" object under Interface/Buttons/Show Cue Button/IconAndText/TextMeshPro. This helps show how many obstacles are currently displayed.
     //public GameObject cuePrefab; //Necessary for AddCue, not ShowCue
 
     /*
@@ -64,9 +64,9 @@ public class ObstacleManager : MonoBehaviour
     [Tooltip("Maximum distance to show obstacles.")]
     public float maxDisplayDistance = 5f;
 
-    private LayerMask defaultMask = ~0;
+    private LayerMask defaultMask = ~0;  //The layer masks are used to hide the collocated obstacles from the viewer.
     private LayerMask obstacleMask;
-    public bool distanceCap = false;
+    public bool distanceCap = false; //Whether the distance at which the user can see collocated obstacles is capped.
 
     [Tooltip("Height of high obstacles in meters.")]
     public float highObstHeight = 1.524f;
@@ -75,9 +75,9 @@ public class ObstacleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SavePositions();
+        SavePositions();  //Saves default obstacle positions.
         //HUDIndicator = HUDManager.GetComponent<HUDIndicator>();
-        HUD_Revised = HUDManager.GetComponent<HUD_Revised_v2>();
+        HUD_Revised = HUDManager.GetComponent<HUD_Revised_v2>();  //Assigns HUD_Revised_v2 script.
 
         /*
         numShown = visualCues.Count;
@@ -109,6 +109,7 @@ public class ObstacleManager : MonoBehaviour
     void Update()
     {
         if (debugCanvas.activeSelf)
+            //If the debug canvas is activated, update it with debugging information.
         {
             TextMeshProUGUI debug = debugCanvas.transform.Find("Debug Text").gameObject.GetComponent<TextMeshProUGUI>();
 
@@ -126,6 +127,7 @@ public class ObstacleManager : MonoBehaviour
             if (!distanceCap || HUD_Revised.HUDCalibration)
             {
                 //If distance is uncapped or HUD calibration is on, this will warn experimenter not to run
+                //Note that distance cap and HUD Calibration are now both toggled simultaneously through Toggle Calibration
                 debug.text += "\nDEACTIVATE CALIBRATION";
             }
             else
@@ -135,6 +137,7 @@ public class ObstacleManager : MonoBehaviour
 
 
     public void CollocatedCuesToggle()
+    //Toggles collocated cue visibility.
     {
         //Debug.Log("Toggling collocated visual cues.");
 
@@ -143,7 +146,7 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("Collocated cues off.");
             textToSpeech.StartSpeaking("Co-located cues off.");
 
-            Camera.main.cullingMask = obstacleMask;
+            Camera.main.cullingMask = obstacleMask; //Applies culling mask that hides obstacles.
 
             collocatedCuesOn = false;
 
@@ -154,13 +157,14 @@ public class ObstacleManager : MonoBehaviour
             Debug.Log("Collocated cues on.");
             textToSpeech.StartSpeaking("Co-located cues on.");
 
-            Camera.main.cullingMask = defaultMask;
+            Camera.main.cullingMask = defaultMask; //Resets to default culling mask.
 
             collocatedCuesOn = true;
         }
     }
 
     public void HUDCuesToggle()
+    //Toggles HUD cue visibility.
     {
         //Debug.Log("Toggling HUD visual cues.");
 
@@ -188,7 +192,7 @@ public class ObstacleManager : MonoBehaviour
 
 
 
-    public void DebugToggle()
+    public void DebugToggle() //Toggles Debug text pane.
     {
         Debug.Log("Toggling debug text.");
         if (debugCanvas.activeSelf)
@@ -315,17 +319,17 @@ public class ObstacleManager : MonoBehaviour
     }
 
 
-    public void MoveForward(float dist)
+    public void MoveForward(float dist)  //Adjusts position of cues forward or backward
     {
         cuesParent.transform.localPosition += cuesParent.transform.forward * dist;
     }
 
-    public void MoveRight(float dist)
+    public void MoveRight(float dist)    //Adjusts position of cues right or left
     {
         cuesParent.transform.localPosition += cuesParent.transform.right * dist;
     }
 
-    public void MoveUp(float dist)
+    public void MoveUp(float dist)  //Adjusts position of cues up or down
     {
         cuesParent.transform.localPosition += cuesParent.transform.up * dist;
     }
@@ -404,7 +408,8 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
-    public void ToggleDistanceCap (bool turnOn)
+    public void ToggleDistanceCap (bool turnOn)  
+    //Toggles whether collocated obstacles can be seen at any distance 
     {
         if (!turnOn)
         {
@@ -424,6 +429,7 @@ public class ObstacleManager : MonoBehaviour
     }
 
     public void AdjustHighObstHeight (float heightAdjust)
+    //Adjusts height of high obstacles
     {
         //This needs to both adjust current cue height, as well as tell the QR codes script to adjust height when moving cues.
         //The latter is done in QRCodes_AROA - it checks highObstHeight on Obstacle Manager.
