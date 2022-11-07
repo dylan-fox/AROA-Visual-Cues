@@ -8,7 +8,7 @@ This project establishes a visual cue system for the HoloLens 2, as used in the 
 ## Core Functionality
 
 The core functions of the project are:
-1. **Course Alignment** - Align with a predetermined [physical obstacle course layout](https://imgur.com/a/NXOB8BM) using [QR codes](https://docs.google.com/document/d/1AcF6-MDEuMgz8fVGd6OxW-DgXVH-ZRz1i57YcW5o8Vc/edit?usp=sharing). This course is set up over a 1.8m x 15m portion of hallway and can take one of 8 layouts.
+1. **Course Alignment** - Align with a predetermined [physical obstacle course layout](https://imgur.com/a/NXOB8BM) using [QR codes](https://docs.google.com/document/d/1AcF6-MDEuMgz8fVGd6OxW-DgXVH-ZRz1i57YcW5o8Vc/edit?usp=sharing). (QR codes created [here](https://www.qr-code-generator.com/).) This course is set up over a 1.8m x 15m portion of hallway and can take one of 8 layouts.
 2. **Cue Display** - Display visual cues in one of three modes: World-Locked (aka Collocated), Heads-Up (aka HUD), or Combined (both other cue types at once).
 3. **Performance Logging** - Log the participant's position and rotation over time as they walk the obstacle course.
 
@@ -33,7 +33,8 @@ The following secondary functions support the core functions.
 These functions were created during the prototyping phase but were not used for the main experiment. 
 
 1. Interface Menu - a floating menu used to control the obstacles and mode.
-2. Manual Obstacle Positioning - the ability to adjust the size and placement of obstacles relative to one another manually, and to save a particular layout and reset to it. (Note that saving is within-session only - if the application restarts, saved positions are lost.)
+3. Manual Obstacle Positioning - the ability to adjust the size and placement of obstacles relative to one another manually, and to save a particular layout and reset to it. (Note that saving is within-session only - if the application restarts, saved positions are lost.)
+4. Show/Hide Obstacles - functionality operated from the interface menu to show or hide additional obstacles one at a time in order to allow manual placement of multiple obstacles.
 
 
 # Key Unity Elements and Associated Scripts
