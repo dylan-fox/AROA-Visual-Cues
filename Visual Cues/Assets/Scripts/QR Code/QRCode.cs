@@ -9,6 +9,8 @@ namespace QRTracking
     [RequireComponent(typeof(QRTracking.SpatialGraphNodeTracker))]
     public class QRCode : MonoBehaviour
     {
+        //<summary>A script attached to each QR Code object that tracks its information.</summary>
+
         public Microsoft.MixedReality.QR.QRCode qrCode;
         private GameObject qrCodeCube;
 
@@ -68,7 +70,7 @@ namespace QRTracking
             QRVersion = QRInfo.transform.Find("QRVersion").gameObject.GetComponent<TextMesh>();
             QRTimeStamp = QRInfo.transform.Find("QRTimeStamp").gameObject.GetComponent<TextMesh>();
             QRSize = QRInfo.transform.Find("QRSize").gameObject.GetComponent<TextMesh>();
-            //AROA EDIT
+            //AROA EDIT - gets position text from QR code info
             QRPositionText = QRInfo.transform.Find("QRPositionText").gameObject.GetComponent<TextMesh>();
 
             QRID.text = "Id:" + qrCode.Id.ToString();
@@ -106,10 +108,12 @@ namespace QRTracking
                 QRInfo.transform.localScale = new Vector3(PhysicalSize / 0.2f, PhysicalSize / 0.2f, PhysicalSize / 0.2f);
 
                 //AROA EDIT
+                //Get and log QR code position
                 QRPositionText.text = "Position: " + qrCodeCube.transform.position;
                 Debug.Log("Position = " + qrCodeCube.transform.position);
                 if (trackedObject != null) { 
-                    if (trackedObject.name == "Collocated Cues") //Moving whole room
+                    if (trackedObject.name == "Collocated Cues") //If tracked object is the Collocated Cues object, move whole room
+                        //Note that this was coded when we were considering having a separate QR code on each obstacle, but this was never fully developed
                     {
                         if (!textToSpeech.IsSpeaking())
                             textToSpeech.StartSpeaking(layout);

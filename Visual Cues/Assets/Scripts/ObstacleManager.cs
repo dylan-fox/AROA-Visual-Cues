@@ -212,6 +212,7 @@ public class ObstacleManager : MonoBehaviour
     public void ShowCue()
     {
         //Activate the collocated and HUD cues for the next object.
+        //Note that this functionality was deprecated when the QR code system and six standard obstacles were introduced.
         if (numShown < visualCues.Count)
         {
             visualCues[numShown].SetActive(true);

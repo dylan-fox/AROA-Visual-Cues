@@ -11,24 +11,26 @@ namespace QRTracking
 {
     public class QRCodes_AROA : MonoBehaviour
     {
-        public GameObject qrCodePrefab;
-        public GameObject obstLow1;
+        //<summary>A script to help the AROA project work with QR codes.</summary>
+
+        public GameObject qrCodePrefab;   //Attach the QRCode prefab
+        public GameObject obstLow1;  //Attach the main obstacles
         public GameObject obstLow2;
         public GameObject obstHigh1;
         public GameObject obstHigh2;
         public GameObject obstWide1;
         public GameObject obstWide2;
-        public GameObject obstacleCollection;
-        public Experiment_Logger experimentLogger;
-        public string layout = "Default";
-        public float highObstHeight;
+        public GameObject obstacleCollection; //Attach the Collocated Cues object
+        public Experiment_Logger experimentLogger;  //Attach the experiment logger
+        public string layout = "Default"; //Current layout
+        public float highObstHeight; //Holds the height of the high obstacle so it's maintained for a new code. Set to 0 by default.
 
-        private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
-        private bool clearExisting = false;
+        private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;  //List of QR code objects
+        private bool clearExisting = false;  
 
         //AROA Edit
-        public TextToSpeech textToSpeech;
-        public ObstacleManager obstacleManager;
+        public TextToSpeech textToSpeech;  //Attach text to speech object
+        public ObstacleManager obstacleManager; //Attach obstacle manager
 
         struct ActionData
         {
@@ -67,6 +69,7 @@ namespace QRTracking
 
             if (qrCodePrefab == null || obstLow1 == null || obstLow2 == null || obstHigh1 == null || obstHigh2 == null || obstWide1 == null || obstWide2 == null || obstacleCollection == null)
             {
+                //Check to make sure QR Code and obstacles are assigned properly
                 throw new System.Exception("Prefab or obstacles not assigned");
             }
         }
@@ -127,6 +130,7 @@ namespace QRTracking
                         qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                         qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
                                                
+                        //Assign layout based on QR Code data
                         if (action.qrCode.Data == "QR Code 1")
                         {
                             layout = "Layout 1";
@@ -207,7 +211,7 @@ namespace QRTracking
                             qrCodeObject.GetComponent<QRCode>().textToSpeech = textToSpeech;
                             qrCodeObject.GetComponent<QRCode>().obstacleManager = obstacleManager;
 
-
+                            //Same as above; assigning layouts based on QR code text
                             if (action.qrCode.Data == "QR Code 1")
                             {
                                 layout = "Layout 1";
